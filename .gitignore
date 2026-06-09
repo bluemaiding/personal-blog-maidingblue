@@ -1,0 +1,7 @@
+node_modules/
+.claude/
+memory/
+_cleanup.js
+_rebuild2.js
+*.log
+.DS_Store

@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>maiding_blue — NJU EE '25</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue-50:#eff6ff;--blue-100:#dbeafe;--blue-200:#bfdbfe;--blue-300:#93c5fd;
+  --blue-400:#60a5fa;--blue-500:#3b82f6;--blue-600:#2563eb;--blue-700:#1d4ed8;
+  --blue-800:#1e40af;--blue-900:#1e3a8a;
+  --white:#ffffff;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-300:#cbd5e1;--gray-400:#94a3b8;--gray-500:#64748b;--gray-600:#475569;
+  --gray-700:#334155;--gray-800:#1e293b;--gray-900:#0f172a;
+  --radius-lg:1.5rem;--radius-full:9999px;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.05);
+  --shadow-md:0 4px 6px -1px rgba(0,0,0,.07),0 2px 4px -2px rgba(0,0,0,.05);
+  --shadow-lg:0 10px 15px -3px rgba(0,0,0,.08),0 4px 6px -4px rgba(0,0,0,.04);
+  --shadow-xl:0 20px 25px -5px rgba(0,0,0,.08),0 8px 10px -6px rgba(0,0,0,.04);
+  --shadow-blue:0 10px 30px -5px rgba(37,99,235,.25);
+  --transition:all 0.25s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  color:var(--gray-700);line-height:1.7;
+  background:linear-gradient(180deg,#f0f7ff 0%,#ffffff 40%,#f8fbff 100%);
+  min-height:100vh;overflow-x:hidden;position:relative;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.025;
+  background-image:radial-gradient(circle,#3b82f6 1px,transparent 1px);
+  background-size:28px 28px;
+}
+body>*{position:relative;z-index:1}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--blue-50)}
+::-webkit-scrollbar-thumb{background:var(--blue-300);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--blue-400)}
+
+/* LOADER */
+#loader{position:fixed;inset:0;z-index:10000;background:linear-gradient(135deg,#f0f7ff,#ffffff);display:flex;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s ease}
+#loader.done{opacity:0;visibility:hidden;pointer-events:none;display:none}
+.loader-ring{width:52px;height:52px;border-radius:50%;border:3px solid var(--blue-100);border-top-color:var(--blue-600);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(37,99,235,.07);box-shadow:0 1px 10px rgba(37,99,235,.05);transition:var(--transition)}
+nav.scrolled{box-shadow:0 2px 20px rgba(37,99,235,.09)}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:62px}
+.nav-logo{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.3rem;color:var(--blue-700);text-decoration:none;letter-spacing:-.02em;transition:var(--transition)}
+.nav-logo:hover{color:var(--blue-500)}
+.nav-links{display:flex;gap:.2rem;align-items:center;list-style:none}
+.nav-links a{text-decoration:none;color:var(--gray-600);font-weight:500;font-size:.9rem;padding:.5rem 1rem;border-radius:var(--radius-full);position:relative;transition:var(--transition)}
+.nav-links a:hover{color:var(--blue-600);background:var(--blue-50)}
+.nav-links a.active{color:#fff;background:var(--blue-600);box-shadow:0 4px 14px rgba(37,99,235,.28);transform:scale(1.04)}
+.hamburger{display:none;background:none;border:none;font-size:1.35rem;color:var(--gray-700);cursor:pointer;padding:.5rem}
+@media(max-width:768px){
+  .hamburger{display:block}
+  .nav-links{position:fixed;top:62px;left:0;right:0;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);flex-direction:column;padding:1rem;gap:.2rem;border-bottom:1px solid var(--blue-100);transform:translateY(-120%);transition:transform .35s ease;box-shadow:var(--shadow-lg)}
+  .nav-links.open{transform:translateY(0)}
+  .nav-links a{display:block;width:100%;text-align:center;padding:.7rem;border-radius:var(--radius-lg)}
+}
+
+/* PAGES */
+.page{display:none;opacity:0;transform:translateY(18px);transition:opacity .45s ease,transform .45s ease}
+.page.active{display:block;opacity:1;transform:translateY(0)}
+.page-section{max-width:1100px;margin:0 auto;padding:5rem 1.5rem 4rem}
+.section-title{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.9rem;color:var(--gray-900);margin-bottom:.4rem;position:relative;display:inline-block}
+.section-title::after{content:'';position:absolute;bottom:-4px;left:0;width:55%;height:4px;background:linear-gradient(90deg,var(--blue-500),var(--blue-300));border-radius:2px}
+.section-subtitle{color:var(--gray-500);margin-bottom:2.5rem;font-size:.95rem}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 1.5rem 4rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;width:550px;height:550px;background:radial-gradient(circle,rgba(59,130,246,.07) 0%,transparent 70%);top:-100px;right:-120px;border-radius:50%}
+.hero::after{content:'';position:absolute;width:380px;height:380px;background:radial-gradient(circle,rgba(37,99,235,.05) 0%,transparent 70%);bottom:-60px;left:-80px;border-radius:50%}
+.float-shape{position:absolute;border-radius:50%;opacity:.1;animation:float 8s ease-in-out infinite}
+.float-shape:nth-child(1){width:110px;height:110px;background:var(--blue-300);top:14%;left:7%;animation-delay:0s}
+.float-shape:nth-child(2){width:70px;height:70px;background:var(--blue-400);top:62%;right:10%;animation-delay:2s}
+.float-shape:nth-child(3){width:45px;height:45px;background:var(--blue-200);top:28%;right:18%;animation-delay:4s}
+.float-shape:nth-child(4){width:90px;height:90px;border:2px solid var(--blue-300);bottom:18%;left:13%;animation-delay:1s}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(4deg)}}
+.hero-title{font-family:'Poppins',sans-serif;font-weight:900;font-size:clamp(2.6rem,7vw,4.2rem);color:var(--gray-900);letter-spacing:-.03em;line-height:1.1;margin-bottom:1.2rem;position:relative;z-index:1}
+.hero-title span{color:var(--blue-600)}
+.typed-wrap{font-size:clamp(.95rem,2.4vw,1.25rem);color:var(--blue-600);font-weight:500;margin-bottom:2.5rem;min-height:1.8rem;position:relative;z-index:1}
+.typed-cursor{display:inline-block;width:2px;height:1.1em;background:var(--blue-600);margin-left:3px;animation:blink .7s infinite;vertical-align:middle}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-btn{display:inline-flex;align-items:center;gap:.55rem;padding:.85rem 2rem;background:var(--blue-600);color:#fff;text-decoration:none;font-weight:600;font-size:1rem;border-radius:var(--radius-full);border:none;cursor:pointer;box-shadow:var(--shadow-blue);transition:var(--transition);position:relative;z-index:1;overflow:hidden}
+.hero-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);opacity:0;transition:opacity .3s}
+.hero-btn:hover{transform:translateY(-2px);box-shadow:0 14px 35px rgba(37,99,235,.35)}
+.hero-btn:hover::before{opacity:1}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);color:var(--blue-400);font-size:1.4rem;animation:bounce 2s infinite;z-index:1}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:start}
+.avatar-wrap{width:200px;height:200px;border-radius:50%;margin:0 auto;background:linear-gradient(135deg,var(--blue-100),var(--blue-200));display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-xl);border:4px solid #fff;position:relative;overflow:visible}
+.avatar-wrap i{font-size:3.5rem;color:var(--blue-600)}
+.avatar-ring{position:absolute;inset:-8px;border-radius:50%;border:2px dashed var(--blue-300);animation:spin 20s linear infinite;pointer-events:none}
+.about-text h3{font-family:'Poppins',sans-serif;font-size:1.4rem;color:var(--gray-900);margin-bottom:.7rem}
+.about-text p{color:var(--gray-600);line-height:1.8;margin-bottom:1rem;font-size:.95rem}
+.skills{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.2rem}
+.skill-tag{padding:.4rem 1rem;border-radius:var(--radius-full);font-size:.8rem;font-weight:500;background:linear-gradient(135deg,var(--blue-50),var(--blue-100));color:var(--blue-700);border:1px solid var(--blue-200);transition:var(--transition);cursor:default}
+.skill-tag:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--blue-400)}
+.latest-posts{margin-top:2.5rem}
+.latest-posts h3{font-family:'Poppins',sans-serif;font-size:1.2rem;color:var(--gray-900);margin-bottom:.8rem}
+.latest-posts-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.latest-post-card{padding:1rem 1.2rem;border-radius:var(--radius-lg);background:#fff;border:1px solid var(--blue-100);text-decoration:none;color:inherit;transition:var(--transition);display:flex;align-items:center;gap:.6rem}
+.latest-post-card i{color:var(--blue-400);font-size:1.1rem;flex-shrink:0}
+.latest-post-card span{font-weight:600;font-size:.9rem;color:var(--gray-700)}
+.latest-post-card:hover{border-color:var(--blue-400);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+@media(max-width:768px){
+  .about-grid{grid-template-columns:1fr;gap:2rem;text-align:center}
+  .avatar-wrap{width:150px;height:150px}
+  .latest-posts-grid{grid-template-columns:1fr}
+}
+
+/* ARTICLES */
+.articles-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.article-card{background:#fff;border-radius:var(--radius-lg);border:1px solid var(--gray-200);overflow:hidden;transition:var(--transition);cursor:pointer;display:flex;flex-direction:column}
+.article-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-xl);border-color:var(--blue-300)}
+.article-card-img{height:90px;background:linear-gradient(135deg,var(--blue-100),var(--blue-200));display:flex;align-items:center;justify-content:center;transition:var(--transition)}
+.article-card:hover .article-card-img{background:linear-gradient(135deg,var(--blue-200),var(--blue-300))}
+.article-card-img i{font-size:1.8rem;color:var(--blue-500);transition:var(--transition)}
+.article-card:hover .article-card-img i{transform:scale(1.15)}
+.article-card-body{padding:1.4rem;flex:1;display:flex;flex-direction:column}
+.article-card-body h3{font-family:'Poppins',sans-serif;font-size:1.1rem;color:var(--gray-900);margin-bottom:.35rem;line-height:1.35}
+.article-card-meta{font-size:.76rem;color:var(--gray-400);margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.article-card-excerpt{font-size:.86rem;color:var(--gray-500);line-height:1.6;flex:1;margin-bottom:.8rem}
+.article-tags{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.8rem}
+.article-tag{padding:.18rem .65rem;border-radius:var(--radius-full);font-size:.7rem;font-weight:500;background:var(--blue-50);color:var(--blue-600)}
+.article-card-read{font-size:.84rem;font-weight:600;color:var(--blue-600);text-decoration:none;display:inline-flex;align-items:center;gap:.35rem;transition:var(--transition);margin-top:auto}
+.article-card-read i{transition:var(--transition);font-size:.7rem}
+.article-card:hover .article-card-read i{transform:translateX(4px)}
+@media(max-width:768px){.articles-grid{grid-template-columns:1fr}}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:2000;background:rgba(15,23,42,.45);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;padding:1.5rem}
+.modal-overlay.open{opacity:1;visibility:visible}
+.modal-box{background:#fff;border-radius:var(--radius-lg);max-width:680px;width:100%;max-height:85vh;overflow-y:auto;padding:2.5rem;box-shadow:var(--shadow-xl);border:1px solid var(--blue-100);transform:translateY(25px) scale(.96);transition:transform .35s ease}
+.modal-overlay.open .modal-box{transform:translateY(0) scale(1)}
+.modal-close{position:sticky;top:0;float:right;background:var(--blue-50);border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--blue-600);font-size:.95rem;transition:var(--transition);z-index:2}
+.modal-close:hover{background:var(--blue-600);color:#fff}
+.modal-box h2{font-family:'Poppins',sans-serif;font-size:1.7rem;color:var(--gray-900);margin-bottom:.4rem;line-height:1.3}
+.modal-meta{font-size:.8rem;color:var(--gray-400);margin-bottom:1.5rem;display:flex;gap:.8rem}
+.modal-body{color:var(--gray-600);line-height:1.85;font-size:.93rem}
+.modal-body p{margin-bottom:1rem}
+
+/* PROJECTS */
+.projects-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.project-card{background:#fff;border-radius:var(--radius-lg);border:1px solid var(--gray-200);padding:1.6rem;transition:var(--transition);display:flex;flex-direction:column}
+.project-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-xl);border-color:var(--blue-300)}
+.project-header{display:flex;align-items:flex-start;gap:.7rem;margin-bottom:.7rem}
+.project-header i{font-size:1.2rem;color:var(--blue-500);margin-top:.1rem}
+.project-header h3{font-family:'Poppins',sans-serif;font-size:1.05rem;color:var(--gray-900)}
+.project-header h3 a{color:inherit;text-decoration:none;transition:var(--transition)}
+.project-header h3 a:hover{color:var(--blue-600)}
+.project-desc{font-size:.86rem;color:var(--gray-500);line-height:1.6;flex:1;margin-bottom:.8rem}
+.project-meta{display:flex;align-items:center;gap:.8rem;font-size:.78rem;color:var(--gray-400)}
+.lang-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.project-stats{display:flex;gap:.7rem}
+.project-stats span{display:inline-flex;align-items:center;gap:.2rem}
+.project-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem 1.1rem;border-radius:var(--radius-full);background:var(--blue-50);color:var(--blue-600);text-decoration:none;font-size:.8rem;font-weight:600;margin-top:1rem;align-self:flex-start;transition:var(--transition);border:1px solid var(--blue-200)}
+.project-btn:hover{background:var(--blue-600);color:#fff;border-color:var(--blue-600)}
+.pinned-section{margin-bottom:2rem}
+.pinned-section .section-subtitle{margin-bottom:1.2rem}
+@media(max-width:768px){.projects-grid{grid-template-columns:1fr}}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem}
+.contact-info{display:flex;flex-direction:column;gap:.8rem}
+.contact-item{display:flex;align-items:center;gap:.8rem;padding:1.1rem 1.3rem;background:#fff;border-radius:var(--radius-lg);border:1px solid var(--gray-200);transition:var(--transition);text-decoration:none;color:inherit}
+.contact-item:hover{border-color:var(--blue-300);transform:translateX(4px);box-shadow:var(--shadow-md)}
+.contact-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.contact-icon.email{background:var(--blue-50);color:var(--blue-600)}
+.contact-icon.github{background:var(--gray-100);color:var(--gray-700)}
+.contact-icon.bilibili{background:#fff0f3;color:#e11d48}
+.contact-label{font-weight:600;font-size:.9rem;color:var(--gray-800)}
+.contact-value{font-size:.78rem;color:var(--gray-400)}
+.contact-copy{margin-left:auto;color:var(--gray-300);cursor:pointer;transition:var(--transition);background:none;border:none;font-size:.85rem}
+.contact-copy:hover{color:var(--blue-500)}
+.contact-form{display:flex;flex-direction:column;gap:.8rem}
+.form-group input,.form-group textarea{width:100%;padding:.85rem 1.1rem;border-radius:var(--radius-lg);border:2px solid var(--gray-200);font-family:inherit;font-size:.9rem;color:var(--gray-700);background:#fff;transition:var(--transition);outline:none}
+.form-group textarea{min-height:130px;resize:vertical}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--blue-400);box-shadow:0 0 0 4px rgba(37,99,235,.1)}
+.form-submit{padding:.85rem 2rem;background:var(--blue-600);color:#fff;border:none;border-radius:var(--radius-full);font-weight:600;font-size:.95rem;cursor:pointer;box-shadow:var(--shadow-blue);transition:var(--transition);align-self:flex-start}
+.form-submit:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(37,99,235,.3)}
+.contact-sign{margin-top:2rem;text-align:center;color:var(--gray-400);font-size:.85rem}
+@media(max-width:768px){.contact-grid{grid-template-columns:1fr}}
+
+/* BACK TO TOP */
+.back-top{position:fixed;bottom:2rem;right:2rem;width:44px;height:44px;border-radius:50%;background:var(--blue-600);color:#fff;border:none;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-blue);opacity:0;visibility:hidden;transform:translateY(20px);transition:var(--transition);z-index:900}
+.back-top.show{opacity:1;visibility:visible;transform:translateY(0)}
+.back-top:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(37,99,235,.35)}
+
+/* STAGGER ANIM */
+.stagger{opacity:0;transform:translateY(25px);transition:opacity .5s ease,transform .5s ease}
+.stagger.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader"><div class="loader-ring"></div></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" onclick="goHome()">maiding_blue</a>
+    <button class="hamburger" id="hamburger" aria-label="菜单"><i class="fas fa-bars"></i></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#" class="nav-link active" data-page="home">首页</a></li>
+      <li><a href="#" class="nav-link" data-page="articles">文章</a></li>
+      <li><a href="#" class="nav-link" data-page="projects">项目</a></li>
+      <li><a href="#" class="nav-link" data-page="contact">联系</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="float-shape"></div>
+    <div class="float-shape"></div>
+    <div class="float-shape"></div>
+    <div class="float-shape"></div>
+    <h1 class="hero-title"><span>maiding</span>_blue</h1>
+    <div class="typed-wrap"><span id="typedText"></span><span class="typed-cursor"></span></div>
+    <a href="#aboutSection" class="hero-btn" id="heroExploreBtn"><i class="fas fa-compass"></i> 探索作品</a>
+    <a href="#aboutSection" class="scroll-hint"><i class="fas fa-chevron-down"></i></a>
+  </section>
+
+  <div class="page-section" id="aboutSection">
+    <h2 class="section-title">关于我</h2>
+    <p class="section-subtitle">南京大学 · 电子工程 · 2025届 · 63 篇文章</p>
+    <div class="about-grid">
+      <div class="avatar-wrap">
+        <i class="fas fa-user-graduate"></i>
+        <div class="avatar-ring"></div>
+      </div>
+      <div class="about-text">
+        <h3>你好，我是 maiding_blue 👋</h3>
+        <p>南京大学电子工程专业大四学生，对嵌入式系统与Web开发都有兴趣。相信代码可以改变物理世界，也喜欢用技术写点有趣的东西。正在探索全栈与边缘计算。</p>
+        <p>从电路设计到前端开发，我享受将软硬件知识融合的过程。这个博客记录了我的学习笔记、项目日常和一些技术思考。</p>
+        <div class="skills">
+          <span class="skill-tag">C / C++</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">嵌入式开发</span>
+          <span class="skill-tag">电路设计</span>
+          <span class="skill-tag">ESP32</span>
+          <span class="skill-tag">Web 全栈</span>
+        </div>
+      </div>
+    </div>
+    <div class="latest-posts">
+      <h3><i class="fas fa-feather-alt" style="margin-right:.4rem;color:var(--blue-500)"></i> 最新文章</h3>
+      <div class="latest-posts-grid" id="latestPostsGrid">
+        <!-- Rendered by JavaScript -->
+      </div>
+      <div style="margin-top:1.2rem">
+        <a href="posts.html" class="project-btn" style="display:inline-flex;align-items:center;gap:.35rem">查看全部文章 <i class="fas fa-arrow-right" style="font-size:.7rem"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ARTICLES -->
+<div class="page" id="page-articles">
+  <div class="page-section">
+    <h2 class="section-title">文章</h2>
+    <p class="section-subtitle">散文 · 小说 · 诗歌 · 随笔 · 作文 · 共 63 篇</p>
+    <div class="articles-grid" id="homeArticlesGrid">
+      <!-- Rendered by JavaScript -->
+    </div>
+    <div style="margin-top:2rem;text-align:center">
+      <a href="posts.html" class="project-btn" style="display:inline-flex;align-items:center;gap:.35rem">查看全部文章 <i class="fas fa-arrow-right" style="font-size:.7rem"></i></a>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div class="page" id="page-projects">
+  <div class="page-section">
+    <h2 class="section-title">项目</h2>
+    <p class="section-subtitle">开源项目与代码仓库</p>
+    <div class="pinned-section">
+      <h3 style="font-family:'Poppins',sans-serif;font-size:1.15rem;color:var(--gray-800);margin-bottom:1rem"><i class="fas fa-thumbtack" style="color:var(--blue-500);margin-right:.4rem"></i>精选项目</h3>
+      <div class="projects-grid">
+        <div class="project-card stagger">
+          <div class="project-header"><i class="fas fa-home"></i><h3><a href="https://github.com/bluemaiding" target="_blank" rel="noopener noreferrer">ESP32 Smart Home</a></h3></div>
+          <p class="project-desc">基于ESP32的智能家居控制系统，支持MQTT协议、多传感器数据采集和Web控制面板。</p>
+          <div class="project-meta"><span><span class="lang-dot" style="background:#f1e05a"></span> JavaScript</span><div class="project-stats"><span><i class="far fa-star"></i> 12</span><span><i class="fas fa-code-branch"></i> 3</span></div></div>
+          <a href="https://github.com/bluemaiding" target="_blank" rel="noopener noreferrer" class="project-btn">GitHub <i class="fas fa-external-link-alt" style="font-size:.7rem"></i></a>
+        </div>
+        <div class="project-card stagger">
+          <div class="project-header"><i class="fas fa-blog"></i><h3><a href="https://github.com/bluemaiding" target="_blank" rel="noopener noreferrer">Personal Blog</a></h3></div>
+          <p class="project-desc">个人博客系统，纯HTML/CSS/JS实现，部署在Cloudflare Pages上，支持响应式设计和交互动效。</p>
+          <div class="project-meta"><span><span class="lang-dot" style="background:#e34c26"></span> HTML</span><div class="project-stats"><span><i class="far fa-star"></i> 8</span><span><i class="fas fa-code-branch"></i> 2</span></div></div>
+          <a href="https://github.com/bluemaiding" target="_blank" rel="noopener noreferrer" class="project-btn">GitHub <i class="fas fa-external-link-alt" style="font-size:.7rem"></i></a>
+        </div>
+      </div>
+    </div>
+    <h3 style="font-family:'Poppins',sans-serif;font-size:1.15rem;color:var(--gray-800);margin-bottom:1rem;margin-top:1rem"><i class="fab fa-github" style="color:var(--blue-500);margin-right:.4rem"></i>GitHub 仓库</h3>
+    <div class="projects-grid" id="githubProjects">
+      <div class="project-card stagger" style="grid-column:1/-1;text-align:center;padding:2.5rem">
+        <i class="fas fa-circle-notch fa-spin" style="font-size:1.5rem;color:var(--blue-400);margin-bottom:.8rem"></i>
+        <p style="color:var(--gray-400)">正在从 GitHub API 加载仓库列表…</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="page-contact">
+  <div class="page-section">
+    <h2 class="section-title">联系我</h2>
+    <p class="section-subtitle">欢迎交流、合作或打个招呼</p>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <a href="mailto:bluemaiding@126.com" class="contact-item stagger">
+          <div class="contact-icon email"><i class="fas fa-envelope"></i></div>
+          <div><div class="contact-label">邮箱</div><div class="contact-value">bluemaiding@126.com</div></div>
+          <button class="contact-copy" data-copy="bluemaiding@126.com" title="复制"><i class="far fa-copy"></i></button>
+        </a>
+        <a href="https://github.com/bluemaiding" target="_blank" rel="noopener noreferrer" class="contact-item stagger">
+          <div class="contact-icon github"><i class="fab fa-github"></i></div>
+          <div><div class="contact-label">GitHub</div><div class="contact-value">github.com/bluemaiding</div></div>
+        </a>
+        <a href="#" class="contact-item stagger">
+          <div class="contact-icon bilibili"><i class="fas fa-play-circle"></i></div>
+          <div><div class="contact-label">Bilibili</div><div class="contact-value">maiding_blue</div></div>
+        </a>
+      </div>
+      <form class="contact-form stagger" id="contactForm" onsubmit="handleSubmit(event)">
+        <div class="form-group"><input type="text" placeholder="您的姓名" required></div>
+        <div class="form-group"><input type="email" placeholder="您的邮箱" required></div>
+        <div class="form-group"><textarea placeholder="想说的话…" required></textarea></div>
+        <button type="submit" class="form-submit"><i class="fas fa-paper-plane" style="margin-right:.4rem"></i>发送消息</button>
+      </form>
+    </div>
+    <div class="contact-sign">从南京大学仙林校区向您问好 🌊</div>
+  </div>
+</div>
+
+<!-- ARTICLE MODAL -->
+<div class="modal-overlay" id="articleModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeArticle()"><i class="fas fa-times"></i></button>
+    <h2 id="modalTitle"></h2>
+    <div class="modal-meta" id="modalMeta"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- BACK TO TOP -->
+<button class="back-top" id="backTop" title="返回顶部" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+
+<script>
+// ===== CONFIG =====
+const CONFIG = {
+  name: 'maiding_blue',
+  github: 'bluemaiding',
+  email: 'bluemaiding@126.com',
+  typedStrings: ["NJU EE'25 | 学生开发者 | 软硬兼修", "嵌入式 × Web | 代码改变世界", "南京大学 · 电子工程 · 2025"]
+};
+
+// ===== BLOG ARTICLES DATA =====
+const BLOG_ARTICLES = [
+  {
+    "id": 0,
+    "title": "When...",
+    "year": "2025",
+    "category": "现代诗",
+    "lang": "en",
+    "classical": false,
+    "url": "posts/article-0.html"
+  },
+  {
+    "id": 1,
+    "title": "故然慢",
+    "year": "2024",
+    "category": "现代诗",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-1.html"
+  },
+  {
+    "id": 2,
+    "title": "青玉案·春雷乍动小池寒",
+    "year": "2024",
+    "category": "古诗词",
+    "lang": "zh",
+    "classical": true,
+    "url": "posts/article-2.html"
+  },
+  {
+    "id": 3,
+    "title": "语文学业考忽觉毕业将至有感而乱作",
+    "year": "2024",
+    "category": "作文",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-3.html"
+  },
+  {
+    "id": 4,
+    "title": "《钗头凤·懒卷帘》",
+    "year": "2023",
+    "category": "古诗词",
+    "lang": "zh",
+    "classical": true,
+    "url": "posts/article-4.html"
+  },
+  {
+    "id": 5,
+    "title": "《风桥夜题》",
+    "year": "2023",
+    "category": "古诗词",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-5.html"
+  },
+  {
+    "id": 6,
+    "title": "《花间辞》 ",
+    "year": "2023",
+    "category": "古诗词",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-6.html"
+  },
+  {
+    "id": 7,
+    "title": "M星上的最后一夜",
+    "year": "2023",
+    "category": "小说",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-7.html"
+  },
+  {
+    "id": 8,
+    "title": "《汪妍记》",
+    "year": "2022",
+    "category": "纪念",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-8.html"
+  },
+  {
+    "id": 9,
+    "title": "《无题》",
+    "year": "2022",
+    "category": "古诗词",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-9.html"
+  },
+  {
+    "id": 10,
+    "title": "《长夜行》",
+    "year": "2022",
+    "category": "小说",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-10.html"
+  },
+  {
+    "id": 11,
+    "title": "《中秋词》",
+    "year": "2022",
+    "category": "古诗词",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-11.html"
+  },
+  {
+    "id": 12,
+    "title": "2060——一个会呼吸的年代",
+    "year": "2022",
+    "category": "小说",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-12.html"
+  },
+  {
+    "id": 13,
+    "title": "必修上册-古诗单元-生命之歌",
+    "year": "2022",
+    "category": "作文",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-13.html"
+  },
+  {
+    "id": 14,
+    "title": "读书笔记1 局外人",
+    "year": "2022",
+    "category": "作文",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-14.html"
+  },
+  {
+    "id": 15,
+    "title": "读书笔记2 长安十二时辰",
+    "year": "2022",
+    "category": "作文",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-15.html"
+  },
+  {
+    "id": 16,
+    "title": "作文4-走自食其力路    谱自强不息歌",
+    "year": "2022",
+    "category": "作文",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-16.html"
+  },
+  {
+    "id": 17,
+    "title": "《2020年7月15日》",
+    "year": "2021",
+    "category": "其他",
+    "lang": "en",
+    "classical": false,
+    "url": "posts/article-17.html"
+  },
+  {
+    "id": 18,
+    "title": "《仇》",
+    "year": "2021",
+    "category": "小说",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-18.html"
+  },
+  {
+    "id": 19,
+    "title": "《礼物》",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-19.html"
+  },
+  {
+    "id": 20,
+    "title": "《三角梅》",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-20.html"
+  },
+  {
+    "id": 21,
+    "title": "《三色堇》",
+    "year": "2021",
+    "category": "小说",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-21.html"
+  },
+  {
+    "id": 22,
+    "title": "《行走》",
+    "year": "2021",
+    "category": "散文",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-22.html"
+  },
+  {
+    "id": 23,
+    "title": "《行走》",
+    "year": "2021",
+    "category": "散文",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-23.html"
+  },
+  {
+    "id": 24,
+    "title": "《一棵通往天堂的樟树》",
+    "year": "2021",
+    "category": "小说",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-24.html"
+  },
+  {
+    "id": 25,
+    "title": "2020年6月21日",
+    "year": "2021",
+    "category": "其他",
+    "lang": "en",
+    "classical": false,
+    "url": "posts/article-25.html"
+  },
+  {
+    "id": 26,
+    "title": "爱夜说 2020年4月16日语文作业",
+    "year": "2021",
+    "category": "随笔",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-26.html"
+  },
+  {
+    "id": 27,
+    "title": "材料作文",
+    "year": "2021",
+    "category": "作文",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-27.html"
+  },
+  {
+    "id": 28,
+    "title": "读北岛《过节》",
+    "year": "2021",
+    "category": "学术性论文",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-28.html"
+  },
+  {
+    "id": 29,
+    "title": "封宅记",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": true,
+    "url": "posts/article-29.html"
+  },
+  {
+    "id": 30,
+    "title": "芙蕖",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": true,
+    "url": "posts/article-30.html"
+  },
+  {
+    "id": 31,
+    "title": "个人篇",
+    "year": "2021",
+    "category": "纪念",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-31.html"
+  },
+  {
+    "id": 32,
+    "title": "给自己的最好礼物",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-32.html"
+  },
+  {
+    "id": 33,
+    "title": "故去的老院",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": true,
+    "url": "posts/article-33.html"
+  },
+  {
+    "id": 34,
+    "title": "唤我阿离",
+    "year": "2021",
+    "category": "小说",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-34.html"
+  },
+  {
+    "id": 35,
+    "title": "九上期中作文 成功的经历，也很重要",
+    "year": "2021",
+    "category": "作文",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-35.html"
+  },
+  {
+    "id": 36,
+    "title": "老胡传",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": true,
+    "url": "posts/article-36.html"
+  },
+  {
+    "id": 37,
+    "title": "那双美丽的眼睛",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-37.html"
+  },
+  {
+    "id": 38,
+    "title": "闹剧",
+    "year": "2021",
+    "category": "小说",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-38.html"
+  },
+  {
+    "id": 39,
+    "title": "闹剧（其二）",
+    "year": "2021",
+    "category": "小说",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-39.html"
+  },
+  {
+    "id": 40,
+    "title": "逆行路上，你我相伴",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-40.html"
+  },
+  {
+    "id": 41,
+    "title": "浅谈自己的责任",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-41.html"
+  },
+  {
+    "id": 42,
+    "title": "沁园春",
+    "year": "2021",
+    "category": "古诗词",
+    "lang": "zh",
+    "classical": true,
+    "url": "posts/article-42.html"
+  },
+  {
+    "id": 43,
+    "title": "如梦令·寻就",
+    "year": "2021",
+    "category": "古诗词",
+    "lang": "zh",
+    "classical": true,
+    "url": "posts/article-43.html"
+  },
+  {
+    "id": 44,
+    "title": "三格情书-我喜欢你，因为你的样子",
+    "year": "2021",
+    "category": "现代诗",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-44.html"
+  },
+  {
+    "id": 45,
+    "title": "社团之争",
+    "year": "2021",
+    "category": "纪念",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-45.html"
+  },
+  {
+    "id": 46,
+    "title": "书斋铭",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": true,
+    "url": "posts/article-46.html"
+  },
+  {
+    "id": 47,
+    "title": "数学老师",
+    "year": "2021",
+    "category": "纪念",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-47.html"
+  },
+  {
+    "id": 48,
+    "title": "死侍",
+    "year": "2021",
+    "category": "小说",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-48.html"
+  },
+  {
+    "id": 49,
+    "title": "温情让美好长久",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-49.html"
+  },
+  {
+    "id": 50,
+    "title": "文本77《缘》",
+    "year": "2021",
+    "category": "纪念",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-50.html"
+  },
+  {
+    "id": 51,
+    "title": "文本78《雨》",
+    "year": "2021",
+    "category": "纪念",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-51.html"
+  },
+  {
+    "id": 52,
+    "title": "文本79《时光事》",
+    "year": "2021",
+    "category": "纪念",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-52.html"
+  },
+  {
+    "id": 53,
+    "title": "武汉，我们想你",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-53.html"
+  },
+  {
+    "id": 54,
+    "title": "细微之处见真情",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-54.html"
+  },
+  {
+    "id": 55,
+    "title": "细微之处见真情（原版）",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-55.html"
+  },
+  {
+    "id": 56,
+    "title": "小城日落",
+    "year": "2021",
+    "category": "散文",
+    "lang": "zh",
+    "classical": true,
+    "url": "posts/article-56.html"
+  },
+  {
+    "id": 57,
+    "title": "夜",
+    "year": "2021",
+    "category": "随笔",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-57.html"
+  },
+  {
+    "id": 58,
+    "title": "永远的目送（千屿）",
+    "year": "2021",
+    "category": "散文",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-58.html"
+  },
+  {
+    "id": 59,
+    "title": "鸢尾花开的夏天",
+    "year": "2021",
+    "category": "小说",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-59.html"
+  },
+  {
+    "id": 60,
+    "title": "原来如此",
+    "year": "2021",
+    "category": "其他",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-60.html"
+  },
+  {
+    "id": 61,
+    "title": "作文《这样的人，让我（敬佩）》",
+    "year": "2021",
+    "category": "作文",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-61.html"
+  }
+];
+
+// ===== TYPEWRITER =====
+let typedIndex = 0, charIndex = 0, isDeleting = false;
+const typedEl = document.getElementById('typedText');
+function typeWriter() {
+  const str = CONFIG.typedStrings[typedIndex];
+  if (!isDeleting) {
+    typedEl.textContent = str.substring(0, charIndex + 1);
+    charIndex++;
+    if (charIndex === str.length) { isDeleting = true; setTimeout(typeWriter, 2000); return; }
+  } else {
+    typedEl.textContent = str.substring(0, charIndex - 1);
+    charIndex--;
+    if (charIndex === 0) { isDeleting = false; typedIndex = (typedIndex + 1) % CONFIG.typedStrings.length; }
+  }
+  setTimeout(typeWriter, isDeleting ? 40 : 80);
+}
+typeWriter();
+
+// ===== RENDER HOME ARTICLES =====
+function renderHomeArticles() {
+  // Show latest 6 articles in the home grid
+  const latest = BLOG_ARTICLES.slice(0, 6);
+  const grid = document.getElementById('homeArticlesGrid');
+  if (!grid) return;
+  grid.innerHTML = latest.map(a => `
+    <div class="article-card stagger" onclick="window.location.href='${a.url}'">
+      <div class="article-card-img"><i class="fas fa-${a.lang === 'en' ? 'file-alt' : 'pen-nib'}"></i></div>
+      <div class="article-card-body">
+        <h3>${a.title}</h3>
+        <div class="article-card-meta"><i class="far fa-calendar"></i> ${a.year}</div>
+        <div class="article-card-excerpt">${a.category} · ${a.classical ? '文言文' : '现代文'} · ${a.lang === 'en' ? 'English' : '中文'}</div>
+        <div class="article-tags"><span class="article-tag">${a.category}</span><span class="article-tag">${a.year}</span></div>
+        <span class="article-card-read">阅读全文 <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderLatestPosts() {
+  const grid = document.getElementById('latestPostsGrid');
+  if (!grid) return;
+  // Show latest 4 articles
+  const latest = BLOG_ARTICLES.slice(0, 4);
+  grid.innerHTML = latest.map(a => `
+    <a href="${a.url}" class="latest-post-card"><i class="fas fa-file-alt"></i><span>${a.title}</span></a>
+  `).join('');
+}
+
+// ===== GITHUB API =====
+async function loadGitHubProjects() {
+  const container = document.getElementById('githubProjects');
+  try {
+    const res = await fetch(`https://api.github.com/users/${CONFIG.github}/repos?sort=updated&per_page=6`);
+    if (!res.ok) throw new Error('API error');
+    const repos = await res.json();
+    if (!repos.length) throw new Error('No repos');
+    container.innerHTML = repos.map(r => `
+      <div class="project-card stagger">
+        <div class="project-header"><i class="fas fa-book"></i><h3><a href="${r.html_url}" target="_blank" rel="noopener noreferrer">${r.name}</a></h3></div>
+        <p class="project-desc">${r.description || '暂无描述'}</p>
+        <div class="project-meta">
+          ${r.language ? `<span><span class="lang-dot" style="background:${langColor(r.language)}"></span> ${r.language}</span>` : ''}
+          <div class="project-stats"><span><i class="far fa-star"></i> ${r.stargazers_count}</span><span><i class="fas fa-code-branch"></i> ${r.forks_count}</span></div>
+        </div>
+        <a href="${r.html_url}" target="_blank" rel="noopener noreferrer" class="project-btn">GitHub <i class="fas fa-external-link-alt" style="font-size:.7rem"></i></a>
+      </div>
+    `).join('');
+    observeStagger();
+  } catch {
+    container.innerHTML = `
+      <div class="project-card stagger" style="grid-column:1/-1;text-align:center;padding:2rem">
+        <i class="fas fa-exclamation-circle" style="font-size:1.5rem;color:var(--blue-300);margin-bottom:.8rem"></i>
+        <p style="color:var(--gray-400)">GitHub API 加载失败，请检查网络连接</p>
+        <p style="color:var(--gray-300);font-size:.8rem;margin-top:.5rem">也可以直接访问 <a href="https://github.com/${CONFIG.github}" target="_blank" style="color:var(--blue-500)">github.com/${CONFIG.github}</a></p>
+      </div>`;
+  }
+}
+function langColor(lang) {
+  const colors = {JavaScript:'#f1e05a',Python:'#3572A5',HTML:'#e34c26',CSS:'#563d7c',C:'#555555','C++':'#f34b7d',TypeScript:'#2b7489',Java:'#b07219',Shell:'#89e051',Go:'#00ADD8'};
+  return colors[lang] || '#999';
+}
+loadGitHubProjects();
+
+// ===== CONTACT FORM =====
+function handleSubmit(e) {
+  e.preventDefault();
+  alert('感谢您的留言！我会尽快回复 ✉️');
+  e.target.reset();
+}
+
+// ===== COPY =====
+document.querySelectorAll('.contact-copy').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    navigator.clipboard.writeText(btn.dataset.copy).then(() => {
+      btn.innerHTML = '<i class="fas fa-check"></i>';
+      setTimeout(() => btn.innerHTML = '<i class="far fa-copy"></i>', 1500);
+    });
+  });
+});
+
+// ===== SCROLL EFFECTS =====
+const navbar = document.getElementById('navbar');
+const backTop = document.getElementById('backTop');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 20);
+  backTop.classList.toggle('show', window.scrollY > 300);
+});
+
+// ===== STAGGER OBSERVER =====
+function observeStagger() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.stagger').forEach(el => { el.classList.remove('visible'); observer.observe(el); });
+}
+observeStagger();
+
+// ===== SMOOTH SCROLL FOR HERO BTN =====
+document.getElementById('heroExploreBtn').addEventListener('click', e => {
+  e.preventDefault();
+  document.getElementById('aboutSection').scrollIntoView({ behavior: 'smooth' });
+});
+
+// ===== NAVIGATION =====
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+    const page = link.dataset.page;
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById('page-' + page);
+    if (target) target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    observeStagger();
+  });
+});
+
+// ===== INIT HOME ARTICLES =====
+renderHomeArticles();
+renderLatestPosts();
+observeStagger();
+
+// Hide loader
+setTimeout(() => {
+  const loader = document.getElementById("loader");
+  if (loader) loader.classList.add("done");
+}, 600);
+</script>
+</body>
+</html>
