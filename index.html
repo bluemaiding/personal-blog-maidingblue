@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>maiding_blue — NJU EE '25</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -84,7 +84,7 @@ nav.scrolled{box-shadow:0 2px 20px rgba(37,99,235,.09)}
 .float-shape:nth-child(3){width:45px;height:45px;background:var(--blue-200);top:28%;right:18%;animation-delay:4s}
 .float-shape:nth-child(4){width:90px;height:90px;border:2px solid var(--blue-300);bottom:18%;left:13%;animation-delay:1s}
 @keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(4deg)}}
-.hero-title{font-family:'Poppins',sans-serif;font-weight:900;font-size:clamp(2.6rem,7vw,4.2rem);color:var(--gray-900);letter-spacing:-.03em;line-height:1.1;margin-bottom:1.2rem;position:relative;z-index:1}
+.hero-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2.6rem,7vw,4.2rem);color:var(--gray-900);letter-spacing:-.03em;line-height:1.1;margin-bottom:1.2rem;position:relative;z-index:1}
 .hero-title span{color:var(--blue-600)}
 .typed-wrap{font-size:clamp(.95rem,2.4vw,1.25rem);color:var(--blue-600);font-weight:500;margin-bottom:2.5rem;min-height:1.8rem;position:relative;z-index:1}
 .typed-cursor{display:inline-block;width:2px;height:1.1em;background:var(--blue-600);margin-left:3px;animation:blink .7s infinite;vertical-align:middle}
@@ -98,7 +98,7 @@ nav.scrolled{box-shadow:0 2px 20px rgba(37,99,235,.09)}
 
 /* ABOUT */
 .about-grid{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:start}
-.avatar-wrap{width:200px;height:200px;border-radius:50%;margin:0 auto;background:linear-gradient(135deg,var(--blue-100),var(--blue-200));display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-xl);border:4px solid #fff;position:relative;overflow:visible}
+.avatar-wrap{width:200px;height:200px;border-radius:50%;margin:0 auto;background:linear-gradient(135deg,var(--blue-100),var(--blue-200));display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-xl);border:4px solid #fff;position:relative;overflow:hidden}
 .avatar-wrap i{font-size:3.5rem;color:var(--blue-600)}
 .avatar-ring{position:absolute;inset:-8px;border-radius:50%;border:2px dashed var(--blue-300);animation:spin 20s linear infinite;pointer-events:none}
 .about-text h3{font-family:'Poppins',sans-serif;font-size:1.4rem;color:var(--gray-900);margin-bottom:.7rem}
@@ -215,6 +215,7 @@ nav.scrolled{box-shadow:0 2px 20px rgba(37,99,235,.09)}
     <ul class="nav-links" id="navLinks">
       <li><a href="#" class="nav-link active" data-page="home">首页</a></li>
       <li><a href="#" class="nav-link" data-page="articles">文章</a></li>
+      <li><a href="memory.html" class="nav-link">纪念</a></li>
       <li><a href="#" class="nav-link" data-page="projects">项目</a></li>
       <li><a href="#" class="nav-link" data-page="contact">联系</a></li>
     </ul>
@@ -236,25 +237,24 @@ nav.scrolled{box-shadow:0 2px 20px rgba(37,99,235,.09)}
 
   <div class="page-section" id="aboutSection">
     <h2 class="section-title">关于我</h2>
-    <p class="section-subtitle">南京大学 · 电子工程 · 2025届 · 63 篇文章</p>
+    <p class="section-subtitle">南京大学 · 电子信息科学与技术 · 大一 · 63 篇文章</p>
     <div class="about-grid">
       <div class="avatar-wrap">
-        <i class="fas fa-user-graduate"></i>
+        <img src="avator.png" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
         <div class="avatar-ring"></div>
       </div>
       <div class="about-text">
         <h3>你好，我是 maiding_blue 👋</h3>
-        <p>南京大学电子工程专业大四学生，对嵌入式系统与Web开发都有兴趣。相信代码可以改变物理世界，也喜欢用技术写点有趣的东西。正在探索全栈与边缘计算。</p>
-        <p>从电路设计到前端开发，我享受将软硬件知识融合的过程。这个博客记录了我的学习笔记、项目日常和一些技术思考。</p>
+        <p>南京大学电子信息科学与技术专业大一学生，对嵌入式系统、硬件电路与数理逻辑感兴趣，也热爱音乐、文学与体育运动。正在探索软硬件结合的工程实践与底层原理。</p>
+        <p>这个博客记录了我的相关文作、项目实践与一些胡思乱想。</p>
         <div class="skills">
-          <span class="skill-tag">C / C++</span>
-          <span class="skill-tag">Python</span>
-          <span class="skill-tag">JavaScript</span>
-          <span class="skill-tag">React</span>
-          <span class="skill-tag">嵌入式开发</span>
-          <span class="skill-tag">电路设计</span>
-          <span class="skill-tag">ESP32</span>
-          <span class="skill-tag">Web 全栈</span>
+          <span class="skill-tag">嵌入式</span>
+          <span class="skill-tag">C语言</span>
+          <span class="skill-tag">EDA</span>
+          <span class="skill-tag">AI+</span>
+          <span class="skill-tag">ENFJ</span>
+          <span class="skill-tag">足篮羽球</span>
+          <span class="skill-tag">吉他</span>
         </div>
       </div>
     </div>
@@ -268,6 +268,29 @@ nav.scrolled{box-shadow:0 2px 20px rgba(37,99,235,.09)}
       </div>
     </div>
   </div>
+
+  <!-- PROJECTS PREVIEW -->
+  <div class="page-section" id="projectsSection">
+    <h2 class="section-title">项目</h2>
+    <p class="section-subtitle">开源项目与代码仓库</p>
+    <div class="projects-grid">
+      <div class="project-card stagger">
+        <div class="project-header"><i class="fas fa-hourglass-half"></i><h3><a href="https://github.com/bluemaiding/countdown-widget" target="_blank" rel="noopener noreferrer">countdown-widget</a></h3></div>
+        <p class="project-desc">一个简洁实用的倒计时小组件，支持自定义时间、样式和提醒，适用于各种倒计时场景。</p>
+        <div class="project-meta"><span><span class="lang-dot" style="background:#e34c26"></span> HTML</span><div class="project-stats"><span><i class="far fa-star"></i> —</span><span><i class="fas fa-code-branch"></i> —</span></div></div>
+        <a href="https://github.com/bluemaiding/countdown-widget" target="_blank" rel="noopener noreferrer" class="project-btn">GitHub <i class="fas fa-external-link-alt" style="font-size:.7rem"></i></a>
+      </div>
+      <div class="project-card stagger">
+        <div class="project-header"><i class="fas fa-blog"></i><h3><a href="https://github.com/bluemaiding/website-personally-use" target="_blank" rel="noopener noreferrer">website-personally-use</a></h3></div>
+        <p class="project-desc">个人博客网站，纯HTML/CSS/JS实现，部署在Cloudflare Pages上，支持响应式设计、暗色动效与交互动效。</p>
+        <div class="project-meta"><span><span class="lang-dot" style="background:#e34c26"></span> HTML</span><div class="project-stats"><span><i class="far fa-star"></i> —</span><span><i class="fas fa-code-branch"></i> —</span></div></div>
+        <a href="https://github.com/bluemaiding/website-personally-use" target="_blank" rel="noopener noreferrer" class="project-btn">GitHub <i class="fas fa-external-link-alt" style="font-size:.7rem"></i></a>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem;text-align:center">
+      <a href="projects.html" class="project-btn" style="display:inline-flex;align-items:center;gap:.35rem">查看全部项目 <i class="fas fa-arrow-right" style="font-size:.7rem"></i></a>
+    </div>
+  </div>
 </div>
 
 <!-- ARTICLES -->
@@ -275,6 +298,7 @@ nav.scrolled{box-shadow:0 2px 20px rgba(37,99,235,.09)}
   <div class="page-section">
     <h2 class="section-title">文章</h2>
     <p class="section-subtitle">散文 · 小说 · 诗歌 · 随笔 · 作文 · 共 63 篇</p>
+
     <div class="articles-grid" id="homeArticlesGrid">
       <!-- Rendered by JavaScript -->
     </div>
@@ -950,14 +974,21 @@ function typeWriter() {
 }
 typeWriter();
 
+// Article card click → navigate
+document.addEventListener('click', e => {
+  const card = e.target.closest('.article-card');
+  if (card && card.dataset.url) {
+    window.location.href = card.dataset.url;
+  }
+});
+
 // ===== RENDER HOME ARTICLES =====
 function renderHomeArticles() {
-  // Show latest 6 articles in the home grid
-  const latest = BLOG_ARTICLES.slice(0, 6);
+  const articles = BLOG_ARTICLES.slice(0, 6);
   const grid = document.getElementById('homeArticlesGrid');
   if (!grid) return;
-  grid.innerHTML = latest.map(a => `
-    <div class="article-card stagger" onclick="window.location.href='${a.url}'">
+  grid.innerHTML = articles.map(a => `
+    <div class="article-card stagger" data-url="${a.url}">
       <div class="article-card-img"><i class="fas fa-${a.lang === 'en' ? 'file-alt' : 'pen-nib'}"></i></div>
       <div class="article-card-body">
         <h3>${a.title}</h3>
@@ -1064,6 +1095,9 @@ document.getElementById('heroExploreBtn').addEventListener('click', e => {
 // ===== NAVIGATION =====
 document.querySelectorAll('.nav-link').forEach(link => {
   link.addEventListener('click', e => {
+    // External links (like memory.html) — let them navigate normally
+    if (link.getAttribute('href') && link.getAttribute('href') !== '#') return;
+    // Internal SPA page links
     e.preventDefault();
     document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
     link.classList.add('active');

@@ -648,6 +648,106 @@ a:hover {
 }
 
 /* ========================================
+   Category Tabs (Posts Page)
+   ======================================== */
+.category-tabs-section {
+    padding: 0;
+    border-bottom: 1px solid var(--border-light);
+    background: var(--bg-secondary);
+}
+
+.category-tabs {
+    display: flex;
+    gap: 0;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 24px;
+    align-items: center;
+}
+
+.category-tab {
+    padding: 14px 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all var(--transition);
+    font-family: var(--font-sans);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+}
+
+.category-tab:hover {
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+}
+
+.category-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+.category-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 120px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px var(--shadow-hover);
+    padding: 6px;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: all 0.2s ease;
+}
+
+.category-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-item {
+    display: block;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all var(--transition);
+    white-space: nowrap;
+}
+
+.dropdown-item:hover {
+    background: var(--accent-light);
+    color: var(--accent);
+}
+
+@media (max-width: 768px) {
+    .category-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .category-tab {
+        padding: 12px 14px;
+        font-size: 0.8rem;
+        flex-shrink: 0;
+    }
+}
+
+/* ========================================
    View Tabs (Posts Page)
    ======================================== */
 .view-tabs-section {

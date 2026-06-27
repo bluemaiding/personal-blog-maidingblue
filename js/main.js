@@ -580,6 +580,24 @@ const BLOG_ARTICLES = [
     "lang": "zh",
     "classical": false,
     "url": "posts/article-61.html"
+  },
+  {
+    "id": 62,
+    "title": "伟大\"的歧途：《了不起的盖茨比》与《远大前程》中\"Great\"寓意的再审视",
+    "year": "2026",
+    "category": "学术性论文",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-62.html"
+  },
+  {
+    "id": 63,
+    "title": "守望谁？——《麦田里的守望者》中\"守望者\"意象的重释",
+    "year": "2026",
+    "category": "学术性论文",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-63.html"
   }
 ];
 
@@ -588,6 +606,13 @@ const BLOG_ARTICLES = [
 // ========================================
 
 let currentView = 'time';
+let currentCategory = 'all';
+
+const CATEGORY_GROUPS = {
+    '文学': ['散文', '小说', '作文', '随笔', '杂文'],
+    '诗歌': ['古诗词', '现代诗'],
+    '论文': ['学术性论文']
+};
 
 function renderArticles() {
     if (!postsList) return;
@@ -597,9 +622,22 @@ function renderArticles() {
     else if (view === 'form') renderByForm();
 }
 
+function getFilteredArticles() {
+    if (currentCategory === 'all') return BLOG_ARTICLES;
+    if (CATEGORY_GROUPS[currentCategory]) {
+        return BLOG_ARTICLES.filter(a => CATEGORY_GROUPS[currentCategory].includes(a.category));
+    }
+    return BLOG_ARTICLES.filter(a => a.category === currentCategory);
+}
+
 function renderByTime() {
+    const articles = getFilteredArticles();
+    if (articles.length === 0) {
+        postsList.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-tertiary)">暂无此类文章</div>';
+        return;
+    }
     const groups = {};
-    BLOG_ARTICLES.forEach(a => {
+    articles.forEach(a => {
         if (!groups[a.year]) groups[a.year] = [];
         groups[a.year].push(a);
     });
@@ -635,8 +673,13 @@ function renderByTime() {
 }
 
 function renderByLang() {
-    const zhArticles = BLOG_ARTICLES.filter(a => a.lang === 'zh');
-    const enArticles = BLOG_ARTICLES.filter(a => a.lang === 'en');
+    const articles = getFilteredArticles();
+    if (articles.length === 0) {
+        postsList.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-tertiary)">暂无此类文章</div>';
+        return;
+    }
+    const zhArticles = articles.filter(a => a.lang === 'zh');
+    const enArticles = articles.filter(a => a.lang === 'en');
 
     let html = '';
 
@@ -674,8 +717,13 @@ function renderByLang() {
 }
 
 function renderByForm() {
-    const modern = BLOG_ARTICLES.filter(a => !a.classical);
-    const classical = BLOG_ARTICLES.filter(a => a.classical);
+    const articles = getFilteredArticles();
+    if (articles.length === 0) {
+        postsList.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-tertiary)">暂无此类文章</div>';
+        return;
+    }
+    const modern = articles.filter(a => !a.classical);
+    const classical = articles.filter(a => a.classical);
 
     let html = '';
 
@@ -710,6 +758,35 @@ function renderByForm() {
     }
 
     postsList.innerHTML = html;
+}
+
+// ========================================
+// Category Tab Switching
+// ========================================
+
+function initCategoryTabs() {
+    // Category buttons
+    document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentCategory = tab.dataset.cat;
+            renderArticles();
+        });
+    });
+
+    // Dropdown items
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            const parentTab = document.querySelector('.category-tab[data-cat="文学"]');
+            if (parentTab) parentTab.classList.add('active');
+            currentCategory = item.dataset.cat;
+            renderArticles();
+        });
+    });
 }
 
 // ========================================
@@ -847,11 +924,30 @@ document.querySelectorAll('.section').forEach(section => {
 });
 
 // ========================================
+// Mobile Menu Toggle
+// ========================================
+
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+if (mobileMenuBtn && mobileMenu) {
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('active');
+    });
+    // Close mobile menu when a link is clicked
+    mobileMenu.querySelectorAll('.mobile-link').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+    });
+}
+
+// ========================================
 // Initialize
 // ========================================
 
 renderArticles();
 renderProjects();
+initCategoryTabs();
 initViewTabs();
 handleScroll();
 

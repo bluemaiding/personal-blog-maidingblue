@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>纪念长廊</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:#0a0a0f;color:#f0f0f0}
+
+/* ====== LAYOUT ====== */
+.gallery{position:fixed;inset:0;display:flex}
+
+/* ── LEFT: TEXT PANEL ── */
+.text-panel{
+  position:relative;
+  width:28%;
+  min-width:260px;
+  max-width:420px;
+  height:100%;
+  z-index:10;
+  padding:3rem 2.4rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  /* frosted glass */
+  background:rgba(15,17,25,.35);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-right:1px solid rgba(255,255,255,.1);
+  transition:opacity .3s ease, transform .3s ease;
+}
+
+.panel-label{
+  font-size:.68rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:rgba(255,215,170,.6);
+  margin-bottom:1.2rem;
+  font-weight:500;
+}
+.panel-title{
+  font-family:'Noto Serif SC',serif;
+  font-size:2rem;
+  font-weight:700;
+  color:#fff;
+  line-height:1.25;
+  margin-bottom:1.4rem;
+  letter-spacing:-.01em;
+}
+.panel-body{
+  font-size:.98rem;
+  font-weight:300;
+  color:rgba(255,255,255,.7);
+  line-height:1.85;
+  margin-bottom:2rem;
+}
+.panel-sign{
+  font-family:'Noto Serif SC',serif;
+  font-size:.92rem;
+  color:rgba(255,215,170,.7);
+  text-align:right;
+}
+
+/* ── RIGHT: IMAGE AREA ── */
+.image-area{
+  flex:1;
+  position:relative;
+  height:100%;
+  overflow:hidden;
+}
+
+.img-layer{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  transition:opacity 1s cubic-bezier(.23,1,.32,1),transform 5s cubic-bezier(.23,1,.32,1);
+  will-change:opacity,transform;
+}
+.img-layer.active{
+  opacity:1;
+  transform:scale(1.02);
+}
+
+/* ====== COUNTER ====== */
+.counter{
+  position:fixed;
+  bottom:2rem;
+  left:2.4rem;
+  z-index:15;
+  display:flex;
+  align-items:center;
+  gap:.8rem;
+  font-size:.8rem;
+  color:rgba(255,255,255,.5);
+  letter-spacing:.06em;
+}
+.counter-current{font-size:1.4rem;font-weight:500;color:#fff;font-variant-numeric:tabular-nums}
+.counter-divider{width:32px;height:1px;background:rgba(255,255,255,.15)}
+.counter-total{font-size:.82rem;color:rgba(255,255,255,.3)}
+
+/* ====== NAV ARROWS ====== */
+.nav-arrow{
+  position:fixed;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:15;
+  width:46px;height:46px;
+  border-radius:50%;
+  background:rgba(18,20,28,.45);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.1);
+  color:rgba(255,255,255,.6);
+  font-size:1rem;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .3s ease;
+  user-select:none;
+}
+.nav-arrow:hover{background:rgba(255,215,170,.12);border-color:rgba(255,215,170,.25);color:#fff}
+.nav-arrow:focus{outline:none}
+.nav-arrow.prev{right:calc(28vw + 2rem)}
+.nav-arrow.next{right:2.5rem}
+.nav-arrow.disabled{opacity:.2;pointer-events:none}
+
+/* ====== PROGRESS BAR ====== */
+.progress-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  height:3px;
+  background:rgba(255,255,255,.06);
+  z-index:15;
+}
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,rgba(255,215,170,.5),rgba(255,215,170,.85));
+  transition:width .5s cubic-bezier(.23,1,.32,1);
+}
+
+/* ====== BACK BUTTON ====== */
+.back-btn{
+  position:fixed;
+  top:1.6rem;left:1.6rem;
+  z-index:20;
+  width:40px;height:40px;
+  border-radius:50%;
+  background:rgba(18,20,28,.45);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.1);
+  color:rgba(255,255,255,.7);
+  font-size:.9rem;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .3s ease;
+  text-decoration:none;
+}
+.back-btn:hover{background:rgba(255,215,170,.12);border-color:rgba(255,215,170,.25);color:#fff}
+.back-btn:focus{outline:none}
+
+/* ====== TOAST ====== */
+.toast{
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(.92);
+  z-index:100;
+  padding:1rem 2rem;
+  border-radius:12px;
+  background:rgba(18,20,28,.75);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.12);
+  color:#fff;
+  font-size:.95rem;
+  font-weight:400;
+  letter-spacing:.02em;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .35s ease, transform .35s cubic-bezier(.23,1,.32,1);
+}
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
+}
+
+/* ====== SCROLL HINT ====== */
+.scroll-hint{
+  position:fixed;
+  bottom:2.5rem;right:2.5rem;
+  z-index:15;
+  font-size:.7rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.28);
+  display:flex;align-items:center;gap:.5rem;
+  animation:hintPulse 2.5s ease-in-out infinite;
+}
+.scroll-hint::before{content:'';width:20px;height:1px;background:rgba(255,255,255,.2)}
+@keyframes hintPulse{0%,100%{opacity:.28}50%{opacity:.6}}
+
+/* ====== MOBILE ====== */
+@media(max-width:768px){
+  .gallery{flex-direction:column}
+  .text-panel{
+    width:100%;
+    max-width:none;
+    min-width:auto;
+    height:auto;
+    max-height:40%;
+    padding:1.6rem 1.4rem;
+    border-right:none;
+    border-top:1px solid rgba(255,255,255,.1);
+    order:2;
+    justify-content:flex-start;
+  }
+  .panel-label{margin-bottom:.6rem}
+  .panel-title{font-size:1.4rem;margin-bottom:.6rem}
+  .panel-body{font-size:.82rem;margin-bottom:1rem}
+  .panel-sign{font-size:.78rem}
+  .image-area{width:100%;height:60%;order:1}
+  .back-btn{top:auto;bottom:calc(40% + 1rem);left:1.4rem}
+  .nav-arrow.prev{left:auto;right:calc(50% + 2rem)}
+  .nav-arrow.next{right:calc(50% - 2.5rem)}
+  .counter{bottom:calc(40% + .8rem);left:4.2rem}
+  .scroll-hint{display:none}
+}
+
+@media(hover:none){
+  .image-area{cursor:grab}
+  .image-area:active{cursor:grabbing}
+}
+</style>
+</head>
+<body>
+
+<!-- Gallery -->
+<div class="gallery" id="gallery">
+  <!-- Text Panel (left) -->
+  <div class="text-panel" id="textPanel">
+    <div class="panel-label">Memory Gallery</div>
+    <div class="panel-title">纪念长廊</div>
+    <div class="panel-body">每一张照片都是时光的切片，凝固了那些再也回不去的瞬间。我们走过的路、爱过的人、流过的泪，都在画面中静静沉淀。愿这些纪念，如星光般恒久。</div>
+    <div class="panel-sign">—— maiding_blue / 2026 夏</div>
+  </div>
+  <!-- Image Area (right) -->
+  <div class="image-area" id="imageArea"></div>
+</div>
+
+<!-- Counter -->
+<div class="counter">
+  <span class="counter-current" id="counterCurrent">01</span>
+  <span class="counter-divider"></span>
+  <span class="counter-total" id="counterTotal">06</span>
+</div>
+
+<!-- Nav Arrows -->
+<button class="nav-arrow prev" id="prevBtn" aria-label="上一张">❮</button>
+<button class="nav-arrow next" id="nextBtn" aria-label="下一张">❯</button>
+
+<!-- Progress Bar -->
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- Back Button -->
+<a href="index.html" class="back-btn" aria-label="返回首页">←</a>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Scroll Hint -->
+<div class="scroll-hint">SCROLL</div>
+
+<script>
+(function(){
+  const photos = [
+    { file: 'memory/小学.JPG',        name: '小学',         desc: '最初的起点' },
+    { file: 'memory/初中毕业照.png',  name: '初中毕业',     desc: '少年初长成' },
+    { file: 'memory/高中.jpg',        name: '高中 · 一',    desc: '青涩岁月' },
+    { file: 'memory/高中2.jpg',       name: '高中 · 二',    desc: '并肩前行' },
+    { file: 'memory/高中3.jpg',       name: '高中 · 三',    desc: '最后冲刺' },
+  ];
+
+  const total = photos.length;
+  let current = 0;
+  let isAnimating = false;
+
+  /* ── BUILD IMG LAYERS ── */
+  const imageArea    = document.getElementById('imageArea');
+  const imgA         = document.createElement('img');
+  const imgB         = document.createElement('img');
+  imgA.className     = 'img-layer active';
+  imgB.className     = 'img-layer';
+  imgA.src           = photos[0].file;
+  imgB.alt           = '';
+  imageArea.appendChild(imgA);
+  imageArea.appendChild(imgB);
+
+  const counterCurrent = document.getElementById('counterCurrent');
+  const counterTotal   = document.getElementById('counterTotal');
+  const progressFill   = document.getElementById('progressFill');
+  const prevBtn        = document.getElementById('prevBtn');
+  const nextBtn        = document.getElementById('nextBtn');
+  const textPanel      = document.getElementById('textPanel');
+
+  counterTotal.textContent = String(total).padStart(2, '0');
+  updateProgress();
+
+  function updateProgress(){
+    progressFill.style.width = ((current + 1) / total * 100) + '%';
+    counterCurrent.textContent = String(current + 1).padStart(2, '0');
+    prevBtn.classList.toggle('disabled', current === 0);
+    nextBtn.classList.toggle('disabled', current === total - 1);
+  }
+
+  /* ── PANEL FLASH ── */
+  let hideTimer;
+  function flashPanel(){
+    textPanel.style.opacity = '0';
+    textPanel.style.transform = 'translateX(-12px)';
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => {
+      textPanel.style.opacity = '1';
+      textPanel.style.transform = 'translateX(0)';
+    }, 100);
+  }
+
+  /* ── SWITCH ── */
+  function goTo(index){
+    if(isAnimating || index === current || index < 0 || index >= total) return;
+    isAnimating = true;
+    flashPanel();
+
+    const activeEl  = imgA.classList.contains('active') ? imgA : imgB;
+    const passiveEl = (activeEl === imgA) ? imgB : imgA;
+
+    passiveEl.src = photos[index].file;
+    passiveEl.style.opacity = '0';
+    passiveEl.style.transform = 'scale(1)';
+    void passiveEl.offsetWidth;
+
+    requestAnimationFrame(() => {
+      activeEl.style.opacity = '0';
+      activeEl.style.transform = 'scale(1)';
+      passiveEl.style.opacity = '1';
+      passiveEl.style.transform = 'scale(1.02)';
+    });
+
+    setTimeout(() => {
+      activeEl.classList.remove('active');
+      activeEl.style.opacity = '';
+      activeEl.style.transform = '';
+      passiveEl.classList.add('active');
+      passiveEl.style.opacity = '';
+      passiveEl.style.transform = '';
+      current = index;
+      updateProgress();
+      isAnimating = false;
+    }, 1005);
+  }
+
+  /* ── TOAST ── */
+  const toast = document.getElementById('toast');
+  let toastTimer;
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+
+  function goNext(){
+    if(current < total - 1){
+      goTo(current + 1);
+    } else {
+      showToast('已经是最后一张了');
+    }
+  }
+  function goPrev(){
+    if(current > 0){
+      goTo(current - 1);
+    } else {
+      showToast('已经是第一张了');
+    }
+  }
+
+  /* ── EVENTS ── */
+  nextBtn.addEventListener('click', goNext);
+  prevBtn.addEventListener('click', goPrev);
+
+  document.addEventListener('keydown', e => {
+    if(e.key === 'ArrowRight' || e.key === 'ArrowDown') goNext();
+    if(e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goPrev();
+  });
+
+  let wheelLock = false;
+  window.addEventListener('wheel', e => {
+    if(wheelLock || Math.abs(e.deltaY) < 20) return;
+    wheelLock = true;
+    e.deltaY > 0 ? goNext() : goPrev();
+    setTimeout(() => { wheelLock = false; }, 1200);
+  }, { passive: true });
+
+  let touchStartY = 0, touchStartX = 0;
+  window.addEventListener('touchstart', e => {
+    touchStartY = e.touches[0].clientY;
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  window.addEventListener('touchend', e => {
+    const dy = touchStartY - e.changedTouches[0].clientY;
+    const dx = touchStartX - e.changedTouches[0].clientX;
+    if(Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 40){
+      dy > 0 ? goNext() : goPrev();
+    }
+  }, { passive: true });
+
+})();
+</script>
+</body>
+</html>
