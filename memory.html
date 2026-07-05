@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:#0a0a0f;color:#f0f0f0}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:#1a1a2e;color:#f5f5f5}
 
 /* ====== LAYOUT ====== */
 .gallery{position:fixed;inset:0;display:flex}
@@ -26,10 +26,11 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
   flex-direction:column;
   justify-content:center;
   /* frosted glass */
-  background:rgba(15,17,25,.35);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border-right:1px solid rgba(255,255,255,.1);
+  background:rgba(18,18,30,.7);
+  
+  
+  border-right:1px solid rgba(255,255,255,.08);
+  
   transition:opacity .3s ease, transform .3s ease;
 }
 
@@ -45,7 +46,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
   font-family:'Noto Serif SC',serif;
   font-size:2rem;
   font-weight:700;
-  color:#fff;
+  color:rgba(255,215,170,.85);
   line-height:1.25;
   margin-bottom:1.4rem;
   letter-spacing:-.01em;
@@ -53,15 +54,9 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
 .panel-body{
   font-size:.98rem;
   font-weight:300;
-  color:rgba(255,255,255,.7);
+  color:rgba(255,235,210,.8);
   line-height:1.85;
   margin-bottom:2rem;
-}
-.panel-sign{
-  font-family:'Noto Serif SC',serif;
-  font-size:.92rem;
-  color:rgba(255,215,170,.7);
-  text-align:right;
 }
 
 /* ── RIGHT: IMAGE AREA ── */
@@ -113,8 +108,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
   width:46px;height:46px;
   border-radius:50%;
   background:rgba(18,20,28,.45);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
+  -webkit-
   border:1px solid rgba(255,255,255,.1);
   color:rgba(255,255,255,.6);
   font-size:1rem;
@@ -125,7 +119,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
 }
 .nav-arrow:hover{background:rgba(255,215,170,.12);border-color:rgba(255,215,170,.25);color:#fff}
 .nav-arrow:focus{outline:none}
-.nav-arrow.prev{right:calc(28vw + 2rem)}
+.nav-arrow.prev{display:none!important}
 .nav-arrow.next{right:2.5rem}
 .nav-arrow.disabled{opacity:.2;pointer-events:none}
 
@@ -150,8 +144,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
   width:40px;height:40px;
   border-radius:50%;
   background:rgba(18,20,28,.45);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
+  -webkit-
   border:1px solid rgba(255,255,255,.1);
   color:rgba(255,255,255,.7);
   font-size:.9rem;
@@ -172,8 +165,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
   padding:1rem 2rem;
   border-radius:12px;
   background:rgba(18,20,28,.75);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
+  -webkit-
   border:1px solid rgba(255,255,255,.12);
   color:#fff;
   font-size:.95rem;
@@ -221,7 +213,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
   .panel-label{margin-bottom:.6rem}
   .panel-title{font-size:1.4rem;margin-bottom:.6rem}
   .panel-body{font-size:.82rem;margin-bottom:1rem}
-  .panel-sign{font-size:.78rem}
+  
   .image-area{width:100%;height:60%;order:1}
   .back-btn{top:auto;bottom:calc(40% + 1rem);left:1.4rem}
   .nav-arrow.prev{left:auto;right:calc(50% + 2rem)}
@@ -243,9 +235,8 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
   <!-- Text Panel (left) -->
   <div class="text-panel" id="textPanel">
     <div class="panel-label">Memory Gallery</div>
-    <div class="panel-title">纪念长廊</div>
-    <div class="panel-body">每一张照片都是时光的切片，凝固了那些再也回不去的瞬间。我们走过的路、爱过的人、流过的泪，都在画面中静静沉淀。愿这些纪念，如星光般恒久。</div>
-    <div class="panel-sign">—— maiding_blue / 2026 夏</div>
+    <div class="panel-title" id="panelTitle">纪念长廊</div>
+    <div class="panel-body" id="panelBody">每一张照片都是时光的切片，凝固了那些再也回不去的瞬间。我们走过的路、爱过的人、流过的泪，都在画面中静静沉淀。愿这些纪念，如星光般恒久。</div>
   </div>
   <!-- Image Area (right) -->
   <div class="image-area" id="imageArea"></div>
@@ -277,146 +268,109 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
 <script>
 (function(){
   const photos = [
-    { file: 'memory/小学.JPG',        name: '小学',         desc: '最初的起点' },
-    { file: 'memory/初中毕业照.png',  name: '初中毕业',     desc: '少年初长成' },
-    { file: 'memory/高中.jpg',        name: '高中 · 一',    desc: '青涩岁月' },
-    { file: 'memory/高中2.jpg',       name: '高中 · 二',    desc: '并肩前行' },
-    { file: 'memory/高中3.jpg',       name: '高中 · 三',    desc: '最后冲刺' },
+    { file: 'memory/1.JPG',   name: '青涩时光',     desc: '小学三年级的合影。还是很想念在惠小分校的时光，放学了在门口周奶奶那里一起买辣条吃的自由自在。' },
+    { file: 'memory/2.jpg',   name: '升入初中',     desc: '第一次在解放中学军训的场景。那时江大路校区的操场甚至还是蓝色的，军训也只是跑跑步走走队列。' },
+    { file: 'memory/3.png',   name: '决胜中考',     desc: '在八十一中考场完成2022年武汉市中考。六张试卷，结束了我们三年的相知相伴，但故事从未被画上句号。' },
+    { file: 'memory/4.png',   name: '毕业留念',     desc: '永远记得解放最好的22届凌云六班，认真负责的老师们，亲切善良的同学们，那段自由而充实的初中生活一直被珍藏在记忆深处。' },
+    { file: 'memory/5.JPG',   name: '\u201c铁血\u201d军营', desc: '升入高中，和11班一起赴黄陂郊区军训。学到了第一套军体拳，踢上了第一场球，经受了人生中最烤人的太阳。' },
+    { file: 'memory/6.jpg',   name: '漫步江滩',     desc: '2024.12.6结束压力山大的高三期中十一校，在江滩体验了一个惬意的下午。金句梗图的素材大多来自于此活动。' },
+    { file: 'memory/7.jpg',   name: '元旦晚会',     desc: '2024.12.31在武汉二中最后一次班级的元旦晚会。全班沉浸在快乐与喜悦的海洋之中，同学们的才华令人叹为观止，剧作家音乐家最佳主演纷纷被发掘。' },
+    { file: 'memory/8.jpg',   name: '江滩2.0',      desc: '2025.3.28结束高三下阶段性测试，再次前往江滩徒步。与上一次不同的是大家充分学会了苦中作乐，在大风小雨之中玩得比上次更疯了）' },
+    { file: 'memory/9.jpg',   name: '十八成人',     desc: '2025.4.30武汉二中第不知道多少届成人礼。此乃成人礼合影的第一张（没有老师版）' },
+    { file: 'memory/10.jpg',  name: '前程似锦',     desc: '此乃成人礼合影的第二张（老师加入版）' },
+    { file: 'memory/11.jpg',  name: '决胜高考',     desc: '2025.6.9在武汉六中门口结束高考时所摄。内心OS大抵是终于考完生物了终于考完高考了爽！！！但是高中怎么就这样结束了\u2026\u2026' },
+    { file: 'memory/12.jpg',  name: '最好的我们',   desc: '此乃2025.6.5在学校的最后一天的全班合影。时光荏苒，那天的青春也许不能常驻，而我们的13班却将永远璀璨，生生不息。' }
   ];
 
   const total = photos.length;
   let current = 0;
   let isAnimating = false;
 
-  /* ── BUILD IMG LAYERS ── */
-  const imageArea    = document.getElementById('imageArea');
-  const imgA         = document.createElement('img');
-  const imgB         = document.createElement('img');
-  imgA.className     = 'img-layer active';
-  imgB.className     = 'img-layer';
-  imgA.src           = photos[0].file;
-  imgB.alt           = '';
+  /* DOM */
+  const imageArea = document.getElementById('imageArea');
+  const imgA = document.createElement('img');
+  const imgB = document.createElement('img');
+  imgA.className = 'img-layer active';
+  imgB.className = 'img-layer';
+  imgA.src = photos[0].file;
+  imgB.alt = '';
   imageArea.appendChild(imgA);
   imageArea.appendChild(imgB);
 
   const counterCurrent = document.getElementById('counterCurrent');
-  const counterTotal   = document.getElementById('counterTotal');
-  const progressFill   = document.getElementById('progressFill');
-  const prevBtn        = document.getElementById('prevBtn');
-  const nextBtn        = document.getElementById('nextBtn');
-  const textPanel      = document.getElementById('textPanel');
+  const counterTotal = document.getElementById('counterTotal');
+  const progressFill = document.getElementById('progressFill');
+  const nextBtn = document.getElementById('nextBtn');
+  const panelTitle = document.getElementById('panelTitle');
+  const panelBody = document.getElementById('panelBody');
 
-  counterTotal.textContent = String(total).padStart(2, '0');
-  updateProgress();
-
-  function updateProgress(){
+  function refreshUI(){
     progressFill.style.width = ((current + 1) / total * 100) + '%';
     counterCurrent.textContent = String(current + 1).padStart(2, '0');
-    prevBtn.classList.toggle('disabled', current === 0);
-    nextBtn.classList.toggle('disabled', current === total - 1);
+    panelTitle.textContent = photos[current].name;
+    panelBody.textContent = photos[current].desc;
   }
 
-  /* ── PANEL FLASH ── */
-  let hideTimer;
-  function flashPanel(){
-    textPanel.style.opacity = '0';
-    textPanel.style.transform = 'translateX(-12px)';
-    clearTimeout(hideTimer);
-    hideTimer = setTimeout(() => {
-      textPanel.style.opacity = '1';
-      textPanel.style.transform = 'translateX(0)';
-    }, 100);
-  }
+  counterTotal.textContent = String(total).padStart(2, '0');
+  refreshUI();
 
-  /* ── SWITCH ── */
+  /* SWITCH */
   function goTo(index){
     if(isAnimating || index === current || index < 0 || index >= total) return;
     isAnimating = true;
-    flashPanel();
 
-    const activeEl  = imgA.classList.contains('active') ? imgA : imgB;
+    const activeEl = imgA.classList.contains('active') ? imgA : imgB;
     const passiveEl = (activeEl === imgA) ? imgB : imgA;
 
-    passiveEl.src = photos[index].file;
-    passiveEl.style.opacity = '0';
-    passiveEl.style.transform = 'scale(1)';
-    void passiveEl.offsetWidth;
-
-    requestAnimationFrame(() => {
-      activeEl.style.opacity = '0';
-      activeEl.style.transform = 'scale(1)';
-      passiveEl.style.opacity = '1';
-      passiveEl.style.transform = 'scale(1.02)';
-    });
-
-    setTimeout(() => {
+    const tmp = new Image();
+    tmp.onload = function(){
+      passiveEl.src = photos[index].file;
+      requestAnimationFrame(function(){
+        activeEl.classList.remove('active');
+        passiveEl.classList.add('active');
+        current = index;
+        refreshUI();
+        setTimeout(function(){ isAnimating = false; }, 400);
+      });
+    };
+    tmp.onerror = function(){
+      passiveEl.src = photos[index].file;
       activeEl.classList.remove('active');
-      activeEl.style.opacity = '';
-      activeEl.style.transform = '';
       passiveEl.classList.add('active');
-      passiveEl.style.opacity = '';
-      passiveEl.style.transform = '';
       current = index;
-      updateProgress();
+      refreshUI();
       isAnimating = false;
-    }, 1005);
+    };
+    tmp.src = photos[index].file;
   }
 
-  /* ── TOAST ── */
-  const toast = document.getElementById('toast');
-  let toastTimer;
-  function showToast(msg){
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
-  }
+  function goNext(){ if(current < total - 1) goTo(current + 1); }
+  function goPrev(){ if(current > 0) goTo(current - 1); }
 
-  function goNext(){
-    if(current < total - 1){
-      goTo(current + 1);
-    } else {
-      showToast('已经是最后一张了');
-    }
-  }
-  function goPrev(){
-    if(current > 0){
-      goTo(current - 1);
-    } else {
-      showToast('已经是第一张了');
-    }
-  }
-
-  /* ── EVENTS ── */
+  /* EVENTS */
   nextBtn.addEventListener('click', goNext);
-  prevBtn.addEventListener('click', goPrev);
 
-  document.addEventListener('keydown', e => {
+  document.addEventListener('keydown', function(e){
     if(e.key === 'ArrowRight' || e.key === 'ArrowDown') goNext();
-    if(e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goPrev();
+    if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') goPrev();
   });
 
-  let wheelLock = false;
-  window.addEventListener('wheel', e => {
-    if(wheelLock || Math.abs(e.deltaY) < 20) return;
+  var wheelLock = false;
+  window.addEventListener('wheel', function(e){
+    if(wheelLock || Math.abs(e.deltaY) < 15) return;
     wheelLock = true;
     e.deltaY > 0 ? goNext() : goPrev();
-    setTimeout(() => { wheelLock = false; }, 1200);
+    setTimeout(function(){ wheelLock = false; }, 300);
   }, { passive: true });
 
-  let touchStartY = 0, touchStartX = 0;
-  window.addEventListener('touchstart', e => {
+  var touchStartY = 0;
+  window.addEventListener('touchstart', function(e){
     touchStartY = e.touches[0].clientY;
-    touchStartX = e.touches[0].clientX;
   }, { passive: true });
-  window.addEventListener('touchend', e => {
-    const dy = touchStartY - e.changedTouches[0].clientY;
-    const dx = touchStartX - e.changedTouches[0].clientX;
-    if(Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 40){
-      dy > 0 ? goNext() : goPrev();
-    }
+  window.addEventListener('touchend', function(e){
+    var dy = touchStartY - e.changedTouches[0].clientY;
+    if(Math.abs(dy) > 30){ dy > 0 ? goNext() : goPrev(); }
   }, { passive: true });
-
 })();
 </script>
 </body>

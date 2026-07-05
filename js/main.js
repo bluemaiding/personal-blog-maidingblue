@@ -312,15 +312,6 @@ const BLOG_ARTICLES = [
     "url": "posts/article-30.html"
   },
   {
-    "id": 31,
-    "title": "个人篇",
-    "year": "2021",
-    "category": "纪念",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-31.html"
-  },
-  {
     "id": 32,
     "title": "给自己的最好礼物",
     "year": "2021",
@@ -472,33 +463,6 @@ const BLOG_ARTICLES = [
     "lang": "zh",
     "classical": false,
     "url": "posts/article-49.html"
-  },
-  {
-    "id": 50,
-    "title": "文本77《缘》",
-    "year": "2021",
-    "category": "纪念",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-50.html"
-  },
-  {
-    "id": 51,
-    "title": "文本78《雨》",
-    "year": "2021",
-    "category": "纪念",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-51.html"
-  },
-  {
-    "id": 52,
-    "title": "文本79《时光事》",
-    "year": "2021",
-    "category": "纪念",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-52.html"
   },
   {
     "id": 53,
