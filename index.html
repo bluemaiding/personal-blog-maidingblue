@@ -242,6 +242,42 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
 /* STAGGER ANIM */
 .stagger{opacity:0;transform:translateY(25px);transition:opacity .5s ease,transform .5s ease}
 .stagger.visible{opacity:1;transform:translateY(0)}
+
+/* ===== ARTICLE LIST (ported from posts page, re-themed dark) ===== */
+.posts-list{display:flex;flex-direction:column;gap:40px}
+.category-tabs-section,.view-tabs-section{padding:0;border-bottom:1px solid rgba(96,165,250,.1);margin-bottom:8px}
+.category-tabs,.view-tabs{display:flex;gap:0;align-items:center;flex-wrap:wrap}
+.category-tab,.view-tab{padding:14px 20px;font-size:.85rem;font-weight:500;color:var(--text-tertiary);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:var(--transition);white-space:nowrap;display:inline-flex;align-items:center}
+.view-tab{padding:16px 24px;font-size:.88rem}
+.category-tab:hover,.view-tab:hover{color:var(--text-secondary);background:rgba(96,165,250,.06)}
+.category-tab.active,.view-tab.active{color:var(--blue-400);border-bottom-color:var(--blue-400)}
+.category-dropdown{position:relative;display:inline-block}
+.dropdown-menu{position:absolute;top:100%;left:0;min-width:120px;background:#131c2e;border:1px solid rgba(96,165,250,.15);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);padding:6px;z-index:100;opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .2s ease}
+.category-dropdown:hover .dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.dropdown-item{display:block;padding:8px 14px;font-size:.82rem;color:var(--text-secondary);text-decoration:none;border-radius:6px;transition:var(--transition);white-space:nowrap}
+.dropdown-item:hover{background:rgba(96,165,250,.12);color:var(--blue-400)}
+.article-groups{display:flex;flex-direction:column;gap:48px}
+.article-group{display:flex;flex-direction:column}
+.article-group-header{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(96,165,250,.1)}
+.article-group-year{font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:700;color:var(--blue-400);line-height:1.2;letter-spacing:-.02em}
+.article-group-count{font-size:.8rem;color:var(--text-tertiary);margin-top:4px}
+.article-items{display:flex;flex-direction:column;gap:2px}
+.article-item{display:flex;align-items:center;gap:16px;padding:12px 16px;border-radius:10px;transition:var(--transition);text-decoration:none;color:inherit}
+.article-item-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.article-item:hover{background:rgba(96,165,250,.07)}
+.article-item-title{font-size:1.05rem;font-weight:500;color:var(--text-primary);transition:var(--transition);line-height:1.5}
+.article-item:hover .article-item-title{color:var(--blue-400)}
+.article-item-meta{font-size:.74rem;line-height:1.3;min-height:1rem;color:var(--text-tertiary)}
+.article-item-category{font-size:.72rem;color:var(--text-tertiary);white-space:nowrap;flex-shrink:0;padding:2px 10px;border-radius:var(--radius-full);background:rgba(255,255,255,.04);border:1px solid rgba(96,165,250,.12)}
+.article-section-label{font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:var(--text-primary);margin-bottom:24px;padding-bottom:8px;border-bottom:2px solid var(--blue-400);display:inline-block}
+@media(max-width:768px){
+  .category-tabs,.view-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap}
+  .category-tab{padding:12px 14px;font-size:.8rem;flex-shrink:0}
+  .view-tab{padding:14px 16px;font-size:.82rem;white-space:nowrap;flex-shrink:0}
+  .article-group-year{font-size:1.8rem}
+  .article-item{padding:10px 12px;gap:10px}
+  .article-item-title{font-size:.98rem}
+}
 </style>
 </head>
 <body>
@@ -311,7 +347,7 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
         <!-- Rendered by JavaScript -->
       </div>
       <div style="margin-top:1.2rem">
-        <a href="posts.html" class="project-btn" style="display:inline-flex;align-items:center;gap:.35rem">查看全部文章 <i class="fas fa-arrow-right" style="font-size:.7rem"></i></a>
+        <a href="#articles" class="project-btn" style="display:inline-flex;align-items:center;gap:.35rem">查看全部文章 <i class="fas fa-arrow-right" style="font-size:.7rem"></i></a>
       </div>
     </div>
   </div>
@@ -344,14 +380,36 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
 <div class="page" id="page-articles">
   <div class="page-section">
     <h2 class="section-title">文章</h2>
-    <p class="section-subtitle">散文 · 小说 · 诗歌 · 随笔 · 作文 · 共 63 篇</p>
+    <p class="section-subtitle" id="articlesSubtitle">思考与记录</p>
 
-    <div class="articles-grid" id="homeArticlesGrid">
-      <!-- Rendered by JavaScript -->
+    <div class="category-tabs-section">
+      <div class="category-tabs">
+        <button class="category-tab active" data-cat="all">全部</button>
+        <div class="category-dropdown">
+          <button class="category-tab" data-cat="文学">文学 <i class="fas fa-chevron-down" style="font-size:.65rem;margin-left:.25rem"></i></button>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item" data-cat="散文">散文</a>
+            <a href="#" class="dropdown-item" data-cat="小说">小说</a>
+            <a href="#" class="dropdown-item" data-cat="作文">作文</a>
+            <a href="#" class="dropdown-item" data-cat="随笔">随笔</a>
+            <a href="#" class="dropdown-item" data-cat="杂文">杂文</a>
+          </div>
+        </div>
+        <button class="category-tab" data-cat="诗歌">诗歌</button>
+        <button class="category-tab" data-cat="论文">论文</button>
+        <button class="category-tab" data-cat="年度总结">总结</button>
+      </div>
     </div>
-    <div style="margin-top:2rem;text-align:center">
-      <a href="posts.html" class="project-btn" style="display:inline-flex;align-items:center;gap:.35rem">查看全部文章 <i class="fas fa-arrow-right" style="font-size:.7rem"></i></a>
+
+    <div class="view-tabs-section">
+      <div class="view-tabs">
+        <button class="view-tab active" data-view="time">时间顺序</button>
+        <button class="view-tab" data-view="lang">中文 / 英文</button>
+        <button class="view-tab" data-view="form">现代文 / 文言文</button>
+      </div>
     </div>
+
+    <div class="posts-list" id="postsList"><!-- Rendered by JavaScript --></div>
   </div>
 </div>
 
@@ -432,6 +490,7 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
 <!-- BACK TO TOP -->
 <button class="back-top" id="backTop" title="返回顶部" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
 
+<script src="js/articles-data.js"></script>
 <script>
 // ===== CONFIG =====
 const CONFIG = {
@@ -441,567 +500,7 @@ const CONFIG = {
   typedStrings: ["NJU EE'25 | 学生开发者 | 软硬兼修", "嵌入式 × Web | 代码改变世界", "南京大学 · 电子工程 · 2025"]
 };
 
-// ===== BLOG ARTICLES DATA =====
-const BLOG_ARTICLES = [
-  {
-    "id": 0,
-    "title": "When...",
-    "year": "2025",
-    "category": "现代诗",
-    "lang": "en",
-    "classical": false,
-    "url": "posts/article-0.html"
-  },
-  {
-    "id": 1,
-    "title": "故然慢",
-    "year": "2024",
-    "category": "现代诗",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-1.html"
-  },
-  {
-    "id": 2,
-    "title": "青玉案·春雷乍动小池寒",
-    "year": "2024",
-    "category": "古诗词",
-    "lang": "zh",
-    "classical": true,
-    "url": "posts/article-2.html"
-  },
-  {
-    "id": 3,
-    "title": "语文学业考忽觉毕业将至有感而乱作",
-    "year": "2024",
-    "category": "作文",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-3.html"
-  },
-  {
-    "id": 4,
-    "title": "《钗头凤·懒卷帘》",
-    "year": "2023",
-    "category": "古诗词",
-    "lang": "zh",
-    "classical": true,
-    "url": "posts/article-4.html"
-  },
-  {
-    "id": 5,
-    "title": "《风桥夜题》",
-    "year": "2023",
-    "category": "古诗词",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-5.html"
-  },
-  {
-    "id": 6,
-    "title": "《花间辞》 ",
-    "year": "2023",
-    "category": "古诗词",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-6.html"
-  },
-  {
-    "id": 7,
-    "title": "M星上的最后一夜",
-    "year": "2023",
-    "category": "小说",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-7.html"
-  },
-  {
-    "id": 8,
-    "title": "《汪妍记》",
-    "year": "2022",
-    "category": "纪念",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-8.html"
-  },
-  {
-    "id": 9,
-    "title": "《无题》",
-    "year": "2022",
-    "category": "古诗词",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-9.html"
-  },
-  {
-    "id": 10,
-    "title": "《长夜行》",
-    "year": "2022",
-    "category": "小说",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-10.html"
-  },
-  {
-    "id": 11,
-    "title": "《中秋词》",
-    "year": "2022",
-    "category": "古诗词",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-11.html"
-  },
-  {
-    "id": 12,
-    "title": "2060——一个会呼吸的年代",
-    "year": "2022",
-    "category": "小说",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-12.html"
-  },
-  {
-    "id": 13,
-    "title": "必修上册-古诗单元-生命之歌",
-    "year": "2022",
-    "category": "作文",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-13.html"
-  },
-  {
-    "id": 14,
-    "title": "读书笔记1 局外人",
-    "year": "2022",
-    "category": "作文",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-14.html"
-  },
-  {
-    "id": 15,
-    "title": "读书笔记2 长安十二时辰",
-    "year": "2022",
-    "category": "作文",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-15.html"
-  },
-  {
-    "id": 16,
-    "title": "作文4-走自食其力路    谱自强不息歌",
-    "year": "2022",
-    "category": "作文",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-16.html"
-  },
-  {
-    "id": 17,
-    "title": "《2020年7月15日》",
-    "year": "2021",
-    "category": "其他",
-    "lang": "en",
-    "classical": false,
-    "url": "posts/article-17.html"
-  },
-  {
-    "id": 18,
-    "title": "《仇》",
-    "year": "2021",
-    "category": "小说",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-18.html"
-  },
-  {
-    "id": 19,
-    "title": "《礼物》",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-19.html"
-  },
-  {
-    "id": 20,
-    "title": "《三角梅》",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-20.html"
-  },
-  {
-    "id": 21,
-    "title": "《三色堇》",
-    "year": "2021",
-    "category": "小说",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-21.html"
-  },
-  {
-    "id": 22,
-    "title": "《行走》",
-    "year": "2021",
-    "category": "散文",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-22.html"
-  },
-  {
-    "id": 23,
-    "title": "《行走》",
-    "year": "2021",
-    "category": "散文",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-23.html"
-  },
-  {
-    "id": 24,
-    "title": "《一棵通往天堂的樟树》",
-    "year": "2021",
-    "category": "小说",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-24.html"
-  },
-  {
-    "id": 25,
-    "title": "2020年6月21日",
-    "year": "2021",
-    "category": "其他",
-    "lang": "en",
-    "classical": false,
-    "url": "posts/article-25.html"
-  },
-  {
-    "id": 26,
-    "title": "爱夜说 2020年4月16日语文作业",
-    "year": "2021",
-    "category": "随笔",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-26.html"
-  },
-  {
-    "id": 27,
-    "title": "材料作文",
-    "year": "2021",
-    "category": "作文",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-27.html"
-  },
-  {
-    "id": 28,
-    "title": "读北岛《过节》",
-    "year": "2021",
-    "category": "学术性论文",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-28.html"
-  },
-  {
-    "id": 29,
-    "title": "封宅记",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": true,
-    "url": "posts/article-29.html"
-  },
-  {
-    "id": 30,
-    "title": "芙蕖",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": true,
-    "url": "posts/article-30.html"
-  },
-  {
-    "id": 31,
-    "title": "个人篇",
-    "year": "2021",
-    "category": "纪念",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-31.html"
-  },
-  {
-    "id": 32,
-    "title": "给自己的最好礼物",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-32.html"
-  },
-  {
-    "id": 33,
-    "title": "故去的老院",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": true,
-    "url": "posts/article-33.html"
-  },
-  {
-    "id": 34,
-    "title": "唤我阿离",
-    "year": "2021",
-    "category": "小说",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-34.html"
-  },
-  {
-    "id": 35,
-    "title": "九上期中作文 成功的经历，也很重要",
-    "year": "2021",
-    "category": "作文",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-35.html"
-  },
-  {
-    "id": 36,
-    "title": "老胡传",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": true,
-    "url": "posts/article-36.html"
-  },
-  {
-    "id": 37,
-    "title": "那双美丽的眼睛",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-37.html"
-  },
-  {
-    "id": 38,
-    "title": "闹剧",
-    "year": "2021",
-    "category": "小说",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-38.html"
-  },
-  {
-    "id": 39,
-    "title": "闹剧（其二）",
-    "year": "2021",
-    "category": "小说",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-39.html"
-  },
-  {
-    "id": 40,
-    "title": "逆行路上，你我相伴",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-40.html"
-  },
-  {
-    "id": 41,
-    "title": "浅谈自己的责任",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-41.html"
-  },
-  {
-    "id": 42,
-    "title": "沁园春",
-    "year": "2021",
-    "category": "古诗词",
-    "lang": "zh",
-    "classical": true,
-    "url": "posts/article-42.html"
-  },
-  {
-    "id": 43,
-    "title": "如梦令·寻就",
-    "year": "2021",
-    "category": "古诗词",
-    "lang": "zh",
-    "classical": true,
-    "url": "posts/article-43.html"
-  },
-  {
-    "id": 44,
-    "title": "三格情书-我喜欢你，因为你的样子",
-    "year": "2021",
-    "category": "现代诗",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-44.html"
-  },
-  {
-    "id": 45,
-    "title": "社团之争",
-    "year": "2021",
-    "category": "纪念",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-45.html"
-  },
-  {
-    "id": 46,
-    "title": "书斋铭",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": true,
-    "url": "posts/article-46.html"
-  },
-  {
-    "id": 47,
-    "title": "数学老师",
-    "year": "2021",
-    "category": "纪念",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-47.html"
-  },
-  {
-    "id": 48,
-    "title": "死侍",
-    "year": "2021",
-    "category": "小说",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-48.html"
-  },
-  {
-    "id": 49,
-    "title": "温情让美好长久",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-49.html"
-  },
-  {
-    "id": 50,
-    "title": "文本77《缘》",
-    "year": "2021",
-    "category": "纪念",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-50.html"
-  },
-  {
-    "id": 51,
-    "title": "文本78《雨》",
-    "year": "2021",
-    "category": "纪念",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-51.html"
-  },
-  {
-    "id": 52,
-    "title": "文本79《时光事》",
-    "year": "2021",
-    "category": "纪念",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-52.html"
-  },
-  {
-    "id": 53,
-    "title": "武汉，我们想你",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-53.html"
-  },
-  {
-    "id": 54,
-    "title": "细微之处见真情",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-54.html"
-  },
-  {
-    "id": 55,
-    "title": "细微之处见真情（原版）",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-55.html"
-  },
-  {
-    "id": 56,
-    "title": "小城日落",
-    "year": "2021",
-    "category": "散文",
-    "lang": "zh",
-    "classical": true,
-    "url": "posts/article-56.html"
-  },
-  {
-    "id": 57,
-    "title": "夜",
-    "year": "2021",
-    "category": "随笔",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-57.html"
-  },
-  {
-    "id": 58,
-    "title": "永远的目送（千屿）",
-    "year": "2021",
-    "category": "散文",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-58.html"
-  },
-  {
-    "id": 59,
-    "title": "鸢尾花开的夏天",
-    "year": "2021",
-    "category": "小说",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-59.html"
-  },
-  {
-    "id": 60,
-    "title": "原来如此",
-    "year": "2021",
-    "category": "其他",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-60.html"
-  },
-  {
-    "id": 61,
-    "title": "作文《这样的人，让我（敬佩）》",
-    "year": "2021",
-    "category": "作文",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-61.html"
-  }
-];
+// 文章数据由 js/articles-data.js 提供
 
 // ===== TYPEWRITER =====
 let typedIndex = 0, charIndex = 0, isDeleting = false;
@@ -1029,23 +528,133 @@ document.addEventListener('click', e => {
   }
 });
 
-// ===== RENDER HOME ARTICLES =====
-function renderHomeArticles() {
-  const articles = BLOG_ARTICLES.slice(0, 6);
-  const grid = document.getElementById('homeArticlesGrid');
-  if (!grid) return;
-  grid.innerHTML = articles.map(a => `
-    <div class="article-card stagger" data-url="${a.url}">
-      <div class="article-card-img"><i class="fas fa-${a.lang === 'en' ? 'file-alt' : 'pen-nib'}"></i></div>
-      <div class="article-card-body">
-        <h3>${a.title}</h3>
-        <div class="article-card-meta"><i class="far fa-calendar"></i> ${a.year}</div>
-        <div class="article-card-excerpt">${a.category} · ${a.classical ? '文言文' : '现代文'} · ${a.lang === 'en' ? 'English' : '中文'}</div>
-        <div class="article-tags"><span class="article-tag">${a.category}</span><span class="article-tag">${a.year}</span></div>
-        <span class="article-card-read">阅读全文 <i class="fas fa-arrow-right"></i></span>
-      </div>
-    </div>
-  `).join('');
+// ===== ARTICLE LIST (ported from posts page) =====
+let currentView = 'time';
+let currentCategory = 'all';
+const postsList = document.getElementById('postsList');
+const articlesSubtitle = document.getElementById('articlesSubtitle');
+
+const CATEGORY_GROUPS = {
+  '文学': ['散文', '小说', '作文', '随笔', '杂文'],
+  '诗歌': ['古诗词', '现代诗'],
+  '论文': ['学术性论文']
+};
+const EMPTY_HINT = '<div style="text-align:center;padding:3rem;color:var(--text-tertiary)">暂无此类文章</div>';
+
+function articleItemHTML(a, categoryLabel) {
+  return `
+    <a href="${a.url}" class="article-item">
+      <span class="article-item-main">
+        <span class="article-item-title">${a.title}</span>
+        ${a.reading ? `<span class="article-item-meta">${a.reading}</span>` : ''}
+      </span>
+      <span class="article-item-category">${categoryLabel}</span>
+    </a>`;
+}
+
+function getFilteredArticles() {
+  if (currentCategory === 'all') return BLOG_ARTICLES;
+  if (CATEGORY_GROUPS[currentCategory]) {
+    return BLOG_ARTICLES.filter(a => CATEGORY_GROUPS[currentCategory].includes(a.category));
+  }
+  return BLOG_ARTICLES.filter(a => a.category === currentCategory);
+}
+
+function renderArticles() {
+  if (!postsList) return;
+  if (articlesSubtitle) articlesSubtitle.textContent = `共 ${BLOG_ARTICLES.length} 篇 · 思考与记录`;
+  if (currentView === 'time') renderByTime();
+  else if (currentView === 'lang') renderByLang();
+  else if (currentView === 'form') renderByForm();
+}
+
+function renderByTime() {
+  const articles = getFilteredArticles();
+  if (!articles.length) { postsList.innerHTML = EMPTY_HINT; return; }
+  const groups = {};
+  articles.forEach(a => { (groups[a.year] = groups[a.year] || []).push(a); });
+  const years = Object.keys(groups).sort((a, b) => (parseInt(b) || 0) - (parseInt(a) || 0));
+  postsList.innerHTML = `<div class="article-groups">${years.map(year => {
+    const items = groups[year];
+    const label = year === '2021' ? '2021 及以前' : year;
+    return `<div class="article-group">
+        <div class="article-group-header">
+          <div class="article-group-year">${label}</div>
+          <div class="article-group-count">${items.length} 篇</div>
+        </div>
+        <div class="article-items">${items.map(a => articleItemHTML(a, a.category)).join('')}</div>
+      </div>`;
+  }).join('')}</div>`;
+}
+
+function renderByLang() {
+  const articles = getFilteredArticles();
+  if (!articles.length) { postsList.innerHTML = EMPTY_HINT; return; }
+  const zh = articles.filter(a => a.lang === 'zh');
+  const en = articles.filter(a => a.lang === 'en');
+  let html = `<div class="article-group">
+      <div class="article-section-label">中文 (${zh.length} 篇)</div>
+      <div class="article-items">${zh.map(a => articleItemHTML(a, `${a.year} · ${a.category}`)).join('')}</div>
+    </div>`;
+  if (en.length) {
+    html += `<div class="article-group">
+      <div class="article-section-label">English (${en.length} articles)</div>
+      <div class="article-items">${en.map(a => articleItemHTML(a, `${a.year} · ${a.category}`)).join('')}</div>
+    </div>`;
+  }
+  postsList.innerHTML = html;
+}
+
+function renderByForm() {
+  const articles = getFilteredArticles();
+  if (!articles.length) { postsList.innerHTML = EMPTY_HINT; return; }
+  const modern = articles.filter(a => !a.classical);
+  const classical = articles.filter(a => a.classical);
+  let html = `<div class="article-group">
+      <div class="article-section-label">现代文 (${modern.length} 篇)</div>
+      <div class="article-items">${modern.map(a => articleItemHTML(a, `${a.year} · ${a.category}`)).join('')}</div>
+    </div>`;
+  if (classical.length) {
+    html += `<div class="article-group">
+      <div class="article-section-label">文言文 (${classical.length} 篇)</div>
+      <div class="article-items">${classical.map(a => articleItemHTML(a, `${a.year} · ${a.category}`)).join('')}</div>
+    </div>`;
+  }
+  postsList.innerHTML = html;
+}
+
+function initCategoryTabs() {
+  document.querySelectorAll('.category-tab').forEach(tab => {
+    tab.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentCategory = tab.dataset.cat;
+      renderArticles();
+    });
+  });
+  document.querySelectorAll('.dropdown-item').forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+      const parent = document.querySelector('.category-tab[data-cat="文学"]');
+      if (parent) parent.classList.add('active');
+      currentCategory = item.dataset.cat;
+      renderArticles();
+    });
+  });
+}
+
+function initViewTabs() {
+  const tabs = document.querySelectorAll('.view-tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentView = tab.dataset.view;
+      renderArticles();
+    });
+  });
 }
 
 function renderLatestPosts() {
@@ -1139,28 +748,39 @@ document.getElementById('heroExploreBtn').addEventListener('click', e => {
   document.getElementById('aboutSection').scrollIntoView({ behavior: 'smooth' });
 });
 
-// ===== NAVIGATION =====
+// ===== NAVIGATION (SPA + hash 路由) =====
+function showPage(name) {
+  if (!document.getElementById('page-' + name)) name = 'home';
+  document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + name));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.dataset.page === name));
+  history.replaceState(null, '', name === 'home' ? location.pathname + location.search : '#' + name);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (name === 'articles') renderArticles();
+  observeStagger();
+}
+
 document.querySelectorAll('.nav-link').forEach(link => {
   link.addEventListener('click', e => {
-    // External links (like memory.html) — let them navigate normally
+    // 真实外链（如 memory.html）正常跳转
     if (link.getAttribute('href') && link.getAttribute('href') !== '#') return;
-    // Internal SPA page links
     e.preventDefault();
-    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-    link.classList.add('active');
-    const page = link.dataset.page;
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    const target = document.getElementById('page-' + page);
-    if (target) target.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    observeStagger();
+    if (link.dataset.page) location.hash = link.dataset.page; // → hashchange → showPage
   });
 });
 
-// ===== INIT HOME ARTICLES =====
-renderHomeArticles();
+window.addEventListener('hashchange', () => {
+  const name = (location.hash || '#home').slice(1);
+  showPage(document.getElementById('page-' + name) ? name : 'home');
+});
+
+// ===== INIT =====
 renderLatestPosts();
-observeStagger();
+initCategoryTabs();
+initViewTabs();
+
+// 初始页面（支持 #articles 等深链直达）
+const initialPage = (location.hash || '#home').slice(1);
+showPage(document.getElementById('page-' + initialPage) ? initialPage : 'home');
 
 // Hide loader
 setTimeout(() => {
