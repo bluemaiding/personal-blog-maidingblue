@@ -1,6 +1,6 @@
 node_modules/
 .claude/
-memory/
+memory-originals/
 _cleanup.js
 _rebuild2.js
 *.log
