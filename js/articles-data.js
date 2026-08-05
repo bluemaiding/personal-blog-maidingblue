@@ -2,6 +2,16 @@
 // 重新生成: node _gen-data.js
 const BLOG_ARTICLES = [
   {
+    "id": 66,
+    "title": "读《我们仨》",
+    "year": "2026",
+    "category": "随笔",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-66.html",
+    "reading": "1885 字 · 约 7 分钟"
+  },
+  {
     "id": 65,
     "title": "大一总结",
     "year": "2026",
