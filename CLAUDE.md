@@ -18,6 +18,7 @@ js/main.js          — 主题切换、项目渲染、导航/滚动/移动菜单
 js/articles-data.js — 文章列表数据（由 _gen-data.js 从 posts/*.html 自动生成，唯一数据源）
 _gen-data.js        — 从文章页提取元数据 → js/articles-data.js
 _reading.js         — 给各文章页 .article-meta 注入「字数 · 阅读时间」(node _reading.js apply)
+_PULL_ARTICLE.md    — 从本地 docx 拉文章进博客的完整流程（pandoc + 弯引号还原 + 同步）
 posts/              — 文章详情页（hello-world.html 可作模板）
 _redirects          — (可选) Cloudflare SPA 回退 /* -> /index.html 200
 ```
@@ -40,6 +41,7 @@ _redirects          — (可选) Cloudflare SPA 回退 /* -> /index.html 200
 ## How to Edit
 - **Personal info**: edit name/bio/skills in index.html
 - **Add a post**: 在 `posts/` 新建 `article-X.html`（可复制 hello-world.html），填好 `<div class="article-meta">` 的 年份/类别/文体/语言；然后 `node _reading.js apply`（注入字数）+ `node _gen-data.js`（刷新列表数据）
+- **Pull a post from local docx**: 按 `_PULL_ARTICLE.md` 走（pandoc 转换 → 还原中文弯引号 → `node _reading.js apply` → `node _gen-data.js`）
 - **Add a project**: add entry to `projects` array in js/main.js
 - **New article page**: copy posts/hello-world.html as template
 - **Change colors**: index 内联 CSS 用自己的变量；about/projects/文章页 用 style.css 的 `:root` / `[data-theme="dark"]`
