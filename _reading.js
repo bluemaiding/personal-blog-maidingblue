@@ -40,7 +40,8 @@ for (const f of files) {
     const m = html.match(re);
     if (!m) { noMeta++; continue; }
     // 先移除上次注入的字数/阅读时间，便于内容更新后重新统计（幂等）
-    const cleaned = m[2].replace(/\s*<span>·<\/span>\s*<span>(\d+\s*字|\d+\s*words)<\/span>\s*<span>·<\/span>\s*<span>(约\s*\d+\s*分钟|\d+\s*min)<\/span>\s*$/, "");
+    // 兼容早期双语文稿遗留的「387+741 字」格式（中文+英文词数相加），带可选 + 号
+    const cleaned = m[2].replace(/\s*<span>·<\/span>\s*<span>(\d+(?:\s*\+\s*\d+)?\s*字|\d+(?:\s*\+\s*\d+)?\s*words)<\/span>\s*<span>·<\/span>\s*<span>(约\s*\d+\s*分钟|\d+\s*min)<\/span>\s*$/, "");
     const trimmed = cleaned.replace(/\s+$/, "");
     const newHtml = html.replace(re, `${m[1]}${trimmed}\n                <span>·</span>\n                <span>${countLabel}</span>\n                <span>·</span>\n                <span>${timeLabel}</span>\n            </div>`);
     fs.writeFileSync(fp, newHtml);

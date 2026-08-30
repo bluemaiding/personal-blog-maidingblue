@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="项目技术复盘报告：面向嵌入式平台的 CLAHE 预处理加速可行性分析 - Bluemaiding">
+    <title>面向嵌入式平台的 CLAHE 预处理加速可行性分析 - Bluemaiding</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="article-page">
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="../index.html" class="nav-logo">bluemaiding</a>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                    <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <header class="article-header">
+        <div class="container">
+            <a href="../index.html#articles" class="back-link">← 返回文章列表</a>
+            <h1 class="article-title">面向嵌入式平台的 CLAHE 预处理加速可行性分析</h1>
+            <div class="article-meta">
+                <span class="post-date">2026</span>
+                <span>·</span>
+                <span>技术性文档</span>
+                <span>·</span>
+                <span>现代文</span>
+                <span>·</span>
+                <span>中文</span>
+                <span>·</span>
+                <span>1470 字</span>
+                <span>·</span>
+                <span>约 6 分钟</span>
+            </div>
+        </div>
+    </header>
+    <article class="article-content">
+
+        <h3>【项目背景】</h3>
+        <p>本项目的初衷是为申请加入南京大学感知计算实验室做准备，旨在通过一个完整的工程实践，建立从算法到硬件的“嵌入式思维”。项目选择以图像预处理中的 CLAHE（限制对比度自适应直方图均衡化）算子为切入点，在 PC 平台上模拟嵌入式开发环境，探索定点化加速与访存优化的可行性。</p>
+
+        <h3>【系统架构设计】</h3>
+        <p>为了模拟嵌入式设备无操作系统、无文件系统依赖的裸机环境，本项目采用“Python + C”的混合开发模式：</p>
+        <ol>
+            <li><strong>数据采集端（Python）</strong>：负责读取标准图像格式（如 JPEG），完成尺寸缩放（224x224）与灰度转换，将图像数据以无格式头的二进制流（.raw）导出。该过程模拟嵌入式摄像头输出的 RAW 数据流。</li>
+            <li><strong>核心处理端（C 语言）</strong>：完全不依赖 OpenCV 等第三方库，仅通过标准 I/O 库（stdio.h）读取 .raw 文件，使用 <code>unsigned char*</code> 指针操作内存块，完成全部预处理算法后，将结果以 .raw 格式写回。</li>
+            <li><strong>数据验证端（Python）</strong>：读取 .raw 文件并还原为可视化的图片格式，用于主观质量评价。</li>
+        </ol>
+        <p>这种架构确保核心算法可以无改动地移植到任何支持 C 编译的嵌入式平台。</p>
+
+        <h3>【CLAHE 算法纯 C 实现】</h3>
+        <p>本项目手动实现了 CLAHE 的完整流水线，未调用任何现成图像处理库。核心步骤如下：</p>
+        <ol>
+            <li><strong>图像分块（Adaptive）</strong>：将 224x224 的图像划分为 8x8 的网格，生成 64 个大小为 28x28 像素的子块。这一步是实现“自适应”增强的基础。</li>
+            <li><strong>直方图统计（Histogram）</strong>：针对每个子块，独立统计 256 个灰度等级的像素分布，存储于 <code>int hist[64][256]</code> 数组中。</li>
+            <li><strong>对比度限制（Contrast Limiting）</strong>：设定裁剪阈值（Clip Limit = 4），将每个子块直方图中超出阈值的部分截断，并将截断的像素总数均匀重新分配到所有灰度级。该机制有效抑制了传统直方图均衡化在平坦区域放大噪声的问题。</li>
+            <li><strong>累积分布计算与像素映射</strong>：计算每个子块的累积分布函数（CDF）作为灰度映射表。映射公式为：<code>new_val = (CDF[old_val] * 255) / 784</code></li>
+        </ol>
+
+        <h3>【定点数加速实验】</h3>
+        <p>在嵌入式 ARM 处理器中，整数除法指令的时钟周期数远高于移位与乘法指令。为此，本项目尝试将映射公式中的除法运算替换为定点数移位运算。</p>
+        <p><strong>1. 数学变换</strong></p>
+        <p>原始映射为除法：<code>(CDF * 255) / 784</code><br>将其近似为定点乘法与移位：<code>(CDF * 333) &gt;&gt; 10</code><br>其中，333 / 1024 ≈ 0.3252，与 255 / 784 ≈ 0.3253 的误差小于 0.1%。</p>
+        <p><strong>2. 测试方法</strong></p>
+        <p>为避免单次运行的系统噪声干扰，采用循环处理 10000 次的方法，并使用高精度 chrono 库统计总耗时。</p>
+
+        <h3>【实验数据与反直觉现象分析】</h3>
+        <p>测试环境：Windows 11 / x86_64 处理器，图像尺寸 224x224。</p>
+        <p>测试结果：</p>
+        <ul>
+            <li>除法版本（/ 784）：2366.375 ms</li>
+            <li>移位版本（*333 &gt;&gt; 10）：2478.423 ms</li>
+            <li>实际加速比：0.95 倍（移位版本性能不升反降）</li>
+        </ul>
+        <p>针对这一反直觉结果，深入分析得出以下两点核心结论：</p>
+        <p><strong>1. 内存墙效应（Memory Wall）</strong></p>
+        <p>在单次处理中，CPU 需要从内存搬运 50176 字节的数据。经过 10000 次循环，总数据吞吐量约为 500 MB。处理器内核花费大量时钟周期处于等待内存数据就绪的状态（Cache Miss），此时算术逻辑单元（ALU）处于空闲。在这种场景下，缩短算术指令（除法改移位）所带来的微秒级收益，相对于毫秒级的内存延迟，对总耗时的改善几乎被完全掩盖。</p>
+        <p><strong>2. 编译器的隐式优化</strong></p>
+        <p>现代 C 编译器（GCC）在默认优化级别下，对于常量除法（/784）会自动生成一套不依赖除法器的优化指令序列（如乘法和移位）。因此，手写的移位优化本质上与编译器生成的代码高度相似，无法产生显著的性能差异。</p>
+
+        <h3>【访存局部性分析】</h3>
+        <p>基于上述结论，本次实验将重点转向数据访问模式对性能的影响：</p>
+        <p><strong>1. 逐行扫描模式（本项目采用）</strong></p>
+        <p>图像数据在内存中按行连续存储。当前处理模式为逐行遍历，访问地址严格递增。该模式对 CPU 缓存（Cache）极为友好，预取机制可以有效工作，保证高命中率。</p>
+        <p><strong>2. 假设的逐块处理模式</strong></p>
+        <p>如果先完整处理第 1 个子块（28x28）再跳转到第 2 个子块，由于内存地址发生了跳跃（横跨了图片宽度），会导致缓存频繁失效（Cache Miss），其性能损失远大于优化几行算术代码带来的收益。</p>
+        <p>结论：在嵌入式优化中，<strong>数据搬移策略的优化优先级应远高于算术指令的优化</strong>。保证数据在时间与空间上的局部性，是深度学习编译器中访存优化的核心课题。</p>
+
+        <h3>【总结与展望】</h3>
+        <p>本项目的核心价值不仅在于跑通了 CLAHE 算法，更在于通过一个失败（0.95x）的实验结果，深刻验证了“内存墙”在嵌入式系统中的主导地位。</p>
+        <p>虽然定点移位在本次 PC 端测试中未展现加速效果，但在缺乏硬件除法器或除法指令延迟显著的系统（如 Cortex-M 系列）中，该优化策略仍具有明确的工程价值。更重要的是，本次实践积累了对内存布局和缓存行为的感性认识，为后续深入深度学习编译器底层优化奠定了基础。</p>
+        <p>下一步工作：</p>
+        <ul>
+            <li>在 ARM Cortex-A 开发板上部署该算法，重新测算真实环境下的定点加速比。</li>
+            <li>研究 OpenCL 或 NEON 指令集，尝试在分块统计阶段引入 SIMD 向量化。</li>
+        </ul>
+        <p>项目源码及实验数据已归档，可随时针对特定硬件后端进行参数调优。</p>
+
+    </article>
+    <div class="article-footer">
+        <div class="container">
+            <a href="../index.html#articles" class="back-link">← 返回文章列表</a>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/bluemaiding" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+                <a href="https://x.com/bluemaiding" target="_blank" rel="noopener noreferrer" class="footer-link">Twitter</a>
+                <a href="mailto:bluemaiding@126.com" class="footer-link">Email</a>
+            </div>
+            <p class="footer-text">© <span id="year"></span> Bluemaiding · 用 ❤ 和 JavaScript 构建</p>
+            <p class="footer-sub">Hosted on Cloudflare Pages</p>
+        </div>
+    </footer>
+    <button class="back-to-top" id="backToTop" aria-label="返回顶部">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+    </button>
+    <script src="../js/main.js"></script>
+</body>
+</html>
