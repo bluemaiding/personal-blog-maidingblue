@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>maiding_blue — NJU EE '25</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -200,16 +201,14 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
 .project-header h3{font-family:'Poppins',sans-serif;font-size:1.05rem;color:var(--text-primary)}
 .project-header h3 a{color:inherit;text-decoration:none;transition:var(--transition)}
 .project-header h3 a:hover{color:var(--blue-400)}
-.project-desc{font-size:.86rem;color:var(--text-secondary);line-height:1.6;flex:1;margin-bottom:.8rem}
+.project-desc{font-size:.86rem;color:var(--text-secondary);line-height:1.6;flex:1;margin-bottom:.8rem;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .project-meta{display:flex;align-items:center;gap:.8rem;font-size:.78rem;color:var(--text-tertiary)}
 .lang-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
 .project-stats{display:flex;gap:.7rem}
 .project-stats span{display:inline-flex;align-items:center;gap:.2rem}
 .project-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem 1.1rem;border-radius:var(--radius-full);background:rgba(96,165,250,.12);color:var(--blue-300);text-decoration:none;font-size:.8rem;font-weight:600;margin-top:1rem;align-self:flex-start;transition:var(--transition);border:1px solid rgba(96,165,250,.2)}
 .project-btn:hover{background:var(--blue-600);color:#fff;border-color:var(--blue-600)}
-.pinned-section{margin-bottom:2rem}
-.pinned-section .section-subtitle{margin-bottom:1.2rem}
-.pinned-section h3,.github-section-h3{font-family:'Poppins',sans-serif;font-size:1.15rem;color:var(--text-primary);margin-bottom:1rem}
+.github-section-h3{font-family:'Poppins',sans-serif;font-size:1.15rem;color:var(--text-primary);margin-bottom:1rem}
 @media(max-width:768px){.projects-grid{grid-template-columns:1fr}}
 
 /* CONTACT */
@@ -247,10 +246,10 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
 .posts-list{display:flex;flex-direction:column;gap:40px}
 .category-tabs-section,.view-tabs-section{padding:0;border-bottom:1px solid rgba(96,165,250,.1);margin-bottom:8px}
 .category-tabs,.view-tabs{display:flex;gap:0;align-items:center;flex-wrap:wrap}
-.category-tab,.view-tab{padding:14px 20px;font-size:.85rem;font-weight:500;color:var(--text-tertiary);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:var(--transition);white-space:nowrap;display:inline-flex;align-items:center}
+.category-tab,.view-tab,.wiki-tab{padding:14px 20px;font-size:.85rem;font-weight:500;color:var(--text-tertiary);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:var(--transition);white-space:nowrap;display:inline-flex;align-items:center}
 .view-tab{padding:16px 24px;font-size:.88rem}
-.category-tab:hover,.view-tab:hover{color:var(--text-secondary);background:rgba(96,165,250,.06)}
-.category-tab.active,.view-tab.active{color:var(--blue-400);border-bottom-color:var(--blue-400)}
+.category-tab:hover,.view-tab:hover,.wiki-tab:hover{color:var(--text-secondary);background:rgba(96,165,250,.06)}
+.category-tab.active,.view-tab.active,.wiki-tab.active{color:var(--blue-400);border-bottom-color:var(--blue-400)}
 .category-dropdown{position:relative;display:inline-block}
 .dropdown-menu{position:absolute;top:100%;left:0;min-width:120px;background:#131c2e;border:1px solid rgba(96,165,250,.15);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);padding:6px;z-index:100;opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .2s ease}
 .category-dropdown:hover .dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}
@@ -272,11 +271,62 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
 .article-section-label{font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:var(--text-primary);margin-bottom:24px;padding-bottom:8px;border-bottom:2px solid var(--blue-400);display:inline-block}
 @media(max-width:768px){
   .category-tabs,.view-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap}
-  .category-tab{padding:12px 14px;font-size:.8rem;flex-shrink:0}
+  .category-tab,.wiki-tab{padding:12px 14px;font-size:.8rem;flex-shrink:0}
   .view-tab{padding:14px 16px;font-size:.82rem;white-space:nowrap;flex-shrink:0}
   .article-group-year{font-size:1.8rem}
   .article-item{padding:10px 12px;gap:10px}
   .article-item-title{font-size:.98rem}
+}
+
+/* ===== WIKI (markdown 运行时渲染：wiki/**/*.md → 本页) ===== */
+.wiki-layout{display:grid;grid-template-columns:270px 1fr;gap:1.8rem;align-items:start;margin-top:1.2rem}
+.wiki-sidebar{position:sticky;top:86px;max-height:calc(100vh - 110px);overflow-y:auto;padding:0 .4rem 1rem 0;border-right:1px solid rgba(96,165,250,.1);display:flex;flex-direction:column;gap:1px}
+.wiki-group-label{font-family:'Space Grotesk',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-tertiary);margin:1rem 0 .35rem;padding-left:.7rem}
+.wiki-group-label:first-child{margin-top:.3rem}
+.wiki-item{display:block;padding:.5rem .7rem;border-radius:8px;font-size:.87rem;line-height:1.5;color:var(--text-secondary);text-decoration:none;border-left:2px solid transparent;transition:var(--transition)}
+.wiki-item:hover{color:var(--text-primary);background:rgba(96,165,250,.08)}
+.wiki-item.active{color:var(--blue-300);background:rgba(96,165,250,.14);border-left-color:var(--blue-400);font-weight:500}
+.wiki-side-empty{padding:.6rem .7rem;font-size:.82rem;color:var(--text-tertiary)}
+.wiki-main{min-width:0;background:rgba(255,255,255,.03);border:1px solid rgba(96,165,250,.1);border-radius:var(--radius-lg);padding:2.2rem 2.4rem;backdrop-filter:blur(8px)}
+.wiki-doc-title{font-family:'Space Grotesk',sans-serif;font-size:1.75rem;font-weight:700;color:var(--text-primary);line-height:1.3;letter-spacing:-.02em;margin-bottom:.5rem}
+.wiki-doc-meta{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.76rem;color:var(--text-tertiary);display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:.9rem}
+.wiki-doc-meta b{color:var(--blue-300);font-weight:500}
+.wiki-doc-tags{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:1.6rem}
+.wiki-doc-tags span{padding:.18rem .65rem;border-radius:var(--radius-full);font-size:.7rem;font-weight:500;background:rgba(96,165,250,.12);color:var(--blue-300)}
+.wiki-doc-rule{height:1px;background:linear-gradient(90deg,rgba(96,165,250,.3),transparent);margin-bottom:1.8rem}
+.wiki-content{color:var(--text-secondary);font-size:.97rem;line-height:1.85;max-width:74ch}
+.wiki-content>*+*{margin-top:1.1rem}
+.wiki-content h1,.wiki-content h2,.wiki-content h3,.wiki-content h4{font-family:'Space Grotesk',sans-serif;color:var(--text-primary);line-height:1.35;scroll-margin-top:90px}
+.wiki-content h1{font-size:1.45rem;margin-top:2.2rem!important}
+.wiki-content h2{font-size:1.25rem;margin-top:2.2rem!important;padding-bottom:.45rem;border-bottom:1px solid rgba(96,165,250,.14)}
+.wiki-content h3{font-size:1.05rem;margin-top:1.8rem!important}
+.wiki-content h4{font-size:.95rem;margin-top:1.4rem!important}
+.wiki-content a{color:var(--blue-400);text-decoration:underline;text-underline-offset:2px}
+.wiki-content a:hover{color:var(--blue-300)}
+.wiki-content code{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.85em;background:rgba(255,255,255,.06);border:1px solid rgba(96,165,250,.14);border-radius:5px;padding:.1rem .35rem}
+.wiki-content pre{background:#0d1526;border:1px solid rgba(96,165,250,.12);border-radius:12px;padding:1rem 1.2rem;overflow-x:auto;margin:1.3rem 0}
+.wiki-content pre code{background:none;border:none;padding:0;font-size:.84rem;line-height:1.7}
+.wiki-content blockquote{border-left:3px solid var(--blue-500);padding:.1rem 0 .1rem 1.1rem;margin:1.3rem 0;color:var(--text-tertiary)}
+.wiki-content ul,.wiki-content ol{padding-left:1.5rem}
+.wiki-content li{margin-bottom:.35rem}
+.wiki-content li::marker{color:var(--blue-400)}
+.wiki-content img{max-width:100%;border-radius:10px}
+.wiki-content table{width:100%;border-collapse:collapse;font-size:.88rem;display:block;overflow-x:auto}
+.wiki-content th,.wiki-content td{border:1px solid rgba(96,165,250,.15);padding:.5rem .75rem;text-align:left}
+.wiki-content th{background:rgba(96,165,250,.1);color:var(--text-primary);font-weight:600}
+.wiki-content hr{border:none;border-top:1px solid rgba(96,165,250,.14);margin:1.8rem 0}
+.wiki-content .katex{font-size:1.03em}
+.wiki-content .katex-display{overflow-x:auto;overflow-y:hidden;padding:.35rem 0;margin:.4rem 0}
+.wiki-content .katex-parse-error{color:#f87171}
+.wiki-state{padding:2.5rem 1rem;text-align:center;color:var(--text-tertiary);font-size:.9rem}
+.wiki-state i{display:block;font-size:1.7rem;color:var(--blue-300);margin-bottom:.9rem;opacity:.7}
+.wiki-state code{font-family:'JetBrains Mono',ui-monospace,monospace;background:rgba(255,255,255,.06);padding:.15rem .45rem;border-radius:5px;color:var(--blue-300);font-size:.82rem}
+.wiki-state p{margin-bottom:.6rem}
+@media(max-width:900px){
+  .wiki-layout{grid-template-columns:1fr;gap:1.2rem}
+  .wiki-sidebar{position:static;max-height:200px;border-right:none;border-bottom:1px solid rgba(96,165,250,.1);padding-right:0}
+  .wiki-main{padding:1.5rem 1.2rem}
+  .wiki-doc-title{font-size:1.4rem}
 }
 </style>
 </head>
@@ -298,6 +348,7 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
     <ul class="nav-links" id="navLinks">
       <li><a href="#" class="nav-link active" data-page="home">首页</a></li>
       <li><a href="#" class="nav-link" data-page="articles">文章</a></li>
+      <li><a href="#" class="nav-link" data-page="wiki">Wiki</a></li>
       <li><a href="memory.html" class="nav-link">纪念</a></li>
       <li><a href="#" class="nav-link" data-page="projects">项目</a></li>
       <li><a href="#" class="nav-link" data-page="contact">联系</a></li>
@@ -355,20 +406,9 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
   <!-- PROJECTS PREVIEW -->
   <div class="page-section" id="projectsSection">
     <h2 class="section-title">项目</h2>
-    <p class="section-subtitle">开源项目与代码仓库</p>
-    <div class="projects-grid">
-      <div class="project-card stagger">
-        <div class="project-header"><i class="fas fa-hourglass-half"></i><h3><a href="https://github.com/bluemaiding/countdown-widget" target="_blank" rel="noopener noreferrer">countdown-widget</a></h3></div>
-        <p class="project-desc">一个简洁实用的倒计时小组件，支持自定义时间、样式和提醒，适用于各种倒计时场景。</p>
-        <div class="project-meta"><span><span class="lang-dot" style="background:#e34c26"></span> HTML</span><div class="project-stats"><span><i class="far fa-star"></i> —</span><span><i class="fas fa-code-branch"></i> —</span></div></div>
-        <a href="https://github.com/bluemaiding/countdown-widget" target="_blank" rel="noopener noreferrer" class="project-btn">GitHub <i class="fas fa-external-link-alt" style="font-size:.7rem"></i></a>
-      </div>
-      <div class="project-card stagger">
-        <div class="project-header"><i class="fas fa-blog"></i><h3><a href="https://github.com/bluemaiding/website-personally-use" target="_blank" rel="noopener noreferrer">website-personally-use</a></h3></div>
-        <p class="project-desc">个人博客网站，纯HTML/CSS/JS实现，部署在Cloudflare Pages上，支持响应式设计、暗色动效与交互动效。</p>
-        <div class="project-meta"><span><span class="lang-dot" style="background:#e34c26"></span> HTML</span><div class="project-stats"><span><i class="far fa-star"></i> —</span><span><i class="fas fa-code-branch"></i> —</span></div></div>
-        <a href="https://github.com/bluemaiding/website-personally-use" target="_blank" rel="noopener noreferrer" class="project-btn">GitHub <i class="fas fa-external-link-alt" style="font-size:.7rem"></i></a>
-      </div>
+    <p class="section-subtitle" id="homeProjectsSubtitle">开源项目与代码仓库</p>
+    <div class="projects-grid" id="homeProjects">
+      <!-- 由 GitHub API 渲染 -->
     </div>
     <div style="margin-top:1.5rem;text-align:center">
       <a href="projects.html" class="project-btn" style="display:inline-flex;align-items:center;gap:.35rem">查看全部项目 <i class="fas fa-arrow-right" style="font-size:.7rem"></i></a>
@@ -414,29 +454,33 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
   </div>
 </div>
 
+<!-- WIKI -->
+<div class="page" id="page-wiki">
+  <div class="page-section">
+    <h2 class="section-title">Wiki</h2>
+    <p class="section-subtitle" id="wikiSubtitle">技术笔记 · 随用随查</p>
+
+    <div class="category-tabs-section">
+      <div class="category-tabs" id="wikiTabs">
+        <button class="wiki-tab active" data-cat="circuits">电子电路</button>
+        <button class="wiki-tab" data-cat="it">信息技术</button>
+        <button class="wiki-tab" data-cat="basics">基础入门帖</button>
+      </div>
+    </div>
+
+    <div class="wiki-layout">
+      <aside class="wiki-sidebar" id="wikiSidebar"><!-- Rendered by JavaScript --></aside>
+      <main class="wiki-main" id="wikiMain"><!-- Rendered by JavaScript --></main>
+    </div>
+  </div>
+</div>
+
 <!-- PROJECTS -->
 <div class="page" id="page-projects">
   <div class="page-section">
     <h2 class="section-title">项目</h2>
-    <p class="section-subtitle">开源项目与代码仓库</p>
-    <div class="pinned-section">
-      <h3 style="font-family:'Poppins',sans-serif;font-size:1.15rem;color:var(--text-primary);margin-bottom:1rem"><i class="fas fa-thumbtack" style="color:var(--blue-500);margin-right:.4rem"></i>精选项目</h3>
-      <div class="projects-grid">
-        <div class="project-card stagger">
-          <div class="project-header"><i class="fas fa-home"></i><h3><a href="https://github.com/bluemaiding" target="_blank" rel="noopener noreferrer">ESP32 Smart Home</a></h3></div>
-          <p class="project-desc">基于ESP32的智能家居控制系统，支持MQTT协议、多传感器数据采集和Web控制面板。</p>
-          <div class="project-meta"><span><span class="lang-dot" style="background:#f1e05a"></span> JavaScript</span><div class="project-stats"><span><i class="far fa-star"></i> 12</span><span><i class="fas fa-code-branch"></i> 3</span></div></div>
-          <a href="https://github.com/bluemaiding" target="_blank" rel="noopener noreferrer" class="project-btn">GitHub <i class="fas fa-external-link-alt" style="font-size:.7rem"></i></a>
-        </div>
-        <div class="project-card stagger">
-          <div class="project-header"><i class="fas fa-blog"></i><h3><a href="https://github.com/bluemaiding" target="_blank" rel="noopener noreferrer">Personal Blog</a></h3></div>
-          <p class="project-desc">个人博客系统，纯HTML/CSS/JS实现，部署在Cloudflare Pages上，支持响应式设计和交互动效。</p>
-          <div class="project-meta"><span><span class="lang-dot" style="background:#e34c26"></span> HTML</span><div class="project-stats"><span><i class="far fa-star"></i> 8</span><span><i class="fas fa-code-branch"></i> 2</span></div></div>
-          <a href="https://github.com/bluemaiding" target="_blank" rel="noopener noreferrer" class="project-btn">GitHub <i class="fas fa-external-link-alt" style="font-size:.7rem"></i></a>
-        </div>
-      </div>
-    </div>
-    <h3 style="font-family:'Poppins',sans-serif;font-size:1.15rem;color:var(--text-primary);margin-bottom:1rem;margin-top:1rem"><i class="fab fa-github" style="color:var(--blue-500);margin-right:.4rem"></i>GitHub 仓库</h3>
+    <p class="section-subtitle" id="reposSubtitle">开源项目与代码仓库</p>
+    <h3 class="github-section-h3"><i class="fab fa-github" style="color:var(--blue-500);margin-right:.4rem"></i>GitHub 仓库</h3>
     <div class="projects-grid" id="githubProjects">
       <div class="project-card stagger" style="grid-column:1/-1;text-align:center;padding:2.5rem">
         <i class="fas fa-circle-notch fa-spin" style="font-size:1.5rem;color:var(--blue-400);margin-bottom:.8rem"></i>
@@ -492,12 +536,15 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
 <button class="back-top" id="backTop" title="返回顶部" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
 
 <script src="js/articles-data.js"></script>
+<script src="js/wiki-data.js"></script>
 <script>
 // ===== CONFIG =====
 const CONFIG = {
   name: 'maiding_blue',
   github: 'bluemaiding',
   email: 'bluemaiding@126.com',
+  // 首页项目预览挑这几个仓库并按此顺序显示；仓库改名后要同步，否则回退到最近更新的
+  pinned: ['countdown-widget', 'personal-blog-maidingblue'],
   typedStrings: ["NJU EE'25 | 学生开发者 | 软硬兼修", "嵌入式 × Web | 代码改变世界", "南京大学 · 电子工程 · 2025"]
 };
 
@@ -669,33 +716,259 @@ function renderLatestPosts() {
   `).join('');
 }
 
-// ===== GITHUB API =====
-async function loadGitHubProjects() {
-  const container = document.getElementById('githubProjects');
+// ===== WIKI =====
+// 顶部分类 + 左侧目录 + 右侧正文；正文由各 wiki/**/*.md 在浏览器里渲染。
+const WIKI_CATS = [['circuits', '电子电路'], ['it', '信息技术'], ['basics', '基础入门帖']];
+const wikiDocCache = new Map();
+let wikiCat = null, wikiLibsJob = null, wikiRequest = 0;
+
+function wikiDecode(s) { try { return decodeURIComponent(s); } catch { return s; } }
+function wikiAll() { return typeof BLOG_WIKI === 'undefined' ? [] : BLOG_WIKI; }
+function wikiItems(cat) { return wikiAll().filter(w => w.cat === cat); }
+function wikiBySlug(slug) { return wikiAll().find(w => w.slug === slug); }
+function escHTML(s) {
+  return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+
+// marked + highlight.js + DOMPurify + KaTeX 只在进 Wiki 时按需加载
+const WIKI_HLJS_LANGS = ['verilog', 'vhdl'];   // common 包不含 HDL，电子类 wiki 需要单独取
+const CDN = 'https://cdnjs.cloudflare.com/ajax/libs/';
+const wikiExtraLibEl = (tag, key, url) => new Promise((resolve, reject) => {
+  const el = document.createElement(tag);
+  if (el.tagName === 'SCRIPT') el.src = url; else { el.rel = 'stylesheet'; el.href = url; }
+  el.id = 'wiki-lib-' + key;
+  el.onload = resolve;
+  el.onerror = () => reject(new Error('加载失败: ' + key));
+  document.head.appendChild(el);
+});
+
+function loadWikiLibs() {
+  if (!wikiLibsJob) {
+    const soft = (key, url) => wikiExtraLibEl('script', key, url).catch(() => undefined); // 单个语言/扩展包取不到只降级
+    wikiLibsJob = Promise.all([
+      wikiExtraLibEl('link', 'hljs-theme', CDN + 'highlight.js/11.9.0/styles/github-dark.min.css'),
+      wikiExtraLibEl('script', 'marked', CDN + 'marked/12.0.2/marked.min.js'),
+      wikiExtraLibEl('script', 'hljs', CDN + 'highlight.js/11.9.0/highlight.min.js'),
+      wikiExtraLibEl('script', 'purify', CDN + 'dompurify/3.1.6/purify.min.js'),
+      wikiExtraLibEl('link', 'katex-css', CDN + 'KaTeX/0.16.9/katex.min.css'),
+      wikiExtraLibEl('script', 'katex', CDN + 'KaTeX/0.16.9/katex.min.js'),
+    ]).then(() => Promise.all([
+      ...WIKI_HLJS_LANGS.map(lang => soft('hljs-' + lang, CDN + `highlight.js/11.9.0/languages/${lang}.min.js`)),
+      soft('render-math', CDN + 'KaTeX/0.16.9/contrib/auto-render.min.js'),
+    ])).catch(err => { wikiLibsJob = null; throw err; });
+  }
+  return wikiLibsJob;
+}
+
+async function fetchWikiDoc(src) {
+  if (!wikiDocCache.has(src)) {
+    const res = await fetch(src.split('/').map(encodeURIComponent).join('/'));
+    // 配了 Cloudflare SPA 回退（_redirects /* -> /index.html 200）时，缺失的 .md 会变成 200 + 一份 HTML，
+    // 不能当 Markdown 渲染；本地 file:// 打开则根本 fetch 不到。
+    const type = res.headers.get('content-type') || '';
+    if (!res.ok || type.includes('text/html')) {
+      throw new Error(`读取 ${src} 失败${type.includes('text/html') ? '（被 SPA 回退挡掉了，检查文件名）' : ' (HTTP ' + res.status + ')'}`);
+    }
+    wikiDocCache.set(src, await res.text());
+  }
+  return wikiDocCache.get(src);
+}
+
+function renderWikiSidebar(activeSlug) {
+  const el = document.getElementById('wikiSidebar');
+  const items = wikiItems(wikiCat);
+  if (!items.length) { el.innerHTML = '<div class="wiki-side-empty">该分类下暂无条目</div>'; return; }
+  const groups = new Map();
+  items.forEach(it => { if (!groups.has(it.group)) groups.set(it.group, []); groups.get(it.group).push(it); });
+  let html = '';
+  groups.forEach((list, group) => {
+    if (group) html += `<div class="wiki-group-label">${escHTML(group)}</div>`;
+    html += list.map(it => `<a href="#wiki/${encodeURIComponent(it.slug)}" class="wiki-item${it.slug === activeSlug ? ' active' : ''}">${escHTML(it.title)}</a>`).join('');
+  });
+  el.innerHTML = html;
+}
+
+function syncWikiTabs() {
+  document.querySelectorAll('.wiki-tab').forEach(t => t.classList.toggle('active', t.dataset.cat === wikiCat));
+  const sub = document.getElementById('wikiSubtitle');
+  if (!sub) return;
+  const total = wikiAll().length;
+  const label = (WIKI_CATS.find(c => c[0] === wikiCat) || [, ''])[1];
+  sub.textContent = total
+    ? `${label} · ${wikiItems(wikiCat).length} 条 / 共 ${total} 条`
+    : '把 .md 放进 wiki/ 对应分类，再跑 node _gen-wiki.js';
+}
+
+function wikiEmptyHTML() {
+  return `<div class="wiki-state"><i class="fas fa-book-open"></i>
+    <p>这个分类还空着</p>
+    <p>把 Markdown 放进 <code>wiki/${escHTML(wikiCat)}/</code>，然后运行 <code>node _gen-wiki.js</code></p>
+  </div>`;
+}
+
+// $…$ / $$…$$ 得先从 Markdown 里摘出来占位，否则 marked 会把 _ 当斜体、把 \ 当转义吃掉。
+// 行内式要求首尾非空白，避免「$5 和 $10」被误判成数学。
+const WIKI_MATH_RE = /\$\$[\s\S]+?\$\$|\$(?![\s$])(?:[^$\n]*[^\s$])?\$/g;
+const WIKI_MATH_OPTS = {
+  delimiters: [
+    { left: '$$', right: '$$', display: true },
+    { left: '$', right: '$', display: false },
+    { left: '\\(', right: '\\)', display: false },
+    { left: '\\[', right: '\\]', display: true },
+  ],
+  throwOnError: false,
+};
+
+function protectMath(body) {
+  const spans = [];
+  const codeSplit = /(```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]*`)/;
+  const kept = body.split(codeSplit).map((seg, i) => {
+    if (i % 2 === 1) return seg;   // 代码块/行内代码原样保留
+    return seg.replace(WIKI_MATH_RE, m => { spans.push(m); return `%%MATH${spans.length - 1}%%`; });
+  }).join('');
+  return { kept, spans };
+}
+
+function restoreMath(root, spans) {
+  if (!spans.length) return;
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(node => {
+    if (node.nodeValue.indexOf('%%MATH') < 0) return;
+    node.nodeValue = node.nodeValue.replace(/%%MATH(\d+)%%/g, (_, i) => spans[Number(i)] || '');
+  });
+}
+
+async function renderWiki(slug) {
+  const main = document.getElementById('wikiMain');
+  if (!main) return;
+  if (!wikiCat) wikiCat = (WIKI_CATS.find(([c]) => wikiItems(c).length) || ['circuits'])[0];
+
+  const doc = slug ? wikiBySlug(slug) : null;
+  if (slug && !doc) {
+    syncWikiTabs(); renderWikiSidebar(null);
+    main.innerHTML = `<div class="wiki-state"><i class="fas fa-compass"></i>
+      <p>没有条目 <code>${escHTML(slug)}</code></p>
+      <p>md 文件可能改名了，重跑 <code>node _gen-wiki.js</code> 刷新目录</p></div>`;
+    return;
+  }
+  if (doc) wikiCat = doc.cat;
+  const target = doc || wikiItems(wikiCat)[0];
+  syncWikiTabs();
+  renderWikiSidebar(target ? target.slug : null);
+  if (!target) { main.innerHTML = wikiEmptyHTML(); return; }
+  if (target.slug !== slug) history.replaceState(null, '', '#wiki/' + encodeURIComponent(target.slug));
+
+  main.innerHTML = `
+    <h1 class="wiki-doc-title">${escHTML(target.title)}</h1>
+    <div class="wiki-doc-meta">
+      <b>${escHTML(target.catLabel)}</b><span>·</span>
+      ${target.group ? `<span>${escHTML(target.group)}</span><span>·</span>` : ''}
+      ${target.date ? `<span>${escHTML(target.date)}</span><span>·</span>` : ''}
+      <span>${escHTML(target.reading)}</span>
+    </div>
+    ${target.tags && target.tags.length ? `<div class="wiki-doc-tags">${target.tags.map(t => `<span>#${escHTML(t)}</span>`).join('')}</div>` : ''}
+    <div class="wiki-doc-rule"></div>
+    <div class="wiki-content" id="wikiContent"><div class="wiki-state"><i class="fas fa-circle-notch fa-spin"></i>正在渲染 Markdown…</div></div>`;
+
+  const token = ++wikiRequest;
   try {
-    const res = await fetch(`https://api.github.com/users/${CONFIG.github}/repos?sort=updated&per_page=6`);
-    if (!res.ok) throw new Error('API error');
-    const repos = await res.json();
-    if (!repos.length) throw new Error('No repos');
-    container.innerHTML = repos.map(r => `
-      <div class="project-card stagger">
-        <div class="project-header"><i class="fas fa-book"></i><h3><a href="${r.html_url}" target="_blank" rel="noopener noreferrer">${r.name}</a></h3></div>
-        <p class="project-desc">${r.description || '暂无描述'}</p>
-        <div class="project-meta">
-          ${r.language ? `<span><span class="lang-dot" style="background:${langColor(r.language)}"></span> ${r.language}</span>` : ''}
-          <div class="project-stats"><span><i class="far fa-star"></i> ${r.stargazers_count}</span><span><i class="fas fa-code-branch"></i> ${r.forks_count}</span></div>
-        </div>
-        <a href="${r.html_url}" target="_blank" rel="noopener noreferrer" class="project-btn">GitHub <i class="fas fa-external-link-alt" style="font-size:.7rem"></i></a>
+    await loadWikiLibs();
+    const md = await fetchWikiDoc(target.src);
+    if (token !== wikiRequest) return;   // 期间已切到别的条目
+    const content = document.getElementById('wikiContent');
+    // frontmatter 只在 _gen-wiki.js 里解析；正文渲染前先剥掉，否则 --- 会被 marked 当 setext 标题
+    const body = md.replace(/^\uFEFF?---\r?\n[\s\S]*?\r?\n---\r?\n/, '');
+    const math = protectMath(body);
+    content.innerHTML = DOMPurify.sanitize(marked.parse(math.kept));
+    restoreMath(content, math.spans);
+    const firstH1 = content.querySelector('h1');
+    if (firstH1 && firstH1.textContent.trim() === target.title) firstH1.remove();
+    content.querySelectorAll('h2,h3,h4').forEach((h, i) => { h.id = 'sec-' + (i + 1); });
+    content.querySelectorAll('a[href^="http"]').forEach(a => { a.target = '_blank'; a.rel = 'noopener noreferrer'; });
+    content.querySelectorAll('pre code').forEach(b => { try { window.hljs.highlightElement(b); } catch { /* 未注册的语言，留纯文本 */ } });
+    if (window.renderMathInElement) window.renderMathInElement(content, WIKI_MATH_OPTS);
+  } catch (err) {
+    if (token !== wikiRequest) return;
+    document.getElementById('wikiContent').innerHTML = `<div class="wiki-state">
+      <i class="fas fa-triangle-exclamation"></i><p>${escHTML(err.message || '渲染失败')}</p>
+      <p>本地预览要用 <code>npx serve . -l 3000</code>，直接双击 HTML（file://）时浏览器不允许读 md</p></div>`;
+  }
+}
+
+function initWikiTabs() {
+  document.querySelectorAll('.wiki-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      wikiCat = tab.dataset.cat;
+      const first = wikiItems(wikiCat)[0];
+      const next = first ? '#wiki/' + encodeURIComponent(first.slug) : '#wiki';
+      if (location.hash === next) renderWiki(null); else location.hash = next;
+    });
+  });
+}
+
+// ===== GITHUB API（项目卡片一律来自真实仓库，不硬编码）=====
+const PROJECTS_STATE = (icon, title, extra) => `
+  <div class="project-card" style="grid-column:1/-1;text-align:center;padding:2.5rem">
+    <i class="fas ${icon}" style="font-size:1.5rem;color:var(--blue-400);margin-bottom:.8rem"></i>
+    <p style="color:var(--gray-400)">${title}</p>${extra || ''}
+  </div>`;
+let githubReposJob = null;
+
+function fetchGitHubRepos() {
+  if (!githubReposJob) {
+    githubReposJob = fetch(`https://api.github.com/users/${CONFIG.github}/repos?sort=updated&per_page=100`)
+      .then(res => {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(repos => {
+        if (!Array.isArray(repos) || !repos.length) throw new Error('没有公开仓库');
+        return repos;
+      })
+      .catch(err => { githubReposJob = null; throw err; });   // 失败后允许下次重试
+  }
+  return githubReposJob;
+}
+
+function projectIcon(lang) {
+  return { HTML: 'fa-code', CSS: 'fa-paint-brush', C: 'fa-microchip', 'C++': 'fa-microchip',
+           Python: 'fa-brain', Dart: 'fa-mobile-screen', JavaScript: 'fa-code' }[lang] || 'fa-book';
+}
+
+function projectCardHTML(r) {
+  return `
+    <div class="project-card stagger">
+      <div class="project-header"><i class="fas ${projectIcon(r.language)}"></i><h3><a href="${escHTML(r.html_url)}" target="_blank" rel="noopener noreferrer">${escHTML(r.name)}</a></h3></div>
+      <p class="project-desc">${escHTML(r.description || '暂无描述')}</p>
+      <div class="project-meta">
+        ${r.language ? `<span><span class="lang-dot" style="background:${langColor(r.language)}"></span> ${escHTML(r.language)}</span>` : ''}
+        <div class="project-stats"><span><i class="far fa-star"></i> ${r.stargazers_count}</span><span><i class="fas fa-code-branch"></i> ${r.forks_count}</span></div>
       </div>
-    `).join('');
+      <a href="${escHTML(r.html_url)}" target="_blank" rel="noopener noreferrer" class="project-btn">GitHub <i class="fas fa-external-link-alt" style="font-size:.7rem"></i></a>
+    </div>`;
+}
+
+async function loadGitHubProjects() {
+  const homeGrid = document.getElementById('homeProjects');
+  const allGrid = document.getElementById('githubProjects');
+  const loading = PROJECTS_STATE('fa-circle-notch fa-spin', '正在从 GitHub API 加载仓库列表…');
+  if (homeGrid) homeGrid.innerHTML = loading;
+  if (allGrid) allGrid.innerHTML = loading;
+  try {
+    const repos = await fetchGitHubRepos();
+    const pinned = CONFIG.pinned.map(n => repos.find(r => r.name === n)).filter(Boolean);
+    if (homeGrid) homeGrid.innerHTML = (pinned.length ? pinned : repos).slice(0, 2).map(projectCardHTML).join('');
+    if (allGrid) allGrid.innerHTML = repos.map(projectCardHTML).join('');
+    const sub = document.getElementById('reposSubtitle');
+    if (sub) sub.textContent = `共 ${repos.length} 个公开仓库 · 数据实时来自 GitHub`;
     observeStagger();
-  } catch {
-    container.innerHTML = `
-      <div class="project-card stagger" style="grid-column:1/-1;text-align:center;padding:2rem">
-        <i class="fas fa-exclamation-circle" style="font-size:1.5rem;color:var(--blue-300);margin-bottom:.8rem"></i>
-        <p style="color:var(--gray-400)">GitHub API 加载失败，请检查网络连接</p>
-        <p style="color:var(--gray-300);font-size:.8rem;margin-top:.5rem">也可以直接访问 <a href="https://github.com/${CONFIG.github}" target="_blank" style="color:var(--blue-500)">github.com/${CONFIG.github}</a></p>
-      </div>`;
+  } catch (err) {
+    const fail = PROJECTS_STATE('fa-exclamation-circle', 'GitHub API 加载失败，请检查网络连接',
+      `<p style="color:var(--gray-300);font-size:.8rem;margin-top:.5rem">也可以直接访问 <a href="https://github.com/${CONFIG.github}" target="_blank" style="color:var(--blue-500)">github.com/${CONFIG.github}</a></p>`);
+    if (homeGrid) homeGrid.innerHTML = fail;
+    if (allGrid) allGrid.innerHTML = fail;
   }
 }
 function langColor(lang) {
@@ -750,14 +1023,21 @@ document.getElementById('heroExploreBtn').addEventListener('click', e => {
   document.getElementById('aboutSection').scrollIntoView({ behavior: 'smooth' });
 });
 
-// ===== NAVIGATION (SPA + hash 路由) =====
-function showPage(name) {
+// ===== NAVIGATION (SPA + hash 路由，支持 #wiki/<slug> 深链) =====
+function parseHash() {
+  const [page, ...rest] = (location.hash || '#home').slice(1).split('/');
+  return { page: document.getElementById('page-' + page) ? page : 'home', sub: rest.join('/') };
+}
+
+function showPage(name, sub) {
   if (!document.getElementById('page-' + name)) name = 'home';
   document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + name));
   document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.dataset.page === name));
-  history.replaceState(null, '', name === 'home' ? location.pathname + location.search : '#' + name);
+  const hash = name === 'home' ? '' : '#' + name + (sub ? '/' + sub : '');
+  history.replaceState(null, '', hash || location.pathname + location.search);
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (name === 'articles') renderArticles();
+  if (name === 'wiki') renderWiki(sub ? wikiDecode(sub) : null);
   observeStagger();
 }
 
@@ -771,18 +1051,19 @@ document.querySelectorAll('.nav-link').forEach(link => {
 });
 
 window.addEventListener('hashchange', () => {
-  const name = (location.hash || '#home').slice(1);
-  showPage(document.getElementById('page-' + name) ? name : 'home');
+  const { page, sub } = parseHash();
+  showPage(page, sub);
 });
 
 // ===== INIT =====
 renderLatestPosts();
 initCategoryTabs();
 initViewTabs();
+initWikiTabs();
 
-// 初始页面（支持 #articles 等深链直达）
-const initialPage = (location.hash || '#home').slice(1);
-showPage(document.getElementById('page-' + initialPage) ? initialPage : 'home');
+// 初始页面（支持 #articles / #wiki/<slug> 等深链直达）
+const { page: initialPage, sub: initialSub } = parseHash();
+showPage(initialPage, initialSub);
 
 // Hide loader
 setTimeout(() => {

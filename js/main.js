@@ -18,55 +18,52 @@ const posts = [
     }
 ];
 
-const projects = [
-    {
-        name: '倒计时小工具',
-        description: '一个简洁的倒计时网页小部件，支持自定义日期和提醒。',
-        icon: '⏱️',
-        tech: ['HTML', 'CSS', 'JavaScript'],
-        url: 'https://github.com/bluemaiding/countdown-widget',
-        external: true
-    },
-    {
-        name: '数据分析脚本',
-        description: '用 Python 写的一些数据处理小脚本，处理 Excel 和 CSV 文件。',
-        icon: '📊',
-        tech: ['Python', 'Pandas'],
-        url: 'https://github.com/bluemaiding/data-scripts',
-        external: true
-    },
-    {
-        name: '个人知识库',
-        description: '使用 Markdown 管理的个人知识库，记录学习笔记和读书心得。',
-        icon: '📚',
-        tech: ['Markdown', 'Obsidian'],
-        url: '#',
-        external: false
-    }
-];
-
 // ========================================
-// Render Projects
+// Render Projects — 实时从 GitHub API 取真实仓库，不硬编码
 // ========================================
 
-function renderProjects() {
+const GITHUB_USER = 'bluemaiding';
+const PROJECT_ICONS = { HTML: '🧩', CSS: '🎨', C: '🔌', 'C++': '🔌', Python: '🐍', Dart: '📱', JavaScript: '📦' };
+
+function esc(s) {
+    return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+
+function projectsState(msg) {
+    return `<div style="grid-column:1/-1;text-align:center;padding:2.5rem 1rem;color:var(--text-tertiary)">${msg}</div>`;
+}
+
+async function renderProjects() {
     if (!projectsList) return;
+    projectsList.innerHTML = projectsState('正在从 GitHub 加载仓库列表…');
 
-    projectsList.innerHTML = projects.map(project => `
+    try {
+        const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=100`);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const repos = await res.json();
+        if (!Array.isArray(repos) || !repos.length) throw new Error('没有公开仓库');
+
+        projectsList.innerHTML = repos.map(repo => {
+            const tech = [repo.language, ...(repo.topics || [])].filter(Boolean);
+            return `
         <div class="project-card">
-            <div class="project-icon">${project.icon}</div>
-            <h3 class="project-name">${project.name}</h3>
-            <p class="project-desc">${project.description}</p>
+            <div class="project-icon">${PROJECT_ICONS[repo.language] || '📦'}</div>
+            <h3 class="project-name">${esc(repo.name)}</h3>
+            <p class="project-desc">${esc(repo.description || '暂无描述')}</p>
             <div class="project-tech">
-                ${project.tech.map(t => `<span>${t}</span>`).join('')}
+                ${(tech.length ? tech : ['GitHub']).map(t => `<span>${esc(t)}</span>`).join('')}
             </div>
             <div class="project-links">
-                <a href="${project.url}" class="project-link" ${project.external ? 'target="_blank" rel="noopener noreferrer"' : ''}>
-                    ${project.external ? '访问 →' : '查看 →'}
+                <a href="${esc(repo.html_url)}" class="project-link" target="_blank" rel="noopener noreferrer">
+                    GitHub ★${repo.stargazers_count} →
                 </a>
             </div>
-        </div>
-    `).join('');
+        </div>`;
+        }).join('');
+    } catch (err) {
+        projectsList.innerHTML = projectsState(`GitHub 加载失败（${esc(err.message)}），可直接访问
+            <a href="https://github.com/${GITHUB_USER}" target="_blank" rel="noopener noreferrer">github.com/${GITHUB_USER}</a>`);
+    }
 }
 
 // ========================================
@@ -75,7 +72,7 @@ function renderProjects() {
 
 function handleScroll() {
     const scrolled = window.scrollY > 300;
-    backToTop.classList.toggle('visible', scrolled);
+    if (backToTop) backToTop.classList.toggle('visible', scrolled);
 
     // Nav shadow on scroll
     if (window.scrollY > 10) {
@@ -87,9 +84,13 @@ function handleScroll() {
 
 window.addEventListener('scroll', handleScroll, { passive: true });
 
-backToTop.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+// about / projects 页没有返回顶部按钮，缺元素时跳过（否则这里抛错会中断整个脚本）
+const backToTop = document.getElementById('backToTop');
+if (backToTop) {
+    backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
 
 // ========================================
 // Smooth Scroll for Anchor Links
