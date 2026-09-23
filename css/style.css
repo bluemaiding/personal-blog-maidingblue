@@ -226,6 +226,23 @@ a:hover {
     gap: 12px;
 }
 
+/* 阅读进度条：绝对定位贴在 nav（fixed）下沿，导航变高也不会盖住正文 */
+.reading-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    pointer-events: none;
+}
+
+.reading-progress-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+    transition: width 0.08s linear;
+}
+
 /* Theme Toggle */
 .theme-toggle {
     width: 36px;
@@ -1240,7 +1257,7 @@ a:hover {
 }
 
 .article-header .container {
-    max-width: 700px;
+    max-width: 860px;
 }
 
 .article-title {
@@ -1258,7 +1275,7 @@ a:hover {
     align-items: center;
     gap: 12px;
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     color: var(--text-tertiary);
     margin-bottom: 16px;
 }
@@ -1274,7 +1291,7 @@ a:hover {
 }
 
 .article-content {
-    max-width: 700px;
+    max-width: 860px;
     margin: 0 auto;
     padding: 0 24px var(--section-padding);
 }
@@ -1388,13 +1405,18 @@ a:hover {
 
 /* ========================================
    Article page font system（仅文章详情页 body.article-page）
+   标题：方正清刻本悦宋简体（未安装回退楷体）
    正文：西文 Times New Roman / 中文 宋体
-   译文 · 作者 · 非正文（标题·meta·导航·返回链·页脚）：仿宋
+   译文 · 作者 · 非正文（meta·导航·返回链·页脚）：仿宋
    ======================================== */
 body.article-page {
     font-family: 'Times New Roman', '仿宋', FangSong, serif;
 }
-body.article-page .article-title,
+body.article-page .article-title {
+    /* Times 打头：拉丁字符强制新罗马；中文字形自动落到悦宋/楷体 */
+    font-family: 'Times New Roman', '方正清刻本悦宋简体', 'FZQingKeBenYueSongS-R-GB', '方正清刻本悦宋', '楷体', KaiTi, STKaiti, 'Noto Serif SC', serif;
+    letter-spacing: 0.01em;
+}
 body.article-page .article-meta,
 body.article-page .article-author,
 body.article-page .back-link {
@@ -1408,6 +1430,11 @@ body.article-page .article-content .article-yiwen,
 body.article-page .article-content .article-yiwen p {
     font-family: 'Times New Roman', '仿宋', FangSong, serif !important;
 }
+body.article-page .article-content p {
+    font-size: 1.15rem;
+    line-height: 2;
+    margin-bottom: 24px;
+}
 .article-author {
     font-size: 0.92rem;
     color: var(--text-tertiary);
@@ -1415,7 +1442,7 @@ body.article-page .article-content .article-yiwen p {
 }
 
 .article-footer {
-    max-width: 700px;
+    max-width: 860px;
     margin: 0 auto;
     padding: 0 24px var(--section-padding);
 }
@@ -1451,6 +1478,57 @@ body.article-page .article-content .article-yiwen p {
 /* ========================================
    Responsive
    ======================================== */
+@media (max-width: 768px) {
+    /* 文章页导航与首页观感保持一致：链接直接展开成第二行，不折叠成汉堡菜单 */
+    body.article-page .nav {
+        height: auto;
+        padding-bottom: 6px;
+    }
+
+    body.article-page .nav-inner {
+        flex-wrap: wrap;
+        height: auto;
+    }
+
+    body.article-page .nav-logo {
+        flex: 1;
+    }
+
+    body.article-page .nav-links {
+        display: flex;
+        order: 3;
+        width: 100%;
+        gap: 4px;
+        padding-top: 2px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    body.article-page .nav-links::-webkit-scrollbar {
+        display: none;
+    }
+
+    body.article-page .nav-link {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.7rem;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    body.article-page .mobile-menu-btn {
+        display: none;
+    }
+
+    body.article-page .mobile-menu {
+        display: none !important;
+    }
+
+    body.article-page .article-header {
+        padding-top: calc(var(--nav-height) + 92px);
+    }
+}
+
 @media (max-width: 768px) {
     .nav-links {
         display: none;
@@ -1573,4 +1651,174 @@ body.article-page .article-content .article-yiwen p {
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(var(--accent-rgb), 0.5);
+}
+
+/* ========================================
+   Article Page TOC — 左侧体裁目录 + 右侧阅读区（≈1:3）
+   ======================================== */
+.reading-layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 2.5rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.reading-main {
+    min-width: 0;
+}
+
+.reading-layout .article-header {
+    max-width: none;
+}
+
+.article-header .container,
+.article-content,
+.article-footer {
+    margin-left: 0;
+}
+
+.article-toc {
+    position: sticky;
+    top: calc(var(--nav-height) + 20px);
+    max-height: calc(100vh - var(--nav-height) - 40px);
+    overflow-y: auto;
+    padding: calc(var(--section-padding) - 40px) 12px 24px 0;
+    border-right: 1px solid var(--border-light);
+    scrollbar-width: thin;
+}
+
+.toc-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.toc-title {
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    color: var(--text-tertiary);
+    font-family: var(--font-mono);
+}
+
+.toc-close {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.3rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.toc-group-head,
+.toc-sub-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--text-primary);
+    text-align: left;
+    padding: 7px 10px;
+    border-radius: 8px;
+    transition: background var(--transition), color var(--transition);
+}
+
+.toc-group-head { font-size: 0.95rem; font-weight: 600; }
+.toc-sub-head { font-size: 0.88rem; color: var(--text-secondary); }
+.toc-group-head:hover, .toc-sub-head:hover { background: var(--surface-glass); color: var(--accent); }
+
+.toc-count {
+    margin-left: auto;
+    font-size: 0.72rem;
+    color: var(--text-tertiary);
+}
+
+.toc-caret {
+    font-size: 0.7rem;
+    color: var(--text-tertiary);
+    transition: transform 0.2s ease;
+}
+
+.toc-group.open > .toc-group-head .toc-caret,
+.toc-sub.open > .toc-sub-head .toc-caret { transform: rotate(90deg); }
+
+.toc-children,
+.toc-articles { display: none; }
+
+.toc-group.open > .toc-children,
+.toc-sub.open > .toc-articles { display: block; }
+
+.toc-articles { padding-left: 8px; margin: 2px 0 6px; }
+
+.toc-article {
+    display: block;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    padding: 5px 8px 5px 12px;
+    border-left: 2px solid var(--border-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color var(--transition), border-color var(--transition);
+}
+
+.toc-article:hover { color: var(--accent); border-left-color: var(--accent); }
+
+.toc-article.current {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    font-weight: 600;
+}
+
+.toc-fab {
+    display: none;
+    position: fixed;
+    left: 16px;
+    bottom: 84px;
+    z-index: 1100;
+    padding: 9px 16px;
+    border-radius: 9999px;
+    border: 1px solid var(--border);
+    background: var(--nav-bg-scrolled);
+    backdrop-filter: blur(12px);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+@media (max-width: 1023px) {
+    .reading-layout {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .article-toc {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 300px;
+        max-height: none;
+        z-index: 1200;
+        background: var(--bg-primary);
+        border-right: 1px solid var(--border);
+        padding: 20px 12px 40px;
+        transform: translateX(-105%);
+        transition: transform 0.3s ease;
+        box-shadow: 8px 0 32px rgba(0, 0, 0, 0.25);
+    }
+
+    body.toc-open .article-toc { transform: translateX(0); }
+    .toc-close { display: block; }
+    .toc-fab { display: block; }
 }

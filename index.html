@@ -279,24 +279,29 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
 }
 
 /* ===== WIKI (markdown 运行时渲染：wiki/**/*.md → 本页) ===== */
-.wiki-layout{display:grid;grid-template-columns:270px 1fr;gap:1.8rem;align-items:start;margin-top:1.2rem}
-.wiki-sidebar{position:sticky;top:86px;max-height:calc(100vh - 110px);overflow-y:auto;padding:0 .4rem 1rem 0;border-right:1px solid rgba(96,165,250,.1);display:flex;flex-direction:column;gap:1px}
-.wiki-group-label{font-family:'Space Grotesk',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-tertiary);margin:1rem 0 .35rem;padding-left:.7rem}
-.wiki-group-label:first-child{margin-top:.3rem}
-.wiki-item{display:block;padding:.5rem .7rem;border-radius:8px;font-size:.87rem;line-height:1.5;color:var(--text-secondary);text-decoration:none;border-left:2px solid transparent;transition:var(--transition)}
-.wiki-item:hover{color:var(--text-primary);background:rgba(96,165,250,.08)}
-.wiki-item.active{color:var(--blue-300);background:rgba(96,165,250,.14);border-left-color:var(--blue-400);font-weight:500}
+.wiki-layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:2.5rem;align-items:start;margin-top:1.2rem}
+.wiki-sidebar{position:sticky;top:86px;max-height:calc(100vh - 110px);overflow-y:auto;padding:0 .4rem 1rem 0;border-right:1px solid rgba(96,165,250,.1);display:flex;flex-direction:column;gap:1px;scrollbar-width:thin}
+.wiki-group-head{display:flex;align-items:center;gap:8px;width:100%;background:none;border:none;cursor:pointer;font-family:inherit;text-align:left;padding:7px 10px;border-radius:8px;font-size:.95rem;font-weight:600;color:var(--text-primary);transition:color .25s,background .25s}
+.wiki-group-head:hover{background:rgba(96,165,250,.08);color:var(--blue-400)}
+.wiki-group-count{margin-left:auto;font-size:.72rem;color:var(--text-tertiary)}
+.wiki-caret{font-size:.7rem;color:var(--text-tertiary);transition:transform .2s ease}
+.wiki-group.open>.wiki-group-head .wiki-caret{transform:rotate(90deg)}
+.wiki-group-items{display:none;padding-left:6px;margin:2px 0 6px}
+.wiki-group.open>.wiki-group-items{display:block}
+.wiki-item{display:block;padding:.5rem .7rem;border-radius:8px;font-size:.87rem;line-height:1.5;color:var(--text-secondary);text-decoration:none;border-left:2px solid rgba(96,165,250,.12);transition:var(--transition)}
+.wiki-item:hover{color:var(--blue-400);border-left-color:var(--blue-400)}
+.wiki-item.active{color:var(--blue-300);background:rgba(96,165,250,.14);border-left-color:var(--blue-400);font-weight:600}
 .wiki-side-empty{padding:.6rem .7rem;font-size:.82rem;color:var(--text-tertiary)}
 .wiki-main{min-width:0;background:rgba(255,255,255,.03);border:1px solid rgba(96,165,250,.1);border-radius:var(--radius-lg);padding:2.2rem 2.4rem;backdrop-filter:blur(8px)}
-.wiki-doc-title{font-family:'Space Grotesk',sans-serif;font-size:1.75rem;font-weight:700;color:var(--text-primary);line-height:1.3;letter-spacing:-.02em;margin-bottom:.5rem}
+.wiki-doc-title{font-family:'Times New Roman','方正清刻本悦宋简体','FZQingKeBenYueSongS-R-GB','方正清刻本悦宋','楷体',KaiTi,STKaiti,'Noto Serif SC',serif;font-size:1.75rem;font-weight:700;color:var(--text-primary);line-height:1.4;letter-spacing:.01em;margin-bottom:.5rem}
 .wiki-doc-meta{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.76rem;color:var(--text-tertiary);display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:.9rem}
 .wiki-doc-meta b{color:var(--blue-300);font-weight:500}
 .wiki-doc-tags{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:1.6rem}
 .wiki-doc-tags span{padding:.18rem .65rem;border-radius:var(--radius-full);font-size:.7rem;font-weight:500;background:rgba(96,165,250,.12);color:var(--blue-300)}
 .wiki-doc-rule{height:1px;background:linear-gradient(90deg,rgba(96,165,250,.3),transparent);margin-bottom:1.8rem}
-.wiki-content{color:var(--text-secondary);font-size:.97rem;line-height:1.85;max-width:74ch}
+.wiki-content{color:var(--text-secondary);font-size:1.02rem;line-height:2;max-width:80ch;font-family:'Times New Roman','宋体',SimSun,'Noto Serif SC',serif}
 .wiki-content>*+*{margin-top:1.1rem}
-.wiki-content h1,.wiki-content h2,.wiki-content h3,.wiki-content h4{font-family:'Space Grotesk',sans-serif;color:var(--text-primary);line-height:1.35;scroll-margin-top:90px}
+.wiki-content h1,.wiki-content h2,.wiki-content h3,.wiki-content h4{font-family:'Times New Roman','方正清刻本悦宋简体','FZQingKeBenYueSongS-R-GB','方正清刻本悦宋','楷体',KaiTi,STKaiti,'Noto Serif SC',serif;color:var(--text-primary);line-height:1.4;scroll-margin-top:90px}
 .wiki-content h1{font-size:1.45rem;margin-top:2.2rem!important}
 .wiki-content h2{font-size:1.25rem;margin-top:2.2rem!important;padding-bottom:.45rem;border-bottom:1px solid rgba(96,165,250,.14)}
 .wiki-content h3{font-size:1.05rem;margin-top:1.8rem!important}
@@ -371,7 +376,7 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
 
   <div class="page-section" id="aboutSection">
     <h2 class="section-title">关于我</h2>
-    <p class="section-subtitle">南京大学 · 电子信息科学与技术 · 大一 · 63 篇文章</p>
+    <p class="section-subtitle">南京大学 · 电子信息科学与技术 · 大一 · 62 篇文章</p>
     <div class="about-grid">
       <div class="avatar-wrap">
         <img src="avator.png" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
@@ -782,8 +787,11 @@ function renderWikiSidebar(activeSlug) {
   items.forEach(it => { if (!groups.has(it.group)) groups.set(it.group, []); groups.get(it.group).push(it); });
   let html = '';
   groups.forEach((list, group) => {
-    if (group) html += `<div class="wiki-group-label">${escHTML(group)}</div>`;
-    html += list.map(it => `<a href="#wiki/${encodeURIComponent(it.slug)}" class="wiki-item${it.slug === activeSlug ? ' active' : ''}">${escHTML(it.title)}</a>`).join('');
+    const open = list.some(it => it.slug === activeSlug) || !activeSlug ? ' open' : '';
+    html += `<div class="wiki-group${open}">
+      <button class="wiki-group-head">${escHTML(group || '未分组')}<span class="wiki-group-count">${list.length}</span><span class="wiki-caret">▸</span></button>
+      <div class="wiki-group-items">${list.map(it => `<a href="#wiki/${encodeURIComponent(it.slug)}" class="wiki-item${it.slug === activeSlug ? ' active' : ''}">${escHTML(it.title)}</a>`).join('')}</div>
+    </div>`;
   });
   el.innerHTML = html;
 }
@@ -898,6 +906,10 @@ async function renderWiki(slug) {
 }
 
 function initWikiTabs() {
+  document.getElementById('wikiSidebar').addEventListener('click', e => {
+    const head = e.target.closest('.wiki-group-head');
+    if (head) head.parentElement.classList.toggle('open');
+  });
   document.querySelectorAll('.wiki-tab').forEach(tab => {
     tab.addEventListener('click', () => {
       wikiCat = tab.dataset.cat;

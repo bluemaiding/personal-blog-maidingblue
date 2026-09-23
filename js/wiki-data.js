@@ -3,6 +3,24 @@
 const BLOG_WIKI = [
   {
     "id": 1,
+    "title": "面向嵌入式平台的 CLAHE 预处理加速可行性分析",
+    "cat": "circuits",
+    "catLabel": "电子电路",
+    "group": "嵌入式",
+    "slug": "clahe-embedded-acceleration",
+    "src": "wiki/circuits/clahe-embedded-acceleration.md",
+    "date": "2026",
+    "tags": [
+      "嵌入式",
+      "CLAHE",
+      "C语言",
+      "图像处理"
+    ],
+    "order": 100,
+    "reading": "1488 字 · 约 6 分钟"
+  },
+  {
+    "id": 2,
     "title": "Introduction to Blue_Wiki",
     "cat": "basics",
     "catLabel": "基础入门帖",
@@ -18,7 +36,7 @@ const BLOG_WIKI = [
     "reading": "820 字 · 约 4 分钟"
   },
   {
-    "id": 2,
+    "id": 3,
     "title": "Wiki 写作指南",
     "cat": "basics",
     "catLabel": "基础入门帖",

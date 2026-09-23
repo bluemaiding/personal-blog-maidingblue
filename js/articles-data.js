@@ -2,16 +2,6 @@
 // 重新生成: node _gen-data.js
 const BLOG_ARTICLES = [
   {
-    "id": 67,
-    "title": "面向嵌入式平台的 CLAHE 预处理加速可行性分析",
-    "year": "2026",
-    "category": "技术性文档",
-    "lang": "zh",
-    "classical": false,
-    "url": "posts/article-67.html",
-    "reading": "1470 字 · 约 6 分钟"
-  },
-  {
     "id": 66,
     "title": "读《我们仨》",
     "year": "2026",
