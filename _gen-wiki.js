@@ -1,6 +1,6 @@
 // _gen-wiki.js — 扫描 wiki/<分类>/**/*.md，生成 js/wiki-data.js（Wiki 目录唯一数据源）。
 // 用法: node _gen-wiki.js   （新增/修改 .md 后重跑即可同步首页 Wiki 栏）
-// 约定：wiki/circuits=电子电路, wiki/it=信息技术, wiki/basics=基础入门帖；
+// 约定：wiki/circuits=电子电路, wiki/it=信息技术, wiki/skills=实用技能；
 //       分类下的一级子目录名即侧栏分组（也可用 frontmatter group: 覆盖）；
 //       文件名/目录名建议用 ASCII，非 ASCII 时侧栏深链退化为 <cat>-N。
 const fs = require("fs");
@@ -10,7 +10,7 @@ const ROOT = "wiki";
 const CATEGORIES = [
   { cat: "circuits", label: "电子电路" },
   { cat: "it", label: "信息技术" },
-  { cat: "basics", label: "基础入门帖" },
+  { cat: "skills", label: "实用技能" },
 ];
 
 function walk(dir) {

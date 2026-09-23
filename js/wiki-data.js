@@ -22,11 +22,11 @@ const BLOG_WIKI = [
   {
     "id": 2,
     "title": "Introduction to Blue_Wiki",
-    "cat": "basics",
-    "catLabel": "基础入门帖",
+    "cat": "skills",
+    "catLabel": "实用技能",
     "group": "开篇",
     "slug": "intro",
-    "src": "wiki/basics/intro.md",
+    "src": "wiki/skills/intro.md",
     "date": "2026-09-22",
     "tags": [
       "Wiki",
@@ -38,11 +38,11 @@ const BLOG_WIKI = [
   {
     "id": 3,
     "title": "Wiki 写作指南",
-    "cat": "basics",
-    "catLabel": "基础入门帖",
+    "cat": "skills",
+    "catLabel": "实用技能",
     "group": "入门",
     "slug": "wiki-writing-guide",
-    "src": "wiki/basics/wiki-writing-guide.md",
+    "src": "wiki/skills/wiki-writing-guide.md",
     "date": "2026-09-22",
     "tags": [
       "博客",
