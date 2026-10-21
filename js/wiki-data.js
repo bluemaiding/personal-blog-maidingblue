@@ -2,6 +2,24 @@
 // 重新生成: node _gen-wiki.js
 const BLOG_WIKI = [
   {
+    "id": 2,
+    "title": "为什么 IC 卡不用接触就能更新余额和权限",
+    "cat": "circuits",
+    "catLabel": "电子电路",
+    "group": "电磁与射频",
+    "slug": "ic-card-contactless",
+    "src": "wiki/circuits/ic-card-contactless.md",
+    "date": "2026-09-29",
+    "tags": [
+      "IC卡",
+      "RFID",
+      "NFC",
+      "电磁感应"
+    ],
+    "order": 1,
+    "reading": "1849 字 · 约 7 分钟"
+  },
+  {
     "id": 1,
     "title": "面向嵌入式平台的 CLAHE 预处理加速可行性分析",
     "cat": "circuits",
@@ -20,7 +38,79 @@ const BLOG_WIKI = [
     "reading": "1488 字 · 约 6 分钟"
   },
   {
-    "id": 2,
+    "id": 3,
+    "title": "蓝牙耳机为什么信号时好时差",
+    "cat": "it",
+    "catLabel": "信息技术",
+    "group": "通信",
+    "slug": "bluetooth-wifi-signal",
+    "src": "wiki/it/bluetooth-wifi-signal.md",
+    "date": "2026-09-29",
+    "tags": [
+      "蓝牙",
+      "WiFi",
+      "2.4GHz",
+      "无线通信"
+    ],
+    "order": 1,
+    "reading": "1650 字 · 约 7 分钟"
+  },
+  {
+    "id": 5,
+    "title": "如何设计一个\"可以使用\"的软件",
+    "cat": "it",
+    "catLabel": "信息技术",
+    "group": "软件工程",
+    "slug": "software-design-usability",
+    "src": "wiki/it/software-design-usability.md",
+    "date": "2026-10-01",
+    "tags": [
+      "软件设计",
+      "用户体验",
+      "项目实践"
+    ],
+    "order": 2,
+    "reading": "1867 字 · 约 7 分钟"
+  },
+  {
+    "id": 6,
+    "title": "论 Ubuntu 和 Windows：两种世界观之争",
+    "cat": "it",
+    "catLabel": "信息技术",
+    "group": "操作系统",
+    "slug": "ubuntu-vs-windows",
+    "src": "wiki/it/ubuntu-vs-windows.md",
+    "date": "2026-10-01",
+    "tags": [
+      "Ubuntu",
+      "Windows",
+      "Linux",
+      "操作系统"
+    ],
+    "order": 3,
+    "reading": "1520 字 · 约 6 分钟"
+  },
+  {
+    "id": 4,
+    "title": "NOVA南苏讲座速记",
+    "cat": "it",
+    "catLabel": "信息技术",
+    "group": "讲座速记",
+    "slug": "nova-nansu-lecture-notes",
+    "src": "wiki/it/nova-nansu-lecture-notes.md",
+    "date": "2026-10-16",
+    "tags": [
+      "AI",
+      "嵌入式",
+      "Agent",
+      "MCP",
+      "端侧智能"
+    ],
+    "order": 3,
+    "reading": "3360 字 · 约 14 分钟"
+  },
+  {
+    "id": 8,
     "title": "Introduction to Blue_Wiki",
     "cat": "skills",
     "catLabel": "实用技能",
@@ -36,7 +126,7 @@ const BLOG_WIKI = [
     "reading": "820 字 · 约 4 分钟"
   },
   {
-    "id": 3,
+    "id": 11,
     "title": "Wiki 写作指南",
     "cat": "skills",
     "catLabel": "实用技能",
@@ -49,6 +139,76 @@ const BLOG_WIKI = [
       "Markdown"
     ],
     "order": 1,
-    "reading": "397 字 · 约 2 分钟"
+    "reading": "396 字 · 约 2 分钟"
+  },
+  {
+    "id": 12,
+    "title": "如何使用 Zotero 管理论文",
+    "cat": "skills",
+    "catLabel": "实用技能",
+    "group": "实用技巧",
+    "slug": "zotero-paper-management",
+    "src": "wiki/skills/zotero-paper-management.md",
+    "date": "2026-09-24",
+    "tags": [
+      "Zotero",
+      "论文管理",
+      "科研工具"
+    ],
+    "order": 1,
+    "reading": "2303 字 · 约 9 分钟"
+  },
+  {
+    "id": 7,
+    "title": "CMD、PowerShell、终端——那些黑框框到底是什么",
+    "cat": "skills",
+    "catLabel": "实用技能",
+    "group": "入门",
+    "slug": "cmd-terminal-basics",
+    "src": "wiki/skills/cmd-terminal-basics.md",
+    "date": "2026-09-29",
+    "tags": [
+      "终端",
+      "CMD",
+      "PowerShell",
+      "命令行"
+    ],
+    "order": 2,
+    "reading": "1322 字 · 约 6 分钟"
+  },
+  {
+    "id": 9,
+    "title": "如何用 Markdown 记笔记",
+    "cat": "skills",
+    "catLabel": "实用技能",
+    "group": "实用技巧",
+    "slug": "markdown-note-taking",
+    "src": "wiki/skills/markdown-note-taking.md",
+    "date": "2026-10-01",
+    "tags": [
+      "Markdown",
+      "笔记",
+      "写作"
+    ],
+    "order": 2,
+    "reading": "650 字 · 约 3 分钟"
+  },
+  {
+    "id": 10,
+    "title": "npm install 和 localhost:3000 到底发生了什么",
+    "cat": "skills",
+    "catLabel": "实用技能",
+    "group": "入门",
+    "slug": "npm-install-localhost",
+    "src": "wiki/skills/npm-install-localhost.md",
+    "date": "2026-09-29",
+    "tags": [
+      "npm",
+      "Node.js",
+      "前端",
+      "开源项目"
+    ],
+    "order": 3,
+    "reading": "1520 字 · 约 6 分钟"
   }
 ];
