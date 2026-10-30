@@ -1,3 +1,6 @@
+@layer legacy;
+@import url('garden.css');
+@layer legacy {
 /* ========================================
    Bluemaiding - Personal Blog
    Dark modern theme, aligned with index.html
@@ -1821,4 +1824,5 @@ body.article-page .article-content p {
     body.toc-open .article-toc { transform: translateX(0); }
     .toc-close { display: block; }
     .toc-fab { display: block; }
+}
 }

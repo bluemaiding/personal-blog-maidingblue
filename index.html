@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
+@layer legacy {
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --blue-50:#eff6ff;--blue-100:#dbeafe;--blue-200:#bfdbfe;--blue-300:#93c5fd;
@@ -280,7 +281,7 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
   .article-item-title{font-size:.98rem}
 }
 
-/* ===== WIKI (markdown 运行时渲染：wiki/**/*.md → 本页) ===== */
+/* ===== WIKI (Markdown files in the wiki directory render here) ===== */
 .wiki-layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:2.5rem;align-items:start;margin-top:1.2rem}
 .wiki-sidebar{position:sticky;top:86px;max-height:calc(100vh - 110px);overflow-y:auto;padding:0 .4rem 1rem 0;border-right:1px solid rgba(96,165,250,.1);display:flex;flex-direction:column;gap:1px;scrollbar-width:thin}
 .wiki-cat-header{font-family:'Times New Roman','方正清刻本悦宋简体','FZQingKeBenYueSongS-R-GB','方正清刻本悦宋','楷体',KaiTi,STKaiti,'Noto Serif SC',serif;font-size:.82rem;font-weight:700;color:var(--blue-300);text-transform:uppercase;letter-spacing:.08em;padding:12px 10px 6px;margin-top:8px;border-bottom:1px solid rgba(96,165,250,.12)}
@@ -337,7 +338,9 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
   .wiki-main{padding:1.5rem 1.2rem}
   .wiki-doc-title{font-size:1.4rem}
 }
+}
 </style>
+<link rel="stylesheet" href="css/garden.css">
 </head>
 <body>
 
@@ -367,20 +370,38 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
 
 <!-- HOME -->
 <div class="page active" id="page-home">
-  <section class="hero">
-    <div class="float-shape"></div>
-    <div class="float-shape"></div>
-    <div class="float-shape"></div>
-    <div class="float-shape"></div>
-    <h1 class="hero-title"><span>maiding</span>_blue</h1>
-    <div class="typed-wrap"><span id="typedText"></span><span class="typed-cursor"></span></div>
-    <a href="#aboutSection" class="hero-btn" id="heroExploreBtn"><i class="fas fa-compass"></i> 探索作品</a>
-    <a href="#aboutSection" class="scroll-hint"><i class="fas fa-chevron-down"></i></a>
+  <section class="hero" aria-label="欢迎来到 maiding_blue 的博客">
+    <div class="hero-copy">
+      <p class="hero-eyebrow">MAIDING_BLUE · 南京大学 · EE '25</p>
+      <h1 class="hero-title">把日子写下来，<br><span>让想法慢慢长大。</span></h1>
+      <p class="hero-description">你好，我是 maiding_blue。<br>在电路与代码之间探索，也在文字、音乐和生活里，收集一些值得留下的小事。</p>
+      <div class="hero-actions">
+        <a href="#articles" class="hero-btn">翻开文章 <span aria-hidden="true">↗</span></a>
+        <a href="#wiki" class="hero-secondary">逛逛知识花园 <span aria-hidden="true">→</span></a>
+      </div>
+      <p class="hero-footnote">A little space for words, wires & everyday wonders.</p>
+    </div>
+    <div class="garden-spread">
+      <div class="garden-sun" aria-hidden="true"></div>
+      <div class="garden-note">
+        <div class="note-topline"><span>Notes from my little corner</span><span aria-hidden="true">✧</span></div>
+        <div class="note-portrait">
+          <img src="avator.png" alt="maiding_blue 的头像" width="76" height="76">
+          <div><p class="note-name">maiding_blue</p><p class="note-caption">写作 · 做东西 · 慢慢探索</p></div>
+        </div>
+        <a class="garden-path" href="#articles"><span><strong>文作</strong><small>思考和生活的切片</small></span><span aria-hidden="true">↗</span></a>
+        <a class="garden-path" href="#wiki"><span><strong>知识花园</strong><small>随用随查的技术笔记</small></span><span aria-hidden="true">↗</span></a>
+        <a class="garden-path" href="memory.html"><span><strong>纪念长廊</strong><small>留住一些好时光</small></span><span aria-hidden="true">↗</span></a>
+      </div>
+      <p class="garden-label">Always growing, at my own pace. ↗</p>
+    </div>
   </section>
+
+  <div class="home-divider" aria-hidden="true">A few things about me</div>
 
   <div class="page-section" id="aboutSection">
     <h2 class="section-title">关于我</h2>
-    <p class="section-subtitle">南京大学 · 电子信息科学与技术 · 大一 · 62 篇文章</p>
+    <p class="section-subtitle" id="homeAboutSubtitle">南京大学 · 电子信息科学与技术 · 2025 级</p>
     <div class="about-grid">
       <div class="avatar-wrap">
         <img src="avator.png" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
@@ -388,7 +409,7 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
       </div>
       <div class="about-text">
         <h3>你好，我是 maiding_blue 👋</h3>
-        <p>南京大学电子信息科学与技术专业大一学生，对嵌入式系统、硬件电路与数理逻辑感兴趣，也热爱音乐、文学与体育运动。正在探索软硬件结合的工程实践与底层原理。</p>
+        <p>南京大学电子信息科学与技术专业 2025 级学生，对嵌入式系统、硬件电路与数理逻辑感兴趣，也热爱音乐、文学与体育运动。正在探索软硬件结合的工程实践与底层原理。</p>
         <p>这个博客记录了我的相关文作、项目实践与一些胡思乱想。</p>
         <div class="skills">
           <span class="skill-tag">嵌入式</span>
@@ -521,9 +542,9 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
         </a>
       </div>
       <form class="contact-form stagger" id="contactForm" onsubmit="handleSubmit(event)">
-        <div class="form-group"><input type="text" placeholder="您的姓名" required></div>
-        <div class="form-group"><input type="email" placeholder="您的邮箱" required></div>
-        <div class="form-group"><textarea placeholder="想说的话…" required></textarea></div>
+        <div class="form-group"><input type="text" placeholder="您的姓名" aria-label="您的姓名" autocomplete="name" required></div>
+        <div class="form-group"><input type="email" placeholder="您的邮箱" aria-label="您的邮箱" autocomplete="email" required></div>
+        <div class="form-group"><textarea placeholder="想说的话…" aria-label="想说的话" required></textarea></div>
         <button type="submit" class="form-submit"><i class="fas fa-paper-plane" style="margin-right:.4rem"></i>发送消息</button>
       </form>
     </div>
@@ -553,29 +574,13 @@ const CONFIG = {
   github: 'bluemaiding',
   email: 'bluemaiding@126.com',
   // 首页项目预览挑这几个仓库并按此顺序显示；仓库改名后要同步，否则回退到最近更新的
-  pinned: ['countdown-widget', 'personal-blog-maidingblue'],
-  typedStrings: ["NJU EE'25 | 学生开发者 | 软硬兼修", "嵌入式 × Web | 代码改变世界", "南京大学 · 电子工程 · 2025"]
+  pinned: ['countdown-widget', 'personal-blog-maidingblue']
 };
 
 // 文章数据由 js/articles-data.js 提供
 
-// ===== TYPEWRITER =====
-let typedIndex = 0, charIndex = 0, isDeleting = false;
-const typedEl = document.getElementById('typedText');
-function typeWriter() {
-  const str = CONFIG.typedStrings[typedIndex];
-  if (!isDeleting) {
-    typedEl.textContent = str.substring(0, charIndex + 1);
-    charIndex++;
-    if (charIndex === str.length) { isDeleting = true; setTimeout(typeWriter, 2000); return; }
-  } else {
-    typedEl.textContent = str.substring(0, charIndex - 1);
-    charIndex--;
-    if (charIndex === 0) { isDeleting = false; typedIndex = (typedIndex + 1) % CONFIG.typedStrings.length; }
-  }
-  setTimeout(typeWriter, isDeleting ? 40 : 80);
-}
-typeWriter();
+document.getElementById('homeAboutSubtitle').textContent =
+  `南京大学 · 电子信息科学与技术 · 2025 级 · ${BLOG_ARTICLES.length} 篇文章`;
 
 // Article card click → navigate
 document.addEventListener('click', e => {
@@ -793,7 +798,7 @@ function renderWikiSidebar(activeSlug) {
     items.forEach(it => { if (!groups.has(it.group)) groups.set(it.group, []); groups.get(it.group).push(it); });
     html += `<div class="wiki-cat-header">${escHTML(label)}</div>`;
     groups.forEach((list, group) => {
-      const open = list.some(it => it.slug === activeSlug) ? ' open' : '';
+      const open = ' open';
       html += `<div class="wiki-group${open}">
         <button class="wiki-group-head">${escHTML(group || '未分组')}<span class="wiki-group-count">${list.length}</span><span class="wiki-caret">▸</span></button>
         <div class="wiki-group-items">${list.map(it => `<a href="#wiki/${encodeURIComponent(it.slug)}" class="wiki-item${it.slug === activeSlug ? ' active' : ''}">${escHTML(it.title)}</a>`).join('')}</div>
@@ -820,7 +825,7 @@ function syncWikiSubtitle(slug) {
 
 // $…$ / $$…$$ 得先从 Markdown 里摘出来占位，否则 marked 会把 _ 当斜体、把 \ 当转义吃掉。
 // 行内式要求首尾非空白，避免「$5 和 $10」被误判成数学。
-const WIKI_MATH_RE = /\$\$[\s\S]+?\$\$|\$(?![\s$])(?:[^$\n]*[^\s$])?\$/g;
+const WIKI_MATH_RE = /(?<!\\)(?:\$\$[\s\S]+?\$\$|\$(?![\s$])(?:[^$\n]*[^\s$])?\$|\\\([\s\S]+?\\\)|\\\[[\s\S]+?\\\])/g;
 const WIKI_MATH_OPTS = {
   delimiters: [
     { left: '$$', right: '$$', display: true },
@@ -850,6 +855,26 @@ function restoreMath(root, spans) {
     if (node.nodeValue.indexOf('%%MATH') < 0) return;
     node.nodeValue = node.nodeValue.replace(/%%MATH(\d+)%%/g, (_, i) => spans[Number(i)] || '');
   });
+}
+
+let wikiMarkdownConfigured = false;
+function configureWikiMarkdown() {
+  if (wikiMarkdownConfigured) return;
+  // CommonMark's punctuation rules leave Chinese bold followed immediately by
+  // Chinese prose unparsed. Handle that case through the inline lexer so code,
+  // escapes and nested Markdown still pass through the normal parser.
+  marked.use({ extensions: [{
+    name: 'wikiCjkStrong',
+    level: 'inline',
+    start(src) { const i = src.indexOf('**'); return i < 0 ? undefined : i; },
+    tokenizer(src) {
+      const match = /^\*\*(?![\s*])([^\n]+?)\*\*(?!\*)/.exec(src);
+      if (!match || /\s$/.test(match[1]) || !/[\u2e80-\u9fff\uff00-\uffef]|%%MATH\d+%%/.test(match[1])) return;
+      return { type: 'wikiCjkStrong', raw: match[0], tokens: this.lexer.inlineTokens(match[1]) };
+    },
+    renderer(token) { return `<strong>${this.parser.parseInline(token.tokens)}</strong>`; },
+  }] });
+  wikiMarkdownConfigured = true;
 }
 
 async function renderWiki(slug) {
@@ -899,6 +924,7 @@ async function renderWikiContent(target) {
   const token = ++wikiRequest;
   try {
     await loadWikiLibs();
+    configureWikiMarkdown();
     const md = await fetchWikiDoc(target.src);
     if (token !== wikiRequest) return;
     const content = document.getElementById('wikiContent');
@@ -912,6 +938,22 @@ async function renderWikiContent(target) {
     content.querySelectorAll('a[href^="http"]').forEach(a => { a.target = '_blank'; a.rel = 'noopener noreferrer'; });
     content.querySelectorAll('pre code').forEach(b => { try { window.hljs.highlightElement(b); } catch { /* 未注册的语言，留纯文本 */ } });
     if (window.renderMathInElement) window.renderMathInElement(content, WIKI_MATH_OPTS);
+    // Older notes use inline and display math wrappers for ordinary text. Keep these in
+    // the surrounding sentence; actual mathematical expressions stay centered.
+    content.querySelectorAll('.katex').forEach(node => {
+      const source = node.querySelector('annotation[encoding="application/x-tex"]');
+      const term = source && source.textContent.trim().match(/^\\text\{([^{}]*)\}$/);
+      if (term) {
+        const text = term[1].replace(/\\cdotp\b/g, '·').replace(/\\[,;:! ]/g, ' ')
+          .replace(/\\([_$%&#])/g, '$1').replace(/~/g, ' ');
+        if (!text.includes('\\')) {
+          const inline = document.createElement('span');
+          inline.className = 'wiki-term';
+          inline.textContent = text;
+          (node.closest('.katex-display') || node).replaceWith(inline);
+        }
+      }
+    });
   } catch (err) {
     if (token !== wikiRequest) return;
     document.getElementById('wikiContent').innerHTML = `<div class="wiki-state">
@@ -1035,12 +1077,6 @@ function observeStagger() {
   document.querySelectorAll('.stagger').forEach(el => { el.classList.remove('visible'); observer.observe(el); });
 }
 observeStagger();
-
-// ===== SMOOTH SCROLL FOR HERO BTN =====
-document.getElementById('heroExploreBtn').addEventListener('click', e => {
-  e.preventDefault();
-  document.getElementById('aboutSection').scrollIntoView({ behavior: 'smooth' });
-});
 
 // ===== NAVIGATION (SPA + hash 路由，支持 #wiki/<slug> 深链) =====
 function parseHash() {

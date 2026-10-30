@@ -127,7 +127,7 @@ const themeToggle = document.getElementById('themeToggle');
 function getPreferredTheme() {
     const saved = localStorage.getItem('theme');
     if (saved) return saved;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return 'light';
 }
 function setTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);

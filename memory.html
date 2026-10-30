@@ -2,11 +2,12 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>纪念长廊</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+@layer legacy {
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:#1a1a2e;color:#f5f5f5}
 
@@ -226,9 +227,11 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
   .image-area{cursor:grab}
   .image-area:active{cursor:grabbing}
 }
+}
 </style>
+<link rel="stylesheet" href="css/garden.css">
 </head>
-<body>
+<body class="memory-page">
 
 <!-- Gallery -->
 <div class="gallery" id="gallery">

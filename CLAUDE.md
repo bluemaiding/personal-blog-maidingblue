@@ -4,7 +4,7 @@ Personal blog hosted on Cloudflare Pages at `bluemaiding.pages.dev`.
 
 ## Tech Stack
 - Pure HTML + CSS + JavaScript (no framework, no build step)
-- CSS variables for theming (light/dark mode with localStorage persistence)
+- CSS variables for theming: pale green / apricot surfaces, blue ink, white button text; standalone reading pages retain an optional dark theme with localStorage persistence
 - Fonts: Inter, Noto Serif SC, JetBrains Mono (Google Fonts)
 
 ## Structure
@@ -15,6 +15,8 @@ index.html          — Home + 单页应用(SPA)：文章/项目/联系 为 #pag
 about.html          — 关于页（独立页，使用 css/style.css + js/main.js）
 projects.html       — 项目页（独立页）
 css/style.css       — about / projects / 文章详情页 的样式
+css/garden.css      — 全站共享视觉层（浅绿/浅橙底色、蓝色文字、纸页卡片、常驻导航）；
+                       index/memory 直接加载，style.css 通过 @import 加载；旧样式包在 legacy 层
 js/main.js          — 主题切换、项目渲染、导航/滚动/移动菜单（供 about/projects/文章详情页）
 js/articles-data.js — 文章列表数据（由 _gen-data.js 从 posts/*.html 自动生成，唯一数据源）
 js/wiki-data.js     — Wiki 目录数据（由 _gen-wiki.js 从 wiki/**/*.md 自动生成）
@@ -64,7 +66,7 @@ _redirects          — (可选) Cloudflare SPA 回退 /* -> /index.html 200
 - **Add a project**: 不用改代码——项目卡片全部实时来自 GitHub API（`users/bluemaiding/repos`），在 GitHub 建仓库即自动上站。
   首页预览挑 `CONFIG.pinned`（index.html）里列的仓库名，仓库改名后要同步；`projects.html` 由 js/main.js 渲染全部仓库
 - **New article page**: copy posts/hello-world.html as template
-- **Change colors**: index 内联 CSS 用自己的变量；about/projects/文章页 用 style.css 的 `:root` / `[data-theme="dark"]`
+- **Change colors/layout**: edit `css/garden.css`, the shared unlayered visual system. Earlier index/memory inline CSS and style.css rules are in `@layer legacy`, so garden.css wins without specificity escalation. Preserve article font roles in style.css. Light is the default; explicit saved dark preference still works on standalone pages.
 - **Change social links**: replace `github.com/bluemaiding`, `x.com/bluemaiding`, `bluemaiding@126.com` across all files
 
 ## Deploy
