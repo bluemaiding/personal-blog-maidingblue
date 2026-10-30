@@ -2,6 +2,16 @@
 // 重新生成: node _gen-data.js
 const BLOG_ARTICLES = [
   {
+    "id": 67,
+    "title": "关于给自己做加减法的一点思考",
+    "year": "2026",
+    "category": "碎碎念",
+    "lang": "zh",
+    "classical": false,
+    "url": "posts/article-67.html",
+    "reading": "3735 字 · 约 13 分钟"
+  },
+  {
     "id": 66,
     "title": "读《我们仨》",
     "year": "2026",

@@ -68,10 +68,10 @@ const base = process.env.BLOG_URL || 'http://127.0.0.1:3000';
         assert.equal(await page.locator('#articleForm').inputValue(), 'all');
         assert.equal(await page.locator('.category-tab.active').getAttribute('data-cat'), 'all');
       });
-      await check('New 碎碎念 category is selectable without reclassifying existing articles', async () => {
+      await check('碎碎念 category shows its actual articles or an honest empty state', async () => {
         await page.locator('.category-tab[data-cat="碎碎念"]').click();
         await expectArticles(a => a.category === '碎碎念');
-        assert(await page.locator('#postsList .articles-empty').isVisible());
+        assert.equal(await page.locator('#postsList .articles-empty').count(), articles.some(a => a.category === '碎碎念') ? 0 : 1);
         await page.getByRole('button', { name: '重置筛选' }).click();
       });
       await check('Selections survive leaving and returning to the archive', async () => {
