@@ -240,6 +240,7 @@ const TOC_GROUPS = [
     ['论文', ['学术性论文']],
     ['技术性文档', ['技术性文档']],
     ['年度总结', ['年度总结']],
+    ['碎碎念', ['碎碎念']],
 ];
 
 function buildArticleToc(articles, prefix) {

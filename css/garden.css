@@ -60,7 +60,7 @@ body::after { background-image: none; }
 ::-webkit-scrollbar-thumb { background: #84a3a2; border-radius: 8px; }
 a, button, input, textarea { -webkit-tap-highlight-color: transparent; }
 button { font-family: inherit; }
-a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
   outline: 3px solid var(--blue); outline-offset: 5px;
 }
 .orb, .float-shape, .avatar-ring { display: none; }
@@ -156,18 +156,23 @@ nav.scrolled, .nav.scrolled { background: var(--nav-bg-scrolled); box-shadow: 0 
 .form-group input::placeholder, .form-group textarea::placeholder { color: var(--muted); opacity: 1; }
 .form-submit { border-radius: 12px; background: var(--accent-strong); box-shadow: none; }
 .contact-sign { padding: 28px; background: var(--apricot); border-radius: 12px; }
-.modal-box, .dropdown-menu { background: var(--paper); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 16px 50px #234f7820; }
+.modal-box { background: var(--paper); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 16px 50px #234f7820; }
 .back-top, .back-to-top { background: var(--accent-strong); color: white; box-shadow: 0 4px 12px #234f781a; border-radius: 14px; }
 
 /* The archive reads like an open notebook, with generous lines and small labels. */
-.category-tabs-section, .view-tabs-section { border: 0; margin-bottom: 16px; }
-.category-tabs, .view-tabs { gap: 7px; }
-.category-tab, .view-tab, .wiki-tab { border: 1px solid var(--line); border-radius: 9px; padding: 10px 16px; color: var(--ink); background: var(--paper); }
-.category-tab:hover, .view-tab:hover, .wiki-tab:hover { background: var(--apricot); color: var(--ink); }
-.category-tab.active, .view-tab.active, .wiki-tab.active { background: var(--accent-strong); color: white; border-color: var(--accent-strong); }
-.category-dropdown:focus-within .dropdown-menu { opacity: 1; visibility: visible; transform: none; }
-.view-tab { background: transparent; font-size: .8rem; }
-.view-tab.active { background: var(--apricot); color: var(--ink); border-color: var(--line); }
+.category-tabs-section { border: 0; margin-bottom: 16px; }
+.category-tabs { gap: 7px; }
+.category-tab, .wiki-tab { border: 1px solid var(--line); border-radius: 9px; padding: 10px 16px; color: var(--ink); background: var(--paper); }
+.category-tab:hover, .wiki-tab:hover { background: var(--apricot); color: var(--ink); }
+.category-tab.active, .wiki-tab.active { background: var(--accent-strong); color: white; border-color: var(--accent-strong); }
+.article-filters { display: flex; align-items: center; flex-wrap: wrap; gap: 16px 24px; padding: 18px 20px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; }
+.article-filter { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: .85rem; }
+.article-filter select { min-width: 120px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-secondary); color: var(--ink); font: inherit; cursor: pointer; }
+.article-filter-reset { margin-left: auto; padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px; background: transparent; color: var(--ink); font-size: .82rem; cursor: pointer; }
+.article-filter-reset:hover:enabled { background: var(--apricot); }
+.article-filter-reset:disabled { opacity: .55; cursor: default; }
+.articles-empty { padding: 48px 24px; border: 1px dashed var(--line); border-radius: 14px; text-align: center; color: var(--ink); background: var(--paper); }
+.articles-empty p + p { margin-top: 10px; color: var(--muted); font-size: .85rem; }
 .posts-list { margin-top: 40px; }
 .article-group { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 28px; }
 .article-group-header { display: flex; align-items: baseline; gap: 14px; border-color: var(--line); padding-bottom: 18px; }
@@ -275,8 +280,8 @@ nav.scrolled, .nav.scrolled { background: var(--nav-bg-scrolled); box-shadow: 0 
   .avatar-wrap { margin: 0; width: 112px; height: 126px; border-width: 5px; }
   .latest-posts-grid { grid-template-columns: 1fr; }
   .latest-post-card { min-height: 82px; }
-  .category-tabs, .view-tabs { flex-wrap: wrap; overflow: visible; }
-  .category-tab, .view-tab { padding: 10px 12px; font-size: .78rem; }
+  .category-tabs { flex-wrap: wrap; overflow: visible; }
+  .category-tab { padding: 10px 12px; font-size: .78rem; }
   .article-group { padding: 20px 14px; }
   .article-item { gap: 8px; padding: 16px 4px; }
   .article-item-title { font-size: 1.05rem; }

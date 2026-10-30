@@ -9,8 +9,8 @@ Personal blog hosted on Cloudflare Pages at `bluemaiding.pages.dev`.
 
 ## Structure
 ```
-index.html          — Home + 单页应用(SPA)：文章/项目/联系 为 #page-* 区段；文章列表含
-                       时间/语种/文体 三视图 + 分类筛选，直达用 #articles（自带内联 CSS/JS）
+index.html          — Home + 单页应用(SPA)：文章/项目/联系 为 #page-* 区段；文章类别全部平铺，
+                       语种/文体下拉可组合筛选，列表按年份排列；直达 #articles（自带内联 CSS/JS）
                        Wiki 为 #page-wiki 区段（导航「Wiki」），直达 #wiki，正文走 #wiki/<slug>
 about.html          — 关于页（独立页，使用 css/style.css + js/main.js）
 projects.html       — 项目页（独立页）
@@ -59,6 +59,7 @@ _redirects          — (可选) Cloudflare SPA 回退 /* -> /index.html 200
 ## How to Edit
 - **Personal info**: edit name/bio/skills in index.html
 - **Add a post**: 在 `posts/` 新建 `article-X.html`（可复制 hello-world.html），填好 `<div class="article-meta">` 的 年份/类别/文体/语言；然后 `node _reading.js apply`（注入字数）+ `node _gen-data.js`（刷新列表数据）
+- **Article filters**: `ARTICLE_CATEGORIES` 定义平铺类别顺序，包含「碎碎念」；数据中新类别会自动追加。语种（全部/中文/英文）、文体（全部/现代文/文言文）与类别取交集；「重置筛选」清空三项，空类别显示真实空状态。不要自动重分类已有文章。
 - **Add a wiki entry**: 把 `.md` 放进 `wiki/circuits|it|basics/`（= 电子电路/信息技术/基础入门帖），可再建子目录当分组；
   文件开头可选 frontmatter `title / group / date / order / tags`（不写也能渲染）；然后 `node _gen-wiki.js` 刷新目录。
   细节与示例见 `wiki/basics/wiki-writing-guide.md`（上线后可删）

@@ -247,17 +247,11 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
 
 /* ===== ARTICLE LIST (ported from posts page, re-themed dark) ===== */
 .posts-list{display:flex;flex-direction:column;gap:40px}
-.category-tabs-section,.view-tabs-section{padding:0;border-bottom:1px solid rgba(96,165,250,.1);margin-bottom:8px}
-.category-tabs,.view-tabs{display:flex;gap:0;align-items:center;flex-wrap:wrap}
-.category-tab,.view-tab,.wiki-tab{padding:14px 20px;font-size:.85rem;font-weight:500;color:var(--text-tertiary);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:var(--transition);white-space:nowrap;display:inline-flex;align-items:center}
-.view-tab{padding:16px 24px;font-size:.88rem}
-.category-tab:hover,.view-tab:hover,.wiki-tab:hover{color:var(--text-secondary);background:rgba(96,165,250,.06)}
-.category-tab.active,.view-tab.active,.wiki-tab.active{color:var(--blue-400);border-bottom-color:var(--blue-400)}
-.category-dropdown{position:relative;display:inline-block}
-.dropdown-menu{position:absolute;top:100%;left:0;min-width:120px;background:#131c2e;border:1px solid rgba(96,165,250,.15);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);padding:6px;z-index:100;opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .2s ease}
-.category-dropdown:hover .dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}
-.dropdown-item{display:block;padding:8px 14px;font-size:.82rem;color:var(--text-secondary);text-decoration:none;border-radius:6px;transition:var(--transition);white-space:nowrap}
-.dropdown-item:hover{background:rgba(96,165,250,.12);color:var(--blue-400)}
+.category-tabs-section{padding:0;border-bottom:1px solid rgba(96,165,250,.1);margin-bottom:8px}
+.category-tabs{display:flex;gap:0;align-items:center;flex-wrap:wrap}
+.category-tab,.wiki-tab{padding:14px 20px;font-size:.85rem;font-weight:500;color:var(--text-tertiary);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:var(--transition);white-space:nowrap;display:inline-flex;align-items:center}
+.category-tab:hover,.wiki-tab:hover{color:var(--text-secondary);background:rgba(96,165,250,.06)}
+.category-tab.active,.wiki-tab.active{color:var(--blue-400);border-bottom-color:var(--blue-400)}
 .article-groups{display:flex;flex-direction:column;gap:48px}
 .article-group{display:flex;flex-direction:column}
 .article-group-header{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(96,165,250,.1)}
@@ -273,9 +267,8 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
 .article-item-category{font-size:.72rem;color:var(--text-tertiary);white-space:nowrap;flex-shrink:0;padding:2px 10px;border-radius:var(--radius-full);background:rgba(255,255,255,.04);border:1px solid rgba(96,165,250,.12)}
 .article-section-label{font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:var(--text-primary);margin-bottom:24px;padding-bottom:8px;border-bottom:2px solid var(--blue-400);display:inline-block}
 @media(max-width:768px){
-  .category-tabs,.view-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap}
+  .category-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap}
   .category-tab,.wiki-tab{padding:12px 14px;font-size:.8rem;flex-shrink:0}
-  .view-tab{padding:14px 16px;font-size:.82rem;white-space:nowrap;flex-shrink:0}
   .article-group-year{font-size:1.8rem}
   .article-item{padding:10px 12px;gap:10px}
   .article-item-title{font-size:.98rem}
@@ -453,31 +446,27 @@ nav.scrolled{background:rgba(11,20,38,.85);box-shadow:0 2px 30px rgba(0,0,0,.5)}
     <p class="section-subtitle" id="articlesSubtitle">思考与记录</p>
 
     <div class="category-tabs-section">
-      <div class="category-tabs">
-        <button class="category-tab active" data-cat="all">全部</button>
-        <div class="category-dropdown">
-          <button class="category-tab" data-cat="文学">文学 <i class="fas fa-chevron-down" style="font-size:.65rem;margin-left:.25rem"></i></button>
-          <div class="dropdown-menu">
-            <a href="#" class="dropdown-item" data-cat="散文">散文</a>
-            <a href="#" class="dropdown-item" data-cat="小说">小说</a>
-            <a href="#" class="dropdown-item" data-cat="作文">作文</a>
-            <a href="#" class="dropdown-item" data-cat="随笔">随笔</a>
-            <a href="#" class="dropdown-item" data-cat="杂文">杂文</a>
-          </div>
-        </div>
-        <button class="category-tab" data-cat="诗歌">诗歌</button>
-        <button class="category-tab" data-cat="论文">论文</button>
-        <button class="category-tab" data-cat="技术性文档">技术性文档</button>
-        <button class="category-tab" data-cat="年度总结">总结</button>
+      <div class="category-tabs" id="articleCategories" role="group" aria-label="文章类别">
+        <button type="button" class="category-tab active" data-cat="all" aria-pressed="true">全部</button>
       </div>
     </div>
 
-    <div class="view-tabs-section">
-      <div class="view-tabs">
-        <button class="view-tab active" data-view="time">时间顺序</button>
-        <button class="view-tab" data-view="lang">中文 / 英文</button>
-        <button class="view-tab" data-view="form">现代文 / 文言文</button>
-      </div>
+    <div class="article-filters" role="group" aria-label="文章筛选">
+      <label class="article-filter" for="articleLanguage">语种
+        <select id="articleLanguage">
+          <option value="all">全部语种</option>
+          <option value="zh">中文</option>
+          <option value="en">英文</option>
+        </select>
+      </label>
+      <label class="article-filter" for="articleForm">文体
+        <select id="articleForm">
+          <option value="all">全部文体</option>
+          <option value="modern">现代文</option>
+          <option value="classical">文言文</option>
+        </select>
+      </label>
+      <button type="button" class="article-filter-reset" id="resetArticleFilters" disabled>重置筛选</button>
     </div>
 
     <div class="posts-list" id="postsList"><!-- Rendered by JavaScript --></div>
@@ -591,18 +580,14 @@ document.addEventListener('click', e => {
 });
 
 // ===== ARTICLE LIST (ported from posts page) =====
-let currentView = 'time';
 let currentCategory = 'all';
+let currentLanguage = 'all';
+let currentForm = 'all';
 const postsList = document.getElementById('postsList');
 const articlesSubtitle = document.getElementById('articlesSubtitle');
 
-const CATEGORY_GROUPS = {
-  '文学': ['散文', '小说', '作文', '随笔', '杂文'],
-  '诗歌': ['古诗词', '现代诗'],
-  '论文': ['学术性论文'],
-  '技术性文档': ['技术性文档']
-};
-const EMPTY_HINT = '<div style="text-align:center;padding:3rem;color:var(--text-tertiary)">暂无此类文章</div>';
+const ARTICLE_CATEGORIES = ['散文', '小说', '作文', '随笔', '杂文', '古诗词', '现代诗', '学术性论文', '技术性文档', '年度总结', '纪念', '碎碎念'];
+const EMPTY_HINT = '<div class="articles-empty" role="status"><p>暂无符合条件的文章</p><p>试试其他类别，或重置筛选。</p></div>';
 
 function articleItemHTML(a, categoryLabel) {
   return `
@@ -616,23 +601,23 @@ function articleItemHTML(a, categoryLabel) {
 }
 
 function getFilteredArticles() {
-  if (currentCategory === 'all') return BLOG_ARTICLES;
-  if (CATEGORY_GROUPS[currentCategory]) {
-    return BLOG_ARTICLES.filter(a => CATEGORY_GROUPS[currentCategory].includes(a.category));
-  }
-  return BLOG_ARTICLES.filter(a => a.category === currentCategory);
+  return BLOG_ARTICLES.filter(a =>
+    (currentCategory === 'all' || a.category === currentCategory) &&
+    (currentLanguage === 'all' || a.lang === currentLanguage) &&
+    (currentForm === 'all' || (currentForm === 'classical' ? a.classical : !a.classical))
+  );
 }
 
 function renderArticles() {
   if (!postsList) return;
-  if (articlesSubtitle) articlesSubtitle.textContent = `共 ${BLOG_ARTICLES.length} 篇 · 思考与记录`;
-  if (currentView === 'time') renderByTime();
-  else if (currentView === 'lang') renderByLang();
-  else if (currentView === 'form') renderByForm();
+  const articles = getFilteredArticles();
+  if (articlesSubtitle) articlesSubtitle.textContent = `共 ${BLOG_ARTICLES.length} 篇 · 当前显示 ${articles.length} 篇`;
+  document.getElementById('resetArticleFilters').disabled =
+    currentCategory === 'all' && currentLanguage === 'all' && currentForm === 'all';
+  renderByTime(articles);
 }
 
-function renderByTime() {
-  const articles = getFilteredArticles();
+function renderByTime(articles) {
   if (!articles.length) { postsList.innerHTML = EMPTY_HINT; return; }
   const groups = {};
   articles.forEach(a => { (groups[a.year] = groups[a.year] || []).push(a); });
@@ -650,73 +635,45 @@ function renderByTime() {
   }).join('')}</div>`;
 }
 
-function renderByLang() {
-  const articles = getFilteredArticles();
-  if (!articles.length) { postsList.innerHTML = EMPTY_HINT; return; }
-  const zh = articles.filter(a => a.lang === 'zh');
-  const en = articles.filter(a => a.lang === 'en');
-  let html = `<div class="article-group">
-      <div class="article-section-label">中文 (${zh.length} 篇)</div>
-      <div class="article-items">${zh.map(a => articleItemHTML(a, `${a.year} · ${a.category}`)).join('')}</div>
-    </div>`;
-  if (en.length) {
-    html += `<div class="article-group">
-      <div class="article-section-label">English (${en.length} articles)</div>
-      <div class="article-items">${en.map(a => articleItemHTML(a, `${a.year} · ${a.category}`)).join('')}</div>
-    </div>`;
-  }
-  postsList.innerHTML = html;
-}
-
-function renderByForm() {
-  const articles = getFilteredArticles();
-  if (!articles.length) { postsList.innerHTML = EMPTY_HINT; return; }
-  const modern = articles.filter(a => !a.classical);
-  const classical = articles.filter(a => a.classical);
-  let html = `<div class="article-group">
-      <div class="article-section-label">现代文 (${modern.length} 篇)</div>
-      <div class="article-items">${modern.map(a => articleItemHTML(a, `${a.year} · ${a.category}`)).join('')}</div>
-    </div>`;
-  if (classical.length) {
-    html += `<div class="article-group">
-      <div class="article-section-label">文言文 (${classical.length} 篇)</div>
-      <div class="article-items">${classical.map(a => articleItemHTML(a, `${a.year} · ${a.category}`)).join('')}</div>
-    </div>`;
-  }
-  postsList.innerHTML = html;
-}
-
 function initCategoryTabs() {
-  document.querySelectorAll('.category-tab').forEach(tab => {
-    tab.addEventListener('click', e => {
-      e.preventDefault();
-      document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      currentCategory = tab.dataset.cat;
-      renderArticles();
-    });
-  });
-  document.querySelectorAll('.dropdown-item').forEach(item => {
-    item.addEventListener('click', e => {
-      e.preventDefault();
-      document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-      const parent = document.querySelector('.category-tab[data-cat="文学"]');
-      if (parent) parent.classList.add('active');
-      currentCategory = item.dataset.cat;
-      renderArticles();
-    });
+  const container = document.getElementById('articleCategories');
+  const categories = [...new Set([...ARTICLE_CATEGORIES, ...BLOG_ARTICLES.map(a => a.category)])];
+  container.innerHTML += categories.map(category =>
+    `<button type="button" class="category-tab" data-cat="${escHTML(category)}" aria-pressed="false">${escHTML(category)}</button>`
+  ).join('');
+  container.addEventListener('click', event => {
+    const tab = event.target.closest('.category-tab');
+    if (!tab) return;
+    currentCategory = tab.dataset.cat;
+    syncCategoryTabs();
+    renderArticles();
   });
 }
 
-function initViewTabs() {
-  const tabs = document.querySelectorAll('.view-tab');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      currentView = tab.dataset.view;
-      renderArticles();
-    });
+function syncCategoryTabs() {
+  document.querySelectorAll('#articleCategories .category-tab').forEach(tab => {
+    const active = tab.dataset.cat === currentCategory;
+    tab.classList.toggle('active', active);
+    tab.setAttribute('aria-pressed', String(active));
+  });
+}
+
+function initArticleFilters() {
+  const language = document.getElementById('articleLanguage');
+  const form = document.getElementById('articleForm');
+  language.addEventListener('change', () => {
+    currentLanguage = language.value;
+    renderArticles();
+  });
+  form.addEventListener('change', () => {
+    currentForm = form.value;
+    renderArticles();
+  });
+  document.getElementById('resetArticleFilters').addEventListener('click', () => {
+    currentCategory = currentLanguage = currentForm = 'all';
+    language.value = form.value = 'all';
+    syncCategoryTabs();
+    renderArticles();
   });
 }
 
@@ -1113,7 +1070,7 @@ window.addEventListener('hashchange', () => {
 // ===== INIT =====
 renderLatestPosts();
 initCategoryTabs();
-initViewTabs();
+initArticleFilters();
 initWikiSidebar();
 
 // 初始页面（支持 #articles / #wiki/<slug> 等深链直达）

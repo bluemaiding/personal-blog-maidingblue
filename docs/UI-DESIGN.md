@@ -19,6 +19,7 @@ The blog uses a pale green and apricot palette with blue ink and white text on b
 
 - Keep the existing title, Chinese body, English body, translation, and metadata font roles. English reading text keeps Times New Roman first.
 - Keep navigation links visible on narrow screens. Article directories appear above the reading surface on mobile; Wiki groups start expanded.
+- Article categories are flat buttons, including 碎碎念; additional categories in generated article data appear automatically. Independent native dropdowns filter language and form, combined with category as an intersection. Results stay in chronological groups. Reset clears all three filters; empty categories stay empty until real articles are added. Verify with `node tests/article-filters.cjs` using the same Playwright configuration as the Wiki suite.
 - Keep actual equations as KaTeX. Older Wiki notes wrap ordinary terms in inline or display `\text{...}`; recognized text-only wrappers become wrapping text spans at render time. Source Markdown stays intact. Both dollar and backslash math delimiters are protected before Markdown parsing. A scoped inline extension handles bold text beside Chinese punctuation without rewriting code or escaped Markdown.
 - Default standalone pages to the light palette, preserving explicit saved dark preferences and the theme switch.
 - Respect reduced motion, show keyboard focus, allow photo-page zoom, and label contact fields.
