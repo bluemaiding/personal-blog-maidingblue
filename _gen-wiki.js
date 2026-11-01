@@ -61,10 +61,14 @@ for (const { cat, label } of CATEGORIES) {
     const rel = path.relative(path.join(ROOT, cat), fp).split(path.sep);
     const base = rel[rel.length - 1].replace(/\.md$/, "");
     const h1 = body.match(/^#\s+(.+)$/m);
+    let titleRuns;
+    try { const runs = JSON.parse(meta.title_runs || 'null'); if (Array.isArray(runs) && runs.every(r => typeof r.text === 'string' && typeof r.font === 'string')) titleRuns = runs; } catch {}
     const src = path.posix.join(ROOT, cat, ...rel);
     return {
       id: ++id,
       title: meta.title || (h1 && h1[1].trim()) || base,
+      ...(meta.title_style ? { titleStyle: meta.title_style } : {}),
+      ...(titleRuns ? { titleRuns } : {}),
       cat,
       catLabel: meta.category || label,
       group: meta.group || (rel.length > 1 ? rel[rel.length - 2] : ""),

@@ -214,6 +214,11 @@ nav.scrolled, .nav.scrolled { background: var(--nav-bg-scrolled); box-shadow: 0 
 .article-meta { flex-wrap: wrap; gap: 8px; line-height: 1.8; }
 .reading-main .article-content { padding: 0 42px 48px; }
 .article-content p { color: var(--text-secondary); }
+.article-content .math.display, .article-content .katex-display { overflow-x: auto; overflow-y: hidden; }
+.article-content .math-error, .article-content .math-load-note { color: #9b3b27; }
+.article-content table { border-collapse: collapse; max-width: 100%; }
+.article-content th, .article-content td { border: 1px solid var(--line); padding: 8px 12px; }
+.article-content figure { margin: 20px 0; }
 .article-content blockquote { background: var(--bg-secondary); border-color: var(--blue); padding: 18px 24px; border-radius: 0 10px 10px 0; }
 .toc-article.current { background: var(--apricot); color: var(--ink); }
 .reading-progress-fill { background: var(--accent-strong); }

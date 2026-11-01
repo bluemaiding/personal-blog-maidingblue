@@ -5,6 +5,8 @@ _cleanup.js
 _rebuild2.js
 *.log
 .DS_Store
+.publisher-state/
+__pycache__/
 
 # wrangler files
 .wrangler

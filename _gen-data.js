@@ -20,8 +20,8 @@ const out = [];
 for (const f of files) {
   const html = fs.readFileSync(path.join(dir, f), "utf8");
   const id = parseInt(f.match(/\d+/)[0], 10);
-  const titleM = html.match(/<h1 class="article-title">([\s\S]*?)<\/h1>/);
-  const title = titleM ? decode(titleM[1]) : "";
+  const titleM = html.match(/<h1 class="article-title"[^>]*>([\s\S]*?)<\/h1>/);
+  const title = titleM ? decode(titleM[1].replace(/<[^>]*>/g, '')) : "";
   const metaM = html.match(/<div class="article-meta">([\s\S]*?)<\/div>/);
   const spans = metaM
     ? (metaM[1].match(/<span[^>]*>[\s\S]*?<\/span>/g) || [])

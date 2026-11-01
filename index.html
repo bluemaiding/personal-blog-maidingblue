@@ -879,6 +879,15 @@ async function renderWikiContent(target) {
     <div class="wiki-content" id="wikiContent"><div class="wiki-state"><i class="fas fa-circle-notch fa-spin"></i>正在渲染 Markdown…</div></div>`;
 
   const token = ++wikiRequest;
+  if (target.titleStyle) main.querySelector('.wiki-doc-title').style.cssText = target.titleStyle;
+  if (target.titleRuns?.length) {
+    const title = main.querySelector('.wiki-doc-title');
+    title.replaceChildren(...target.titleRuns.map(run => {
+      const span = document.createElement('span'); span.textContent = run.text;
+      if (run.font) span.style.fontFamily = '"' + run.font.replace(/["\\<>]/g, '') + '", serif';
+      return span;
+    }));
+  }
   try {
     await loadWikiLibs();
     configureWikiMarkdown();

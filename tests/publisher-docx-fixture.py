@@ -1,0 +1,15 @@
+"""Small real OOXML fixture: inherited fonts, theme fonts, direct run overrides."""
+import sys
+import zipfile
+
+parts = {
+    '[Content_Types].xml': '''<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>''',
+    '_rels/.rels': '''<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>''',
+    'word/_rels/document.xml.rels': '''<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="s" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="t" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme" Target="theme/theme1.xml"/></Relationships>''',
+    'word/styles.xml': '''<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:eastAsia="宋体"/></w:rPr></w:rPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style><w:style w:type="paragraph" w:styleId="Title"><w:name w:val="Title"/><w:basedOn w:val="Normal"/><w:rPr><w:rFonts w:eastAsia="楷体"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Custom"><w:basedOn w:val="Normal"/><w:rPr><w:rFonts w:eastAsia="仿宋"/></w:rPr></w:style></w:styles>''',
+    'word/theme/theme1.xml': '''<a:theme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:themeElements><a:fontScheme name="test"><a:majorFont><a:latin typeface="Calibri"/><a:ea typeface=""/><a:font script="Hans" typeface="黑体"/></a:majorFont><a:minorFont><a:latin typeface="Courier New"/><a:ea typeface=""/><a:font script="Hans" typeface="宋体"/></a:minorFont></a:fontScheme></a:themeElements></a:theme>''',
+    'word/document.xml': '''<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body><w:p><w:pPr><w:pStyle w:val="Title"/></w:pPr><w:r><w:t>原字体标题</w:t></w:r></w:p><w:p><w:r><w:t>默认宋体与 English</w:t></w:r></w:p><w:p><w:pPr><w:pStyle w:val="Custom"/></w:pPr><w:r><w:t>继承仿宋</w:t></w:r><w:r><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:hAnsiTheme="minorHAnsi" w:eastAsia="黑体"/></w:rPr><w:t> Mixed English 黑体</w:t></w:r></w:p><w:sectPr/></w:body></w:document>'''
+}
+with zipfile.ZipFile(sys.argv[1], 'w', zipfile.ZIP_DEFLATED) as archive:
+    for name, content in parts.items():
+        archive.writestr(name, content)

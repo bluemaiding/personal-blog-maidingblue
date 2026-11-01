@@ -57,6 +57,7 @@ _redirects          — (可选) Cloudflare SPA 回退 /* -> /index.html 200
 - All external links use `target="_blank" rel="noopener noreferrer"`
 
 ## How to Edit
+- **GUI publishing**: 双击根目录 `打开博客发布器.cmd`，支持 MD/TXT/DOCX → 文章或 Wiki、分类、预览、保存与 GitHub 推送。DOCX 字体通过 OOXML 继承解析保留；新文章加载 `js/article-math.js` 渲染 LaTeX。后端位于 `publisher/`，仅本机访问，状态在被忽略的 `.publisher-state/`。使用说明见 `docs/PUBLISHER.md`。不要把仅保存改成自动提交，不要混入其他暂存修改。
 - **Personal info**: edit name/bio/skills in index.html
 - **Add a post**: 在 `posts/` 新建 `article-X.html`（可复制 hello-world.html），填好 `<div class="article-meta">` 的 年份/类别/文体/语言；然后 `node _reading.js apply`（注入字数）+ `node _gen-data.js`（刷新列表数据）
 - **Article filters**: `ARTICLE_CATEGORIES` 定义平铺类别顺序，包含「碎碎念」；数据中新类别会自动追加。语种（全部/中文/英文）、文体（全部/现代文/文言文）与类别取交集；「重置筛选」清空三项，空类别显示真实空状态。不要自动重分类已有文章。
