@@ -126,7 +126,7 @@ const BLOG_WIKI = [
     "reading": "820 字 · 约 4 分钟"
   },
   {
-    "id": 11,
+    "id": 12,
     "title": "Wiki 写作指南",
     "cat": "skills",
     "catLabel": "实用技能",
@@ -142,7 +142,7 @@ const BLOG_WIKI = [
     "reading": "396 字 · 约 2 分钟"
   },
   {
-    "id": 12,
+    "id": 13,
     "title": "如何使用 Zotero 管理论文",
     "cat": "skills",
     "catLabel": "实用技能",
@@ -194,7 +194,7 @@ const BLOG_WIKI = [
     "reading": "650 字 · 约 3 分钟"
   },
   {
-    "id": 10,
+    "id": 11,
     "title": "npm install 和 localhost:3000 到底发生了什么",
     "cat": "skills",
     "catLabel": "实用技能",
@@ -210,5 +210,18 @@ const BLOG_WIKI = [
     ],
     "order": 3,
     "reading": "1520 字 · 约 6 分钟"
+  },
+  {
+    "id": 10,
+    "title": "【搬运】提问的智慧",
+    "cat": "skills",
+    "catLabel": "实用技能",
+    "group": "",
+    "slug": "note-2cc392d4-0cd8-4dbd-9747-1ec429ade21f",
+    "src": "wiki/skills/note-2cc392d4-0cd8-4dbd-9747-1ec429ade21f.md",
+    "date": "2026-11-02",
+    "tags": [],
+    "order": 100,
+    "reading": "16771 字 · 约 59 分钟"
   }
 ];
